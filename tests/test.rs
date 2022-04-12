@@ -38,7 +38,7 @@ fn test_x_squared() {
      
     let mut ys = [0.; 10000];
     for (i, y) in ys.iter_mut().enumerate() {
-        *y = xs[i].powf(2.);
+        *y = xs[i].powf(2.) - 5.;
     }
 
     let plot = Plot::new((xs, ys));

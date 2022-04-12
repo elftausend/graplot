@@ -186,7 +186,7 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
                 let move_away = text.len();
     
                 draw_text(&text, half_width - 5. - (y_half_font * move_away as f32), y, y_font_size, BLACK);
-                draw_line(half_width-4., y - (y_half_font / 2.), half_width+4., y - (y_half_font / 2.), 3., DARKGRAY);
+                draw_line(half_width-4., y, half_width+4., y, 3., DARKGRAY);
             }
         } else {
             
