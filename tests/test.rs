@@ -8,6 +8,12 @@ fn test_plot() {
 }
 
 #[test]
+fn test_plot2() {
+    let plot = Plot::new([-4., -2., 1., 4.]);
+    plot.show();
+}
+
+#[test]
 fn test_sine_wave() {
     let mut xs = [0.; 1000]; 
     
@@ -38,7 +44,7 @@ fn test_x_squared() {
      
     let mut ys = [0.; 10000];
     for (i, y) in ys.iter_mut().enumerate() {
-        *y = xs[i].powf(2.) - 5.;
+        *y = xs[i].powf(2.) - 2.5;
     }
 
     let plot = Plot::new((xs, ys));
