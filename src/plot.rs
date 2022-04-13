@@ -1,6 +1,6 @@
 use macroquad::prelude::Conf;
 
-use crate::render;
+use crate::{render, count_tens};
 
 
 pub trait PlotArg {
@@ -9,7 +9,7 @@ pub trait PlotArg {
 
 impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {
     fn as_plot(&self) -> Plot {
-        Plot { xs: self.0.to_vec(), ys: self.1.to_vec(), marker: String::new() }
+        Plot { xs: self.0.to_vec(), ys: self.1.to_vec(), marker: Default::default() }
     }
 }
 
@@ -21,13 +21,49 @@ impl<const N: usize> PlotArg for ([f64; N], [f64; N], &str) {
 
 impl<const N: usize> PlotArg for [f64; N] {
     fn as_plot(&self) -> Plot {
-        Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.to_vec(), marker: String::new() }
+        Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.to_vec(), marker: Default::default() }
     }
 }
 
 impl<const N: usize> PlotArg for ([f64; N], &str) {
     fn as_plot(&self) -> Plot {
         Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.0.to_vec(), marker: self.1.to_string() }
+    }
+}
+
+impl <F: Fn(f64) -> f64>PlotArg for F {
+    fn as_plot(&self) -> Plot {
+        let mut xs = [0.; 20000]; 
+    
+        let mut add = -10000f64;
+        for idx in 0..20000 {
+            xs[idx] = add/10000.;
+            add += 1.;
+        }
+
+        let mut ys = [0.; 20000];
+        for (i, y) in ys.iter_mut().enumerate() {
+            *y = self(xs[i]);
+        }
+        Plot { xs: xs.to_vec(), ys: ys.to_vec(), marker: Default::default() }
+    }
+}
+
+impl <F: Fn(f64) -> f64>PlotArg for (F, usize ) {
+    fn as_plot(&self) -> Plot {
+        let mut xs = vec![0.; 20001]; 
+    
+        let mut add = -10000.;
+        for idx in 0..=20000 {
+            xs[idx] = add / self.1 as f64;
+            add += 1.;
+        }
+
+        let mut ys = vec![0.; 20001];
+        for (i, y) in ys.iter_mut().enumerate() {
+            *y = self.0(xs[i]);
+        }
+        Plot { xs, ys, marker: Default::default() }
     }
 }
 

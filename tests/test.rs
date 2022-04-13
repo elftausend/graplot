@@ -34,19 +34,26 @@ fn test_sine_wave() {
 
 #[test]
 fn test_x_squared() {
-    let mut xs = [0.; 10000]; 
+    let mut xs = [0.; 20000]; 
     
-    let mut add = -5000f64;
-    for idx in 0..10000 {
+    let mut add = -10000f64;
+    for idx in 0..20000 {
         xs[idx] = add/1000.;
         add += 1.;
     }
      
-    let mut ys = [0.; 10000];
+    let mut ys = [0.; 20000];
     for (i, y) in ys.iter_mut().enumerate() {
-        *y = xs[i].powf(2.) - 2.5;
+        *y = xs[i].powf(2.);
     }
 
     let plot = Plot::new((xs, ys));
+    plot.show();
+}
+
+#[test]
+fn test_fn() {
+    //let plot = Plot::new((|x: f64| (2. * std::f64::consts::PI * x).sin(), 15000));
+    let plot = Plot::new((|x: f64| x.powf(2.), 1000));
     plot.show();
 }
