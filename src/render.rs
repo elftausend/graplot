@@ -76,7 +76,7 @@ fn test_round() {
     println!("r: {r}")
 }
 
-fn get_font_size(max: f64) -> f32 {
+fn get_font_size_x(max: f64) -> f32 {
     let a = if max >= 3. {
         count_tens(max) * 10
     } else {
@@ -85,6 +85,17 @@ fn get_font_size(max: f64) -> f32 {
     
     let a = (a as f64).log10() as i32;
     FONT_SIZE - (2.5 * a as f32)
+}
+
+fn get_font_size_y(max: f64) -> f32 {
+    let a = if max >= 3. {
+        count_tens(max) * 10
+    } else {
+        count_inv_tens(max) * 1000
+    };
+    
+    let a = (a as f64).log10() as i32;
+    FONT_SIZE - (1. * a as f32)
 }
 
 
@@ -98,10 +109,10 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
         max_x = smaller_round(max_x / 2.) * 2.;
     }
 
-    let x_font_size = get_font_size(max_x);
+    let x_font_size = get_font_size_x(max_x);
     //println!("max_x: {max_x}");
     
-    let steps = 4.;
+    let steps = 4.; //4.
 
     let step_x = max_x / steps;
 
@@ -118,7 +129,7 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
         max_y = smaller_round(max_y / 2.) * 2.;
     }
 
-    let y_font_size = get_font_size(max_y);
+    let y_font_size = get_font_size_y(max_y);
 
     let steps_y = 4.;
 

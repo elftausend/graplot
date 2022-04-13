@@ -1,6 +1,6 @@
 use macroquad::prelude::Conf;
 
-use crate::{render, count_tens};
+use crate::render;
 
 
 pub trait PlotArg {
@@ -63,6 +63,7 @@ impl <F: Fn(f64) -> f64>PlotArg for (F, usize ) {
         for (i, y) in ys.iter_mut().enumerate() {
             *y = self.0(xs[i]);
         }
+
         Plot { xs, ys, marker: Default::default() }
     }
 }

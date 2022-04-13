@@ -34,3 +34,22 @@ plot.show();
 ```
 
 ![Sinewave](sine_wave.png)
+
+
+x³ + x² - 0.08:
+```rust
+use graplot::Plot;
+
+let plot = Plot::new((|x: f64| x.powf(3.) + x.powf(2.) - 0.08, 10000) );
+plot.show();
+```
+![pol3](pol3.png)
+
+x² - 0.5:
+```rust
+use graplot::Plot;
+
+let plot = Plot::new(|x: f64| x.powf(2.) - 0.5);
+plot.show();
+```
+![squared](x2.png)
