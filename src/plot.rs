@@ -1,3 +1,5 @@
+use std::thread::JoinHandle;
+
 use macroquad::prelude::Conf;
 
 use crate::render;
@@ -22,6 +24,12 @@ impl<const N: usize> PlotArg for ([f64; N], [f64; N], &str) {
 impl<const N: usize> PlotArg for [f64; N] {
     fn as_plot(&self) -> Plot {
         Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.to_vec(), marker: Default::default() }
+    }
+}
+
+impl PlotArg for Vec<f64> {
+    fn as_plot(&self) -> Plot {
+        Plot { xs: (0..self.len()).map(|x| x as f64).collect(), ys: self.clone(), marker: Default::default() }
     }
 }
 
@@ -79,13 +87,15 @@ impl Plot {
         arguments.as_plot()
     }
 
-    pub fn show(self) {
-        let conf = Conf {
-            window_width: 325,
-            window_height: 325,
-            ..Default::default()
-        };
-        macroquad::Window::from_config(conf, render::run(self.xs, self.ys, self.marker));
+    pub fn show(self) -> JoinHandle<()> {
+        std::thread::spawn(|| {
+            let conf = Conf {
+                window_width: 325,
+                window_height: 325,
+                ..Default::default()
+            };
+            macroquad::Window::from_config(conf, render::run(self.xs, self.ys, self.marker));
+        })
         
     }
 }

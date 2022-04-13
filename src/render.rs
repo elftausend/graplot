@@ -101,6 +101,7 @@ fn get_font_size_y(max: f64) -> f32 {
 
 
 pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
+    //std::thread::sleep(std::time::Duration::from_secs(1));
     let mut max_x = max(&xs);
     
     if max_x >= 4. {
