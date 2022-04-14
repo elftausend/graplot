@@ -2,7 +2,7 @@
 
 Experimental plotting library written in Rust and based on [macroquad].
 
-[macroquad]: https://github.com/not-fl3/macroquad
+[macroquad]: https://github.com/elftausend/macroquad
 
 ```rust
 use graplot::Plot;
