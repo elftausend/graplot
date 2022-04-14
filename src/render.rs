@@ -98,6 +98,17 @@ fn get_font_size_y(max: f64) -> f32 {
     FONT_SIZE - (1. * a as f32)
 }
 
+pub fn get_steps(max: f64) -> f64 {
+    let mut steps = 4.;
+
+    if max >= 4. {
+        while max % steps != 0. {
+            steps += 1.;
+        }     
+    }
+
+    steps
+}
 
 
 pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
@@ -111,16 +122,17 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
     }
 
     let x_font_size = get_font_size_x(max_x);
-    //println!("max_x: {max_x}");
+    println!("max_x: {max_x}");
     
-    let steps = 4.; //4.
+    //let steps = 5.; //4.
+    let steps = get_steps(max_x);
 
     let step_x = max_x / steps;
 
     let start_x = step_x;
 
     let xs = divs(&xs, step_x);
-
+    
 
     let mut max_y = max(&ys);
     
@@ -132,7 +144,8 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
     let y_font_size = get_font_size_y(max_y);
 
-    let steps_y = 4.;
+    let steps_y = get_steps(max_y);
+    println!("stepsy: {steps_y}");
 
     let step_y = max_y / steps_y;
 
@@ -160,7 +173,6 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
             let x = xs[i] as f32;
             let y = ys[i] as f32;
     
-
             let x = half_width + 40. * x;
             let y = half_height - 40. * y;
 
@@ -178,7 +190,7 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
             
 
         }
-
+        
         let y_half_font = y_font_size / 2.;
 
         let x_half_font = x_font_size / 2.;

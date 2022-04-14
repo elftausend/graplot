@@ -33,6 +33,12 @@ impl PlotArg for Vec<f64> {
     }
 }
 
+impl PlotArg for (Vec<f64>, &str) {
+    fn as_plot(&self) -> Plot {
+        Plot { xs: (0..self.0.len()).map(|x| x as f64).collect(), ys: self.0.clone(), marker: self.1.to_string() }
+    }
+}
+
 impl<const N: usize> PlotArg for ([f64; N], &str) {
     fn as_plot(&self) -> Plot {
         Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.0.to_vec(), marker: self.1.to_string() }
@@ -77,7 +83,7 @@ impl <F: Fn(f64) -> f64>PlotArg for (F, usize ) {
 }
 
 pub struct Plot {
-    xs: Vec<f64>,
+    pub xs: Vec<f64>,
     ys: Vec<f64>,
     marker: String,
 }
