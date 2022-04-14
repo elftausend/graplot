@@ -87,8 +87,18 @@ impl Plot {
         arguments.as_plot()
     }
 
-    pub fn show(self) -> JoinHandle<()> {
+    pub fn show(self) {        
+        let conf = Conf {
+            window_width: 325,
+            window_height: 325,
+            ..Default::default()
+        };
+        macroquad::Window::from_config(conf, render::run(self.xs, self.ys, self.marker));
+    }
+
+    pub fn show_threaded(self) -> JoinHandle<()> {
         std::thread::spawn(|| {
+            
             let conf = Conf {
                 window_width: 325,
                 window_height: 325,
@@ -96,6 +106,5 @@ impl Plot {
             };
             macroquad::Window::from_config(conf, render::run(self.xs, self.ys, self.marker));
         })
-        
     }
 }
