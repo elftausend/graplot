@@ -122,7 +122,6 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
     }
 
     let x_font_size = get_font_size_x(max_x);
-    println!("max_x: {max_x}");
     
     //let steps = 5.; //4.
     let steps = get_steps(max_x);
@@ -145,7 +144,7 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
     let y_font_size = get_font_size_y(max_y);
 
     let steps_y = get_steps(max_y);
-    println!("stepsy: {steps_y}");
+
 
     let step_y = max_y / steps_y;
 
