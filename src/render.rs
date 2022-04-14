@@ -4,16 +4,6 @@ const FONT_SIZE: f32 = 24.; //27.
 const COORD_THICKNESS: f32 = 2.;
 
 
-pub fn min(arr: &[f32]) -> f32 {
-    let mut min = arr[0];
-    for value in arr {
-        if value < &min {
-            min = *value;
-        }
-    }
-    min
-}
-
 pub fn max(arr: &[f64]) -> f64 {
     let mut max = arr[0];
     for value in arr {
@@ -319,18 +309,7 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
 
         next_frame().await;
-        //std::thread::sleep(std::time::Duration::from_secs_f64(0.02));
+
         std::thread::sleep(std::time::Duration::from_millis(16));
     }
 }
-
-/* 
-fn main() {
-    let conf = Conf {
-        window_width: 325,
-        window_height: 325,
-        ..Default::default()
-    };
-    //macroquad::Window::from_config(conf, run(3));
-}
-*/
