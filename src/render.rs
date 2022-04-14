@@ -102,8 +102,8 @@ pub fn get_steps(max: f64) -> f64 {
 
 
 pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
-    //std::thread::sleep(std::time::Duration::from_secs(1));
-    let mut max_x = max(&xs);
+    let maxed = xs.iter().map(|x| x.abs()).collect::<Vec<f64>>();
+    let mut max_x = max(&maxed);
     
     if max_x >= 4. {
         max_x = round((max_x / 2.) as i32) as f64 * 2.;
@@ -122,8 +122,8 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
     let xs = divs(&xs, step_x);
     
-
-    let mut max_y = max(&ys);
+    let maxed = ys.iter().map(|y| y.abs()).collect::<Vec<f64>>();
+    let mut max_y = max(&maxed);
     
     if max_y >= 4. {
         max_y = round((max_y / 2.) as i32) as f64 * 2.;
