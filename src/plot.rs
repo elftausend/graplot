@@ -50,8 +50,8 @@ impl <F: Fn(f64) -> f64>PlotArg for F {
         let mut xs = [0.; 20000]; 
     
         let mut add = -10000f64;
-        for idx in 0..20000 {
-            xs[idx] = add/10000.;
+        for value in &mut xs {
+            *value = add/10000.;
             add += 1.;
         }
 
@@ -68,8 +68,8 @@ impl <F: Fn(f64) -> f64>PlotArg for (F, usize ) {
         let mut xs = vec![0.; 20001]; 
     
         let mut add = -10000.;
-        for idx in 0..=20000 {
-            xs[idx] = add / self.1 as f64;
+        for value in &mut xs {
+            *value = add / self.1 as f64;
             add += 1.;
         }
 
@@ -95,8 +95,8 @@ impl Plot {
 
     pub fn show(self) {        
         let conf = Conf {
-            window_width: 325,
-            window_height: 325,
+            window_width: 365,
+            window_height: 365,
             ..Default::default()
         };
         macroquad::Window::from_config(conf, render::run(self.xs, self.ys, self.marker));
@@ -104,10 +104,9 @@ impl Plot {
 
     pub fn show_threaded(self) -> JoinHandle<()> {
         std::thread::spawn(|| {
-            
             let conf = Conf {
-                window_width: 325,
-                window_height: 325,
+                window_width: 365,
+                window_height: 365,
                 ..Default::default()
             };
             macroquad::Window::from_config(conf, render::run(self.xs, self.ys, self.marker));
