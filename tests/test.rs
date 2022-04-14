@@ -56,19 +56,10 @@ fn test_fn() {
     //let plot = Plot::new((|x: f64| (2. * std::f64::consts::PI * x).sin(), 15000));
     //let plot = Plot::new((|x: f64| x.powf(2.), 1000000));
     let plot = Plot::new((|x: f64| x.powf(3.) + x.powf(2.) - 0.08, 10000) );
-    let h1 = std::thread::spawn(|| {
-        plot.show();
-    });
-
-    std::thread::sleep(std::time::Duration::from_secs(2));
+    plot.show_threaded();
 
     let plot = Plot::new((|x: f64| x.powf(2.) + 0.08, 10000) );
-    let h2 = std::thread::spawn(|| {
-        plot.show();
-    });
-
-    h1.join().unwrap();
-    h2.join().unwrap()
+    plot.show()
     
 }
 

@@ -307,6 +307,8 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
         }
         next_frame().await;
+        //std::thread::sleep(std::time::Duration::from_secs_f64(0.02));
+        std::thread::sleep(std::time::Duration::from_millis(16));
     }
 }
 
