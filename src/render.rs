@@ -154,6 +154,31 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
         let half_height = screen_height() / 2.;
         let half_width = screen_width() / 2.;
 
+        let mut coords = Vec::new();
+
+        for i in 0..xs.len() {
+            let x = xs[i] as f32;
+            let y = ys[i] as f32;
+    
+
+            let x = half_width + 40. * x;
+            let y = half_height - 40. * y;
+
+            coords.push((x, y));
+
+            if marker.contains('o') {
+                draw_circle(x, y, 5., GREEN);
+            }
+            
+
+            if coords.len() >= 2 {
+                draw_line(coords[0].0, coords[0].1, coords[1].0, coords[1].1, 3., GREEN);
+                coords.remove(0);
+            }
+            
+
+        }
+
         let y_half_font = y_font_size / 2.;
 
         let x_half_font = x_font_size / 2.;
@@ -282,30 +307,6 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
         draw_line(0.0, half_height, screen_width(), half_height, COORD_THICKNESS, GRAY);
 
 
-        let mut coords = Vec::new();
-
-        for i in 0..xs.len() {
-            let x = xs[i] as f32;
-            let y = ys[i] as f32;
-    
-
-            let x = half_width + 40. * x;
-            let y = half_height - 40. * y;
-
-            coords.push((x, y));
-
-            if marker.contains('o') {
-                draw_circle(x, y, 5., GREEN);
-            }
-            
-
-            if coords.len() >= 2 {
-                draw_line(coords[0].0, coords[0].1, coords[1].0, coords[1].1, 3., GREEN);
-                coords.remove(0);
-            }
-            
-
-        }
         next_frame().await;
         //std::thread::sleep(std::time::Duration::from_secs_f64(0.02));
         std::thread::sleep(std::time::Duration::from_millis(16));
