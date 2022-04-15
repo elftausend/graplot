@@ -1,5 +1,7 @@
 use macroquad::prelude::*;
 
+use crate::{Plot, Marker, LineType};
+
 const FONT_SIZE: f32 = 24.; //27.
 const COORD_THICKNESS: f32 = 2.;
 
@@ -101,8 +103,8 @@ pub fn get_steps(max: f64) -> f64 {
 }
 
 
-pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
-    let maxed = xs.iter().map(|x| x.abs()).collect::<Vec<f64>>();
+pub async fn run(plot: Plot) {
+    let maxed = plot.xs.iter().map(|x| x.abs()).collect::<Vec<f64>>();
     let mut max_x = max(&maxed);
     
     if max_x >= 4. {
@@ -120,9 +122,9 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
     let start_x = step_x;
 
-    let xs = divs(&xs, step_x);
+    let xs = divs(&plot.xs, step_x);
     
-    let maxed = ys.iter().map(|y| y.abs()).collect::<Vec<f64>>();
+    let maxed = plot.ys.iter().map(|y| y.abs()).collect::<Vec<f64>>();
     let mut max_y = max(&maxed);
     
     if max_y >= 4. {
@@ -140,7 +142,7 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
     let start_y = step_y;
 
-    let ys = divs(&ys, step_y);
+    let ys = divs(&plot.ys, step_y);
 
 
     //let xs = divs(xs, max_x);
@@ -149,7 +151,6 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
     //let res = (max_x as i32 / tens) * tens;
     //println!("res: {:?}", res);
     
-
     loop {
         clear_background(WHITE);
 
@@ -167,13 +168,17 @@ pub async fn run(xs: Vec<f64>, ys: Vec<f64>, marker: String) {
 
             coords.push((x, y));
 
-            if marker.contains('o') {
-                draw_circle(x, y, 5., GREEN);
+            match plot.line_desc.marker {
+                Marker::Circle(r) => draw_circle(x, y, r, plot.line_desc.color),
+                Marker::None => {},
             }
             
 
             if coords.len() >= 2 {
-                draw_line(coords[0].0, coords[0].1, coords[1].0, coords[1].1, 3., GREEN);
+                match plot.line_desc.line_type {
+                    LineType::Solid => draw_line(coords[0].0, coords[0].1, coords[1].0, coords[1].1, 3., plot.line_desc.color),
+                    LineType::None => {},
+                }
                 coords.remove(0);
             }
             
