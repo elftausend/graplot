@@ -27,6 +27,12 @@ impl<const N: usize> PlotArg for [f64; N] {
     }
 }
 
+impl<const N: usize> PlotArg for ([f64; N], &str) {
+    fn as_plot(&self) -> Plot {
+        Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.0.to_vec(), line_desc: self.1.into() }
+    }
+}
+
 impl PlotArg for Vec<f64> {
     fn as_plot(&self) -> Plot {
         Plot { xs: (0..self.len()).map(|x| x as f64).collect(), ys: self.clone(), line_desc: Default::default() }
@@ -36,12 +42,6 @@ impl PlotArg for Vec<f64> {
 impl PlotArg for (Vec<f64>, &str) {
     fn as_plot(&self) -> Plot {
         Plot { xs: (0..self.0.len()).map(|x| x as f64).collect(), ys: self.0.clone(), line_desc: self.1.into() }
-    }
-}
-
-impl<const N: usize> PlotArg for ([f64; N], &str) {
-    fn as_plot(&self) -> Plot {
-        Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.0.to_vec(), line_desc: self.1.into() }
     }
 }
 
@@ -63,6 +63,14 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
     }
 }
 
+impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, &str) {
+    fn as_plot(&self) -> Plot {
+        let mut plot = self.0.as_plot();
+        plot.line_desc = self.1.into();
+        plot
+    }
+}
+
 impl<F: Fn(f64) -> f64> PlotArg for (F, usize ) {
     fn as_plot(&self) -> Plot {
         let mut xs = vec![0.; 20001]; 
@@ -79,6 +87,14 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, usize ) {
         }
 
         Plot { xs, ys, line_desc: Default::default() }
+    }
+}
+
+impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, usize, &str) {
+    fn as_plot(&self) -> Plot {
+        let mut plot = (self.0, self.1).as_plot();
+        plot.line_desc = self.2.into();
+        plot
     }
 }
 

@@ -4,13 +4,17 @@ Experimental plotting library written in Rust and based on [macroquad].
 
 [macroquad]: https://github.com/elftausend/macroquad
 
+## [Examples]
+
+[Examples]: https://github.com/elftausend/graplot/tree/main/examples
+
 ```rust
 use graplot::Plot;
 
 let plot = Plot::new([-4., -2., 1., 4.]);
 plot.show();
 ```
-![plot1](plot1.png)
+![plot1](pictures/plot1.png)
 
 Sine wave:
 ```rust
@@ -33,7 +37,7 @@ let plot = Plot::new((xs, ys));
 plot.show();
 ```
 
-![Sinewave](sine_wave.png)
+![Sinewave](pictures/sine_wave.png)
 
 
 x³ + x² - 0.08:
@@ -43,7 +47,7 @@ use graplot::Plot;
 let plot = Plot::new((|x: f64| x.powf(3.) + x.powf(2.) - 0.08, 10000) );
 plot.show();
 ```
-![pol3](pol3.png)
+![pol3](pictures/pol3.png)
 
 x² - 0.5:
 ```rust
@@ -52,4 +56,16 @@ use graplot::Plot;
 let plot = Plot::new(|x: f64| x.powf(2.) - 0.5);
 plot.show();
 ```
-![squared](x2.png)
+![squared](pictures/x2.png)
+
+Using a line description: (matplotlib)
+
+```rust
+use graplot::Plot;
+
+// c ... cyan color, - ... solid line, o ... ring marker
+let plot = Plot::new(([-4., -3., -3.4, -3.75, -4.1], "c-o"));
+plot.show();
+```
+
+![line_desc](pictures/line_desc.png)
