@@ -1,6 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.2)](https://docs.rs/graplot/0.1.2/graplot/)
 
 Experimental plotting library written in Rust and based on [macroquad].
 
