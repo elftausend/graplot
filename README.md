@@ -1,5 +1,7 @@
 # graplot
 
+[![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
+
 Experimental plotting library written in Rust and based on [macroquad].
 
 [macroquad]: https://github.com/elftausend/macroquad
