@@ -2,7 +2,7 @@ use graplot::{Plot, x};
 
 #[test]
 fn test_xend_squared() {
-    let plot = Plot::new((|x: f64| x.powi(2), x(400000.)));
+    let plot = Plot::new((|x: f64| x.powi(2), x(0.0004)));
     
     plot.show();
 }

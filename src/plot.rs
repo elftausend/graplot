@@ -8,6 +8,8 @@ use crate::{render, LineDesc};
 pub struct XEnd(pub f64);
 pub struct YEnd(f64, f64);
 
+
+/// sets the absolute max value for x
 pub fn x(end_x: f64) -> XEnd {
     XEnd(end_x.abs())
 }
