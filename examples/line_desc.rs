@@ -4,6 +4,7 @@ fn main() {
     let plot = Plot::new((|x: f64| x.powf(2.) + 0.5, "r-"));
     plot.show();
 
+    println!("???");
     //----------------------
 
     // c ... cyan, - ... solid line, o ... ring marker

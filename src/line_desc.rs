@@ -1,16 +1,18 @@
 use macroquad::color::{Color, GREEN, RED, BLUE, YELLOW};
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy)]
 pub enum Marker {
     Circle(f32),
     None
 }
 
+#[derive(Clone, Copy)]
 pub enum LineType {
     Solid,
     None,
 }
 
+#[derive(Clone, Copy)]
 pub struct LineDesc {
     pub color: Color,
     pub marker: Marker,
