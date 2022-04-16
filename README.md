@@ -35,7 +35,7 @@ let mut ys = [0.; 1000];
 for (i, y) in ys.iter_mut().enumerate() {
     *y = (2. * std::f64::consts::PI * xs[i]).sin();
 }
-
+// or alternatively: let plot = Plot::new((|x: f64| x.sin(), x(4.)));
 let plot = Plot::new((xs, ys));
 plot.show();
 ```
