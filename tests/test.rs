@@ -3,13 +3,34 @@ use graplot::Plot;
 
 #[test]
 fn test_plot() {
-    let plot = Plot::new(([-4., -2., 1., 4.], "o"));
+    let plot = Plot::new(([-4., -2., 1., 4.], "o-"));
     plot.show();
 }
 
 #[test]
 fn test_plot2() {
     let plot = Plot::new([-4., -2., 1., 4.]);
+    plot.show();
+}
+
+#[test]
+fn test_plot3() {
+    let plot = Plot::new(([-1.6,], "o"));
+    plot.show();
+}
+
+#[test]
+fn test_plot4() {
+    let xs = [-1., -2., -3., -4.,];
+    let ys = [-1., -1.5, -1., -1.5];
+
+    let plot = Plot::new((xs, ys));
+    plot.show();
+}
+
+#[test]
+fn test_plot5() {
+    let plot = Plot::new(([-1.6, -1.9,], "o-"));
     plot.show();
 }
 

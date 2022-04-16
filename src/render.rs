@@ -16,22 +16,22 @@ pub fn max(arr: &[f64]) -> f64 {
     max
 }
 
-pub fn count_tens(mut num: f64) -> usize {
+pub fn count_tens(mut num: f64) -> u128 {
     let mut count = 0;
     while num > 10. {
         num /= 10.;
         count += 1;
     }
-    10usize.pow(count)
+    10u128.pow(count)
 }
 
-pub fn count_inv_tens(mut num: f64) -> usize {
-    let mut count = 0;
-    while num % 1. != 0. {
+pub fn count_inv_tens(mut num: f64) -> u128 {
+    let mut count = 1;
+    while num.round() == 0. {
         num *= 10.;
         count += 1;
     }
-    10usize.pow(count)
+    10u128.pow(count)
 }
 
 pub fn divs(lhs: &[f64], rhs: f64) -> Vec<f64> {
@@ -42,41 +42,18 @@ pub fn divs(lhs: &[f64], rhs: f64) -> Vec<f64> {
     out
 }
 
-pub fn round(n: i32) -> i32 {
-    let tens = count_tens(n as f64);
-    ((n as f32 / tens as f32).round() as usize * tens) as i32
-}
 
-pub fn smaller_round(n: f64) -> f64 {
-    let tens = count_inv_tens(n);
-    round((n * tens as f64) as i32) as f64 / tens as f64
-}
-
-#[test]
-fn test_round() {
-    let a = 7340;
-    let r = round(a);
-    assert!(r == 7000);
-
-
-    let a = 0.085;
-    
-    let tens = count_inv_tens(a);
-
-
-    let r = round((a * tens as f64) as i32) as f64 / tens as f64;
-    println!("r: {r}")
-}
 
 fn get_font_size_x(max: f64) -> f32 {
     let a = if max >= 3. {
         count_tens(max) * 10
     } else {
-        count_inv_tens(max) * 1000
+        count_inv_tens(max) * 12
     };
     
-    let a = (a as f64).log10() as i32;
-    FONT_SIZE - (2.5 * a as f32)
+    
+    let a = (a as f64).log10() as f32;
+    FONT_SIZE - (2.9 * a)
 }
 
 fn get_font_size_y(max: f64) -> f32 {
@@ -86,8 +63,8 @@ fn get_font_size_y(max: f64) -> f32 {
         count_inv_tens(max) * 1000
     };
     
-    let a = (a as f64).log10() as i32;
-    FONT_SIZE - (1. * a as f32)
+    let a = (a as f64).log10() as f32;
+    FONT_SIZE - (1. * a)
 }
 
 pub fn get_steps(max: f64) -> f64 {
@@ -102,55 +79,49 @@ pub fn get_steps(max: f64) -> f64 {
     steps
 }
 
+fn max_display(max: f64) -> f64 {
+    if max == 0. {
+        return 1.;
+    }
+    if max >= 2. {
+        let tens = count_tens(max);
+        (((max / tens as f64/ 2.)).round() * tens as f64) * 2.
+    } else {
+        let tens = count_inv_tens(max);
+        (((max * tens as f64 / 2.)).round() / tens as f64) * 2.
+    }
+}
 
 pub async fn run(plot: Plot) {
     let maxed = plot.xs.iter().map(|x| x.abs()).collect::<Vec<f64>>();
     let mut max_x = max(&maxed);
+
+    max_x = max_display(max_x);
     
-    if max_x >= 4. {
-        max_x = round((max_x / 2.) as i32) as f64 * 2.;
-    } else {
-        max_x = smaller_round(max_x / 2.) * 2.;
-    }
 
     let x_font_size = get_font_size_x(max_x);
-    
-    //let steps = 5.; //4.
-    let steps = get_steps(max_x);
 
+
+    let steps = get_steps(max_x);
     let step_x = max_x / steps;
 
     let start_x = step_x;
 
     let xs = divs(&plot.xs, step_x);
-    
+
     let maxed = plot.ys.iter().map(|y| y.abs()).collect::<Vec<f64>>();
     let mut max_y = max(&maxed);
+    max_y = max_display(max_y);
     
-    if max_y >= 4. {
-        max_y = round((max_y / 2.) as i32) as f64 * 2.;
-    } else {
-        max_y = smaller_round(max_y / 2.) * 2.;
-    }
-
     let y_font_size = get_font_size_y(max_y);
 
     let steps_y = get_steps(max_y);
-
-
     let step_y = max_y / steps_y;
 
     let start_y = step_y;
 
     let ys = divs(&plot.ys, step_y);
 
-
-    //let xs = divs(xs, max_x);
-    
-    //let tens = count_tens(max_x) as i32;
-    //let res = (max_x as i32 / tens) * tens;
-    //println!("res: {:?}", res);
-    
     loop {
         clear_background(WHITE);
 
@@ -172,7 +143,6 @@ pub async fn run(plot: Plot) {
                 Marker::Circle(r) => draw_circle(x, y, r, plot.line_desc.color),
                 Marker::None => {},
             }
-            
 
             if coords.len() >= 2 {
                 match plot.line_desc.line_type {
@@ -181,8 +151,6 @@ pub async fn run(plot: Plot) {
                 }
                 coords.remove(0);
             }
-            
-
         }
         
         let y_half_font = y_font_size / 2.;
@@ -192,7 +160,8 @@ pub async fn run(plot: Plot) {
         //draw_text("0", half_width - 13.5, half_height + 17., 14., BLACK);
 
         if step_y > 1. {
-            for (idx, val) in (start_y as i32..=max_y as i32).step_by(step_y as usize).enumerate() {
+            
+            for (idx, val) in (start_y as i128..=max_y as i128).step_by(step_y as usize).enumerate() {
                 let y = (half_height - 40. * idx as f32) - 40.;
                 let text = format!("{}", val);
                 let move_away = text.len();
@@ -211,9 +180,9 @@ pub async fn run(plot: Plot) {
             let max_y = max_y * tens_start as f64;
             let step_y = step_y * tens_step as f64;
 
-            for (idx, val) in (start_y as i32..=max_y as i32).step_by(step_y as usize).enumerate() {
+            for (idx, val) in (start_y as i128..=max_y as i128).step_by(step_y as usize).enumerate() {
                 let y = (half_height - 40. * idx as f32) - 40.;
-                let text = format!("{}", val as f32 / tens_start as f32);
+                let text = format!("{}", val as f64 / tens_start as f64);
                 let move_away = text.len();
     
                 draw_text(&text, half_width - 5. - (y_half_font * move_away as f32), y + (y_half_font / 2.), y_font_size, BLACK);
@@ -223,7 +192,7 @@ pub async fn run(plot: Plot) {
 
         
         if step_y > 1. {
-            for (idx, val) in (start_y as i32..=max_y as i32).step_by(step_y as usize).enumerate() {
+            for (idx, val) in (start_y as i128..=max_y as i128).step_by(step_y as usize).enumerate() {
                 let y = (half_height - 40. * -(idx as f32)) + 40.;
                 let text = format!("{}", -val);
                 let move_away = text.len();
@@ -241,9 +210,9 @@ pub async fn run(plot: Plot) {
             let max_y = max_y * tens_start as f64;
             let step_y = step_y * tens_step as f64;
 
-            for (idx, val) in (start_y as i32..=max_y as i32).step_by(step_y as usize).enumerate() {
+            for (idx, val) in (start_y as i128..=max_y as i128).step_by(step_y as usize).enumerate() {
                 let y = (half_height - 40. * -(idx as f32)) + 40.;
-                let text = format!("{}", -val as f32 / tens_start as f32);
+                let text = format!("{}", -val as f64 / tens_start as f64);
                 let move_away = text.len();
     
                 draw_text(&text, half_width - 5. - (y_half_font * move_away as f32), y + (y_half_font / 2.), y_font_size, BLACK);
@@ -253,7 +222,7 @@ pub async fn run(plot: Plot) {
         }
 
         if step_x > 1. {
-            for (idx, val) in (start_x as i32..=max_x as i32).step_by(step_x as usize).enumerate() {
+            for (idx, val) in (start_x as i128..=max_x as i128).step_by(step_x as usize).enumerate() {
                 let x = (half_width + 40. * idx as f32) + 40.;
     
                 let text = format!("{}", val);
@@ -268,11 +237,11 @@ pub async fn run(plot: Plot) {
             let start_x = start_x * tens_start as f64;
             let max_x = max_x * tens_start as f64;
             let step_x = step_x * tens_step as f64;
-
-            for (idx, val) in (start_x as i32..=max_x as i32).step_by(step_x as usize).enumerate() {
+           
+            for (idx, val) in (start_x as i128..=max_x as i128).step_by(step_x as usize).enumerate() {
                 let x = (half_width + 40. * idx as f32) + 40.;
     
-                let text = format!("{}", val as f32 / tens_start as f32);
+                let text = format!("{}", val as f64 / tens_start as f64);
     
                 draw_text(&text, x - text.len() as f32 * (x_half_font / 2.), half_height + x_half_font + 7., x_font_size, BLACK);
                 draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);    
@@ -280,7 +249,7 @@ pub async fn run(plot: Plot) {
         }
         
         if step_x > 1. {
-            for (idx, val) in (start_x as i32..=max_x as i32).step_by(step_x as usize).enumerate() {
+            for (idx, val) in (start_x as i128..=max_x as i128).step_by(step_x as usize).enumerate() {
                 let x = (half_width + 40. * -(idx as f32)) - 40.;
     
                 let text = format!("{}", -val);
@@ -296,10 +265,10 @@ pub async fn run(plot: Plot) {
             let max_x = max_x * tens_start as f64;
             let step_x = step_x * tens_step as f64;
 
-            for (idx, val) in (start_x as i32..=max_x as i32).step_by(step_x as usize).enumerate() {
+            for (idx, val) in (start_x as i128..=max_x as i128).step_by(step_x as usize).enumerate() {
                 let x = (half_width + 40. * -(idx as f32)) - 40.;
     
-                let text = format!("{}", -val as f32 / tens_start as f32);
+                let text = format!("{}", -val as f64 / tens_start as f64);
     
                 draw_text(&text, x - text.len() as f32 * (x_half_font / 2.), half_height + x_half_font + 7., x_font_size, BLACK);
                 draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);    

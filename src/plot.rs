@@ -4,6 +4,13 @@ use macroquad::prelude::Conf;
 
 use crate::{render, LineDesc};
 
+#[derive(Clone, Copy)]
+pub struct XEnd(pub f64);
+pub struct YEnd(f64, f64);
+
+pub fn x(end_x: f64) -> XEnd {
+    XEnd(end_x.abs())
+}
 
 pub trait PlotArg {
     fn as_plot(&self) -> Plot;
@@ -50,8 +57,8 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
         let mut xs = [0.; 20000]; 
     
         let mut add = -10000f64;
-        for value in &mut xs {
-            *value = add/10000.;
+        for x in &mut xs {
+            *x = add/10000.;
             add += 1.;
         }
 
@@ -60,6 +67,32 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
             *y = self(xs[i]);
         }
         Plot { xs: xs.to_vec(), ys: ys.to_vec(), line_desc: Default::default() }
+    }
+}
+
+impl<F: Fn(f64) -> f64> PlotArg for (F, XEnd) {
+    fn as_plot(&self) -> Plot {
+        let mut xs = vec![0.; 200]; 
+    
+        let mut add = -100f64;
+        for x in &mut xs {
+            *x = (add/100.) * self.1.0;
+            add += 1.;
+        }
+
+        let mut ys = vec![0.; 200];
+        for (i, y) in ys.iter_mut().enumerate() {
+            *y = self.0(xs[i]);
+        }
+        Plot { xs: xs.to_vec(), ys: ys.to_vec(), line_desc: Default::default() }
+    }
+}
+
+impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, XEnd, &str) {
+    fn as_plot(&self) -> Plot {
+        let mut plot = (self.0, self.1).as_plot();
+        plot.line_desc = self.2.into();
+        plot
     }
 }
 
@@ -76,8 +109,8 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, usize ) {
         let mut xs = vec![0.; 20001]; 
     
         let mut add = -10000.;
-        for value in &mut xs {
-            *value = add / self.1 as f64;
+        for x in &mut xs {
+            *x = add / self.1 as f64;
             add += 1.;
         }
 
@@ -105,8 +138,8 @@ pub struct Plot {
 }
 
 impl Plot {
-    pub fn new<A: PlotArg>(arguments: A) -> Plot {
-        arguments.as_plot()
+    pub fn new<A: PlotArg>(args: A) -> Plot {
+        args.as_plot()
     }
 
     pub fn show(self) {        
@@ -118,6 +151,7 @@ impl Plot {
         macroquad::Window::from_config(conf, render::run(self));
     }
 
+    /// you will need another miniquad and macroquad version
     pub fn show_threaded(self) -> JoinHandle<()> {
         std::thread::spawn(|| {
             let conf = Conf {
