@@ -77,7 +77,8 @@ fn test_fn() {
     //let plot = Plot::new((|x: f64| (2. * std::f64::consts::PI * x).sin(), 15000));
     //let plot = Plot::new((|x: f64| x.powf(2.), 1000000));
     let plot = Plot::new((|x: f64| x.powf(3.) + x.powf(2.) - 0.08, 10000) );
-    plot.show_threaded();
+    //plot.show_threaded();
+    plot.show();
 
     let plot = Plot::new((|x: f64| x.powf(2.) + 0.08, 10000) );
     plot.show()

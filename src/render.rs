@@ -85,10 +85,10 @@ fn max_display(max: f64) -> f64 {
     }
     if max >= 2. {
         let tens = count_tens(max);
-        (((max / tens as f64/ 2.)).round() * tens as f64) * 2.
+        ((max / tens as f64/ 2.).round() * tens as f64) * 2.
     } else {
         let tens = count_inv_tens(max);
-        (((max * tens as f64 / 2.)).round() / tens as f64) * 2.
+        ((max * tens as f64 / 2.).round() / tens as f64) * 2.
     }
 }
 
