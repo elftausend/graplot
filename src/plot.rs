@@ -4,6 +4,41 @@ use macroquad::prelude::Conf;
 
 use crate::{render, LineDesc};
 
+
+pub struct Plot {
+    pub xs: Vec<f64>,
+    pub ys: Vec<f64>,
+    pub line_desc: LineDesc,
+}
+
+impl Plot {
+    pub fn new<A: PlotArg>(args: A) -> Plot {
+        args.as_plot()
+    }
+
+    pub fn show(self) {        
+        let conf = Conf {
+            window_width: 365,
+            window_height: 365,
+            ..Default::default()
+        };
+        macroquad::Window::from_config(conf, render::run(self));
+    }
+
+    /// you will need another miniquad and macroquad version
+    pub fn show_threaded(self) -> JoinHandle<()> {
+        std::thread::spawn(|| {
+            let conf = Conf {
+                window_width: 365,
+                window_height: 365,
+                ..Default::default()
+            };
+            macroquad::Window::from_config(conf, render::run(self));
+        })
+    }
+}
+
+
 #[derive(Clone, Copy)]
 pub struct XEnd(pub f64);
 pub struct YEnd(f64, f64);
@@ -130,38 +165,5 @@ impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, usize, &str) {
         let mut plot = (self.0, self.1).as_plot();
         plot.line_desc = self.2.into();
         plot
-    }
-}
-
-pub struct Plot {
-    pub xs: Vec<f64>,
-    pub ys: Vec<f64>,
-    pub line_desc: LineDesc,
-}
-
-impl Plot {
-    pub fn new<A: PlotArg>(args: A) -> Plot {
-        args.as_plot()
-    }
-
-    pub fn show(self) {        
-        let conf = Conf {
-            window_width: 365,
-            window_height: 365,
-            ..Default::default()
-        };
-        macroquad::Window::from_config(conf, render::run(self));
-    }
-
-    /// you will need another miniquad and macroquad version
-    pub fn show_threaded(self) -> JoinHandle<()> {
-        std::thread::spawn(|| {
-            let conf = Conf {
-                window_width: 365,
-                window_height: 365,
-                ..Default::default()
-            };
-            macroquad::Window::from_config(conf, render::run(self));
-        })
     }
 }
