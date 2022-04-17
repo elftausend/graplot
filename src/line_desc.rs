@@ -1,9 +1,9 @@
-use macroquad::color::{Color, GREEN, RED, BLUE, YELLOW};
+use macroquad::color::{Color, BLUE, GREEN, RED, YELLOW};
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum Marker {
     Circle(f32),
-    None
+    None,
 }
 
 #[derive(Clone, Copy)]
@@ -16,12 +16,16 @@ pub enum LineType {
 pub struct LineDesc {
     pub color: Color,
     pub marker: Marker,
-    pub line_type: LineType
+    pub line_type: LineType,
 }
 
 impl Default for LineDesc {
     fn default() -> Self {
-        LineDesc { color: GREEN, marker: Marker::None, line_type: LineType::Solid }
+        LineDesc {
+            color: GREEN,
+            marker: Marker::None,
+            line_type: LineType::Solid,
+        }
     }
 }
 
@@ -40,17 +44,20 @@ impl From<&str> for LineDesc {
                 'b' => color = BLUE,
                 'y' => color = YELLOW,
                 //cyan
-                'c' => color = Color::new(0., 1., 1., 1.), 
+                'c' => color = Color::new(0., 1., 1., 1.),
                 'o' => marker = Marker::Circle(radius),
                 '-' => line_type = LineType::Solid,
-                '1' ..='9' => radius = char.to_digit(10).unwrap() as f32,
-               _ => {}
+                '1'..='9' => radius = char.to_digit(10).unwrap() as f32,
+                _ => {}
             }
         }
         if marker == Marker::None {
             line_type = LineType::Solid
         }
-        LineDesc { color, marker, line_type }
+        LineDesc {
+            color,
+            marker,
+            line_type,
+        }
     }
 }
-

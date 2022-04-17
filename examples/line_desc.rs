@@ -13,14 +13,14 @@ fn main() {
 
     //----------------------
 
-    let mut xs = [0.; 20000]; 
-    
+    let mut xs = [0.; 20000];
+
     let mut add = -10000f64;
     for idx in 0..20000 {
-        xs[idx] = add/1000.;
+        xs[idx] = add / 1000.;
         add += 1.;
     }
-     
+
     let mut ys = [0.; 20000];
     for (i, y) in ys.iter_mut().enumerate() {
         *y = xs[i].powf(2.);
