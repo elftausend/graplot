@@ -141,7 +141,7 @@ pub async fn run(plot: Plot) {
         let half_width = screen_width() / 2.;
 
         for (idx, xs) in plot.xs.iter().enumerate() {
-            let xs = divs(&xs, step_x);
+            let xs = divs(xs, step_x);
             let ys = divs(&plot.ys[idx], step_y);
 
             let line_desc = &plot.line_desc[idx];
