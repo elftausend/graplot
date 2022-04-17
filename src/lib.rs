@@ -1,5 +1,6 @@
 //!
-//! 'graplot' is a simple and experimental plotting library written in Rust that is based on macroquad.
+//! 'graplot' is an experimental plotting library written in Rust that is based on [macroquad].
+//! It creates a window displaying the graphs.
 //! 
 //! # Example
 //! ```

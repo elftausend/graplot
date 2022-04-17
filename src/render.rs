@@ -140,6 +140,13 @@ pub async fn run(plot: Plot) {
         let half_height = screen_height() / 2.;
         let half_width = screen_width() / 2.;
 
+        // y-axis
+        draw_line(half_width, 0.0, half_width, screen_height(), COORD_THICKNESS, GRAY);
+        
+        // x-axis
+        draw_line(0.0, half_height, screen_width(), half_height, COORD_THICKNESS, GRAY);
+         
+
         for (idx, xs) in plot.xs.iter().enumerate() {
             let xs = divs(xs, step_x);
             let ys = divs(&plot.ys[idx], step_y);
@@ -295,12 +302,6 @@ pub async fn run(plot: Plot) {
             }
         }
 
-        // y-axis
-        draw_line(half_width, 0.0, half_width, screen_height(), COORD_THICKNESS, GRAY);
-        
-        // x-axis
-        draw_line(0.0, half_height, screen_width(), half_height, COORD_THICKNESS, GRAY);
-        
         next_frame().await;
         std::thread::sleep(std::time::Duration::from_millis(16));    
     }
