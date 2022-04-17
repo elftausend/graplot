@@ -17,7 +17,28 @@ use graplot::Plot;
 let plot = Plot::new([-4., -2., 1., 4.]);
 plot.show();
 ```
+
 ![plot1](pictures/plot1.png)
+
+Multiple graphs:
+```rust
+use graplot::Plot;
+
+let xs = [1., 2., 3.,];
+let ys = [1.7, 3., 1.9];
+
+let ys1 = [1.4, 1.6, 1.5];    
+
+let ys2 = [0.9, 1.2, 1.7, 1.9, 2.];    
+
+let mut plot = Plot::new((xs, ys));
+plot.add((xs, ys1, "c-o"));
+plot.add((ys2, "r-"));
+plot.show();
+```
+
+![multiple graphs](pictures/multiple.png)
+
 
 Sine wave:
 ```rust
