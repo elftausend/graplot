@@ -130,3 +130,9 @@ fn test_1_x() {
     let plot = Plot::new((xs, ys));
     plot.show();
 }
+
+#[test]
+fn test_tanh() {
+    let plot = Plot::new(|x: f64| x.tanh());
+    plot.show()
+}

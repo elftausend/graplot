@@ -4,16 +4,24 @@ use macroquad::prelude::Conf;
 
 use crate::{render, LineDesc};
 
+pub type Matrix = Vec<Vec<f64>>;
 
 pub struct Plot {
-    pub xs: Vec<f64>,
-    pub ys: Vec<f64>,
-    pub line_desc: LineDesc,
+    pub xs: Matrix,
+    pub ys: Matrix,
+    pub line_desc: Vec<LineDesc>,
 }
 
 impl Plot {
     pub fn new<A: PlotArg>(args: A) -> Plot {
         args.as_plot()
+    }
+
+    pub fn add<A: PlotArg>(&mut self, args: A) {
+        let plot = args.as_plot();
+        self.xs.push(plot.xs[0].clone());
+        self.ys.push(plot.ys[0].clone());
+        self.line_desc.push(plot.line_desc[0])
     }
 
     pub fn show(self) {        
@@ -55,37 +63,37 @@ pub trait PlotArg {
 
 impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {
     fn as_plot(&self) -> Plot {
-        Plot { xs: self.0.to_vec(), ys: self.1.to_vec(), line_desc: Default::default() }
+        Plot { xs: vec![self.0.to_vec()], ys: vec![self.1.to_vec()], line_desc: vec![Default::default()] }
     }
 }
 
 impl<const N: usize> PlotArg for ([f64; N], [f64; N], &str) {
     fn as_plot(&self) -> Plot {
-        Plot { xs: self.0.to_vec(), ys: self.1.to_vec(), line_desc: self.2.into() }
+        Plot { xs: vec![self.0.to_vec()], ys: vec![self.1.to_vec()], line_desc: vec![self.2.into()] }
     }
 }
 
 impl<const N: usize> PlotArg for [f64; N] {
     fn as_plot(&self) -> Plot {
-        Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.to_vec(), line_desc: Default::default() }
+        Plot { xs: vec![(0..N).map(|x| x as f64).collect()], ys: vec![self.to_vec()], line_desc: vec![Default::default()] }
     }
 }
 
 impl<const N: usize> PlotArg for ([f64; N], &str) {
     fn as_plot(&self) -> Plot {
-        Plot { xs: (0..N).map(|x| x as f64).collect(), ys: self.0.to_vec(), line_desc: self.1.into() }
+        Plot { xs: vec![(0..N).map(|x| x as f64).collect()], ys: vec![self.0.to_vec()], line_desc: vec![self.1.into()] }
     }
 }
 
 impl PlotArg for Vec<f64> {
     fn as_plot(&self) -> Plot {
-        Plot { xs: (0..self.len()).map(|x| x as f64).collect(), ys: self.clone(), line_desc: Default::default() }
+        Plot { xs: vec![(0..self.len()).map(|x| x as f64).collect()], ys: vec![self.clone()], line_desc: vec![Default::default()] }
     }
 }
 
 impl PlotArg for (Vec<f64>, &str) {
     fn as_plot(&self) -> Plot {
-        Plot { xs: (0..self.0.len()).map(|x| x as f64).collect(), ys: self.0.clone(), line_desc: self.1.into() }
+        Plot { xs: vec![(0..self.0.len()).map(|x| x as f64).collect()], ys: vec![self.0.clone()], line_desc: vec![self.1.into()] }
     }
 }
 
@@ -103,7 +111,7 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
         for (i, y) in ys.iter_mut().enumerate() {
             *y = self(xs[i]);
         }
-        Plot { xs: xs.to_vec(), ys: ys.to_vec(), line_desc: Default::default() }
+        Plot { xs: vec![xs.to_vec()], ys: vec![ys.to_vec()], line_desc: Default::default() }
     }
 }
 
@@ -121,14 +129,14 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, XEnd) {
         for (i, y) in ys.iter_mut().enumerate() {
             *y = self.0(xs[i]);
         }
-        Plot { xs: xs.to_vec(), ys: ys.to_vec(), line_desc: Default::default() }
+        Plot { xs: vec![xs.to_vec()], ys: vec![ys.to_vec()], line_desc: Default::default() }
     }
 }
 
 impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, XEnd, &str) {
     fn as_plot(&self) -> Plot {
         let mut plot = (self.0, self.1).as_plot();
-        plot.line_desc = self.2.into();
+        plot.line_desc = vec![self.2.into()];
         plot
     }
 }
@@ -136,7 +144,7 @@ impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, XEnd, &str) {
 impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, &str) {
     fn as_plot(&self) -> Plot {
         let mut plot = self.0.as_plot();
-        plot.line_desc = self.1.into();
+        plot.line_desc = vec![self.1.into()];
         plot
     }
 }
@@ -156,14 +164,14 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, usize ) {
             *y = self.0(xs[i]);
         }
 
-        Plot { xs, ys, line_desc: Default::default() }
+        Plot { xs: vec![xs], ys: vec![ys], line_desc: Default::default() }
     }
 }
 
 impl<F: Copy+Fn(f64) -> f64> PlotArg for (F, usize, &str) {
     fn as_plot(&self) -> Plot {
         let mut plot = (self.0, self.1).as_plot();
-        plot.line_desc = self.2.into();
+        plot.line_desc = vec![self.2.into()];
         plot
     }
 }

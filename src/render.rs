@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 
-use crate::{Plot, Marker, LineType};
+use crate::{Plot, Marker, LineType, Matrix};
 
 const FONT_SIZE: f32 = 24.; //27.
 const COORD_THICKNESS: f32 = 2.;
@@ -92,9 +92,22 @@ fn max_display(max: f64) -> f64 {
     }
 }
 
+pub fn max_matrix(mat: &Matrix) -> f64 {
+    let mut max = mat[0][0].abs();
+    for x in mat {
+        for x in x {
+            let x = x.abs();
+            if x > max {
+                max = x;
+            }
+        }
+    }
+    max
+}
+
 pub async fn run(plot: Plot) {
-    let maxed = plot.xs.iter().map(|x| x.abs()).collect::<Vec<f64>>();
-    let mut max_x = max(&maxed);
+    let mut max_x = max_matrix(&plot.xs);
+    //let mut max_x = max(&maxed);
 
     max_x = max_display(max_x);
     
@@ -107,10 +120,11 @@ pub async fn run(plot: Plot) {
 
     let start_x = step_x;
 
-    let xs = divs(&plot.xs, step_x);
+    
 
-    let maxed = plot.ys.iter().map(|y| y.abs()).collect::<Vec<f64>>();
-    let mut max_y = max(&maxed);
+    //let maxed = plot.ys.iter().map(|y| y.abs()).collect::<Vec<f64>>();
+    //let mut max_y = max(&maxed);
+    let mut max_y = max_matrix(&plot.ys);
     max_y = max_display(max_y);
     
     let y_font_size = get_font_size_y(max_y);
@@ -120,39 +134,45 @@ pub async fn run(plot: Plot) {
 
     let start_y = step_y;
 
-    let ys = divs(&plot.ys, step_y);
-
     loop {
         clear_background(WHITE);
 
         let half_height = screen_height() / 2.;
         let half_width = screen_width() / 2.;
 
-        let mut coords = Vec::new();
+        for (idx, xs) in plot.xs.iter().enumerate() {
+            let xs = divs(&xs, step_x);
+            let ys = divs(&plot.ys[idx], step_y);
 
-        for i in 0..xs.len() {
-            let x = xs[i] as f32;
-            let y = ys[i] as f32;
-    
-            let x = half_width + 40. * x;
-            let y = half_height - 40. * y;
+            let line_desc = &plot.line_desc[idx];
 
-            coords.push((x, y));
+            let mut coords = Vec::new();
 
-            match plot.line_desc.marker {
-                Marker::Circle(r) => draw_circle(x, y, r, plot.line_desc.color),
-                Marker::None => {},
-            }
-
-            if coords.len() >= 2 {
-                match plot.line_desc.line_type {
-                    LineType::Solid => draw_line(coords[0].0, coords[0].1, coords[1].0, coords[1].1, 3., plot.line_desc.color),
-                    LineType::None => {},
-                }
-                coords.remove(0);
-            }
-        }
+            for i in 0..xs.len() {
+                let x = xs[i] as f32;
+                let y = ys[i] as f32;
         
+                let x = half_width + 40. * x;
+                let y = half_height - 40. * y;
+
+                coords.push((x, y));
+
+                match line_desc.marker {
+                    Marker::Circle(r) => draw_circle(x, y, r, line_desc.color),
+                    Marker::None => {},
+                }
+
+                if coords.len() >= 2 {
+                    match line_desc.line_type {
+                        LineType::Solid => draw_line(coords[0].0, coords[0].1, coords[1].0, coords[1].1, 3., line_desc.color),
+                        LineType::None => {},
+                    }
+                    coords.remove(0);
+                }
+            }
+
+        }
+            
         let y_half_font = y_font_size / 2.;
 
         let x_half_font = x_font_size / 2.;
@@ -237,7 +257,7 @@ pub async fn run(plot: Plot) {
             let start_x = start_x * tens_start as f64;
             let max_x = max_x * tens_start as f64;
             let step_x = step_x * tens_step as f64;
-           
+        
             for (idx, val) in (start_x as i128..=max_x as i128).step_by(step_x as usize).enumerate() {
                 let x = (half_width + 40. * idx as f32) + 40.;
     
@@ -280,10 +300,8 @@ pub async fn run(plot: Plot) {
         
         // x-axis
         draw_line(0.0, half_height, screen_width(), half_height, COORD_THICKNESS, GRAY);
-
-
+        
         next_frame().await;
-
-        std::thread::sleep(std::time::Duration::from_millis(16));
+        std::thread::sleep(std::time::Duration::from_millis(16));    
     }
 }

@@ -1,8 +1,6 @@
-use graplot::{Plot, x};
+use graplot::Plot;
 
 fn main() {
-    let plot = Plot::new((|x: f64| x.sin(), x(4.)));
-    /* 
     let mut xs = [0.; 1000]; 
     
     let mut add = 0f64;
@@ -17,7 +15,10 @@ fn main() {
     }
 
     let plot = Plot::new((xs, ys));
-    */
+    let _thread = std::thread::Builder::new().name("test".to_string());
+
+    //thread.spawn(|| {
     plot.show();
+    //}).unwrap().join().unwrap()
     
 }
