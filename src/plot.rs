@@ -111,7 +111,7 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
         for (i, y) in ys.iter_mut().enumerate() {
             *y = self(xs[i]);
         }
-        Plot { xs: vec![xs.to_vec()], ys: vec![ys.to_vec()], line_desc: Default::default() }
+        Plot { xs: vec![xs.to_vec()], ys: vec![ys.to_vec()], line_desc: vec![Default::default()] }
     }
 }
 
@@ -129,7 +129,7 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, XEnd) {
         for (i, y) in ys.iter_mut().enumerate() {
             *y = self.0(xs[i]);
         }
-        Plot { xs: vec![xs.to_vec()], ys: vec![ys.to_vec()], line_desc: Default::default() }
+        Plot { xs: vec![xs.to_vec()], ys: vec![ys.to_vec()], line_desc: vec![Default::default()] }
     }
 }
 
@@ -164,7 +164,7 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, usize ) {
             *y = self.0(xs[i]);
         }
 
-        Plot { xs: vec![xs], ys: vec![ys], line_desc: Default::default() }
+        Plot { xs: vec![xs], ys: vec![ys], line_desc: vec![Default::default()] }
     }
 }
 
