@@ -30,7 +30,7 @@ fn test_plot4() {
 
 #[test]
 fn test_plot5() {
-    let plot = Plot::new(([-1.6, -1.9,], "o-"));
+    let plot = Plot::new(([-1.6, -1.9,], "7o-"));
     plot.show();
 }
 

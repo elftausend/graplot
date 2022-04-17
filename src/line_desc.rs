@@ -29,6 +29,8 @@ impl From<&str> for LineDesc {
         let mut line_type = LineType::None;
         let mut marker = Marker::None;
 
+        let mut radius = 5.;
+
         for char in desc.chars() {
             match char {
                 'r' => color = RED,
@@ -37,8 +39,9 @@ impl From<&str> for LineDesc {
                 'y' => color = YELLOW,
                 //cyan
                 'c' => color = Color::new(0., 1., 1., 1.), 
-                'o' => marker = Marker::Circle(5.),
+                'o' => marker = Marker::Circle(radius),
                 '-' => line_type = LineType::Solid,
+                '1' ..='9' => radius = char.to_digit(10).unwrap() as f32,
                _ => {}
             }
         }
