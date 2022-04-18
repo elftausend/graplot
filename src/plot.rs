@@ -6,20 +6,11 @@ use crate::{render, LineDesc};
 
 pub type Matrix = Vec<Vec<f64>>;
 
+#[derive(Default)]
 pub struct AxisDesc {
     pub title: String,
     pub x_label: String,
     pub y_label: String,
-}
-
-impl Default for AxisDesc {
-    fn default() -> Self {
-        Self {
-            title: Default::default(),
-            x_label: Default::default(),
-            y_label: Default::default(),
-        }
-    }
 }
 
 pub struct Plot {

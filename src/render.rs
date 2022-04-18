@@ -2,6 +2,10 @@ use macroquad::prelude::*;
 
 use crate::{LineType, Marker, Matrix, Plot};
 
+const TITLE_SIZE: f32 = 37.;
+const YLABEL_SIZE: f32 = 29.;
+//const XLABEL_SIZE: f32 = 29.;
+
 const FONT_SIZE: f32 = 24.; //27.
 const COORD_THICKNESS: f32 = 2.;
 
@@ -133,20 +137,56 @@ pub async fn run(plot: Plot) {
         let half_width = screen_width() / 2.;
 
         if !plot.axis_desc.title.is_empty() {
-            let len = plot.axis_desc.title.len() as f32 * (30. / 4. - COORD_THICKNESS / 2.);
+            let len = plot.axis_desc.title.len() as f32 * (TITLE_SIZE / 4. - COORD_THICKNESS / 2.);
             draw_text(
                 &plot.axis_desc.title,
                 half_width - len,
-                half_height - 40. * steps_y as f32 - 20.,
-                30.,
+                half_height - 40. * steps_y as f32 - 50.,
+                TITLE_SIZE,
                 BLACK,
             );
         }
 
+        if !plot.axis_desc.y_label.is_empty() {
+            let len = plot.axis_desc.y_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.);
+            draw_text(
+                &plot.axis_desc.y_label,
+                half_width - len,
+                half_height - 40. * steps_y as f32 - 20.,
+                YLABEL_SIZE,
+                BLACK,
+            );
+        }
+
+        if !plot.axis_desc.x_label.is_empty() {
+            
+            //let len = plot.axis_desc.y_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.);
+            for (idx, char) in plot.axis_desc.x_label.chars().into_iter().enumerate() {
+                let adding = if char == 'i' { 3. } else {0.};
+                draw_text_rot(
+                    &format!("{char}"), 
+                    half_width + 40. * steps as f32 + 20. + adding, 
+                    half_height - plot.axis_desc.x_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.) + idx as f32 * YLABEL_SIZE / 2., 
+                    YLABEL_SIZE, 
+                    BLACK, 
+                    std::f32::consts::PI / 2.
+                );
+            }
+        }
+
+        let subtract = if !plot.axis_desc.y_label.is_empty()
+            || !plot.axis_desc.x_label.is_empty()
+            || !plot.axis_desc.title.is_empty()
+        {
+            40. * steps_y as f32
+        } else {
+            half_height
+        };
+
         // y-axis
         draw_line(
             half_width,
-            half_height - 40. * steps_y as f32,
+            half_height - subtract,
             half_width,
             screen_height(),
             COORD_THICKNESS,
@@ -157,7 +197,7 @@ pub async fn run(plot: Plot) {
         draw_line(
             0.0,
             half_height,
-            screen_width(),
+            half_width + subtract,
             half_height,
             COORD_THICKNESS,
             GRAY,
