@@ -1931,8 +1931,8 @@ impl ElapsedQuery {
 
     /// Reports whenever elapsed timer is supported and other methods can be invoked.
     pub fn is_supported() -> bool {
-        //unsafe { sapp_is_elapsed_timer_supported() }
-        sapp_is_elapsed_timer_supported()
+        unsafe { sapp_is_elapsed_timer_supported() }
+        //sapp_is_elapsed_timer_supported()
     }
 
     /// Reports whenever result of submitted query is available for retrieval with

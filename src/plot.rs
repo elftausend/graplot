@@ -54,7 +54,7 @@ impl Plot {
         macroquad::Window::from_config(conf, render::run(self));
     }
 
-    /// you will need another miniquad and macroquad version
+    #[cfg(target_os="linux")]
     pub fn show_threaded(self) -> JoinHandle<()> {
         std::thread::spawn(|| {
             let conf = Conf {

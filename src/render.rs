@@ -174,19 +174,19 @@ pub async fn run(plot: Plot) {
             }
         }
 
-        let subtract = if !plot.axis_desc.y_label.is_empty()
+        let (subtract_x, subtract_y) = if !plot.axis_desc.y_label.is_empty()
             || !plot.axis_desc.x_label.is_empty()
             || !plot.axis_desc.title.is_empty()
         {
-            40. * steps_y as f32
+            (40. * steps as f32, (40. * steps_y as f32))
         } else {
-            half_height
+            (half_width, half_height)
         };
 
         // y-axis
         draw_line(
             half_width,
-            half_height - subtract,
+            half_height - subtract_y,
             half_width,
             screen_height(),
             COORD_THICKNESS,
@@ -197,7 +197,7 @@ pub async fn run(plot: Plot) {
         draw_line(
             0.0,
             half_height,
-            half_width + subtract,
+            half_width + subtract_x,
             half_height,
             COORD_THICKNESS,
             GRAY,

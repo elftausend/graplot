@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.4)](https://docs.rs/graplot/0.1.4/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.5)](https://docs.rs/graplot/0.1.5/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad].
 It creates a window displaying the graphs.
@@ -40,6 +40,20 @@ plot.show();
 
 ![multiple graphs](pictures/multiple.png)
 
+Label the x and y axis and set a title:
+
+```rust
+use graplot::{x, Plot};
+
+let mut plot = Plot::new((|x: f64| x.cos(), x(6.)));
+
+plot.set_title("cosine wave");
+plot.set_xlabel("x axis");
+plot.set_ylabel("y axis");
+plot.show();
+```
+<img src="pictures/cosine_labeled.png" alt="cosine labeled" width="400"/>
+
 
 Sine wave:
 ```rust
@@ -73,7 +87,8 @@ use graplot::{Plot, x};
 let plot = Plot::new((|x: f64| x.powf(3.) + x.powf(2.) - 0.08, x(1.)) );
 plot.show();
 ```
-![pol3](pictures/pol3.png)
+<img src="pictures/pol3.png" alt="pol3" width="400"/>
+
 
 x² - 0.5:
 ```rust
@@ -93,5 +108,25 @@ use graplot::Plot;
 let plot = Plot::new(([-4., -3., -3.4, -3.75, -4.1], "c-o"));
 plot.show();
 ```
-
 ![line_desc](pictures/line_desc.png)
+
+Spawning multiple windows on linux:
+
+```rust
+let mut plot = Plot::new(|x: f64| x.powf(3.) + x.powf(2.) - 0.08);
+plot.set_title("x^3 + x^2 - 0.08");
+let h = plot.show_threaded() // show_threaded() is currently linux only;
+
+let mut plot = Plot::new(|x: f64| x.powf(2.) + 0.08);
+plot.set_title("x²");
+plot.show();
+
+h.join().unwrap() // you need to close both windows
+```
+
+<img src="pictures/multiple_windows.png" alt="multiple windows" width="500"/>
+
+## Changelog
+
+- 0.1.5: Label x and y axis, set title, mutliple windows on linux
+- 0.1.4: Multiple graphs
