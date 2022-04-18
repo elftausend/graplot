@@ -1,3 +1,4 @@
+#[cfg(target_os="linux")]
 use std::thread::JoinHandle;
 
 use macroquad::prelude::Conf;
