@@ -160,9 +160,11 @@ pub async fn run(plot: Plot) {
 
         if !plot.axis_desc.x_label.is_empty() {
             
+            /* 
             //let len = plot.axis_desc.y_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.);
             for (idx, char) in plot.axis_desc.x_label.chars().into_iter().enumerate() {
                 let adding = if char == 'i' { 3. } else {0.};
+            
                 draw_text_rot(
                     &format!("{char}"), 
                     half_width + 40. * steps as f32 + 20. + adding, 
@@ -170,8 +172,9 @@ pub async fn run(plot: Plot) {
                     YLABEL_SIZE, 
                     BLACK, 
                     std::f32::consts::PI / 2.
-                );
+                );  
             }
+            */
         }
 
         let (subtract_x, subtract_y) = if !plot.axis_desc.y_label.is_empty()

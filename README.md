@@ -48,6 +48,8 @@ use graplot::{x, Plot};
 let mut plot = Plot::new((|x: f64| x.cos(), x(6.)));
 
 plot.set_title("cosine wave");
+
+//currently, no x axis label
 plot.set_xlabel("x axis");
 plot.set_ylabel("y axis");
 plot.show();
