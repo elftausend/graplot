@@ -9,9 +9,7 @@ readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[patch.crates-io]
-macroquad = {path = "./macroquad"}
 
 [dependencies]
-#macroquad = {path = "./macroquad"}
-macroquad = "0.3"
+macroquad = {path = "../macroquad"}
+#macroquad = "0.3"
