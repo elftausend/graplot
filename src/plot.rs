@@ -1,7 +1,7 @@
 #[cfg(target_os="linux")]
 use std::thread::JoinHandle;
 
-use macroquad::prelude::Conf;
+use litequad::prelude::Conf;
 
 use crate::{render, LineDesc};
 
@@ -52,7 +52,7 @@ impl Plot {
             window_height: 395,
             ..Default::default()
         };
-        macroquad::Window::from_config(conf, render::run(self));
+        litequad::Window::from_config(conf, render::run(self));
     }
 
     #[cfg(target_os="linux")]
@@ -64,7 +64,7 @@ impl Plot {
                 window_height: 395,
                 ..Default::default()
             };
-            macroquad::Window::from_config(conf, render::run(self));
+            litequad::Window::from_config(conf, render::run(self));
         })
     }
 }

@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.5)](https://docs.rs/graplot/0.1.5/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.6)](https://docs.rs/graplot/0.1.6/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad].
 It creates a window displaying the graphs.
@@ -49,7 +49,6 @@ let mut plot = Plot::new((|x: f64| x.cos(), x(6.)));
 
 plot.set_title("cosine wave");
 
-//currently, no x axis label
 plot.set_xlabel("x axis");
 plot.set_ylabel("y axis");
 plot.show();
@@ -112,6 +111,7 @@ plot.show();
 ```
 ![line_desc](pictures/line_desc.png)
 
+Another version for miniquad is needed for this feature. Therefore is it broken.
 Spawning multiple windows on linux:
 
 ```rust
@@ -130,5 +130,6 @@ h.join().unwrap() // you need to close both windows
 
 ## Changelog
 
-- 0.1.5: Label x and y axis, set title, mutliple windows on linux
+- 0.1.6: Label x axis, litequad
+- 0.1.5: y axis, set title, /*mutliple windows on linux*/ | yanked
 - 0.1.4: Multiple graphs
