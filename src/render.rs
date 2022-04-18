@@ -133,9 +133,10 @@ pub async fn run(plot: Plot) {
         let half_width = screen_width() / 2.;
 
         if !plot.axis_desc.title.is_empty() {
+            let len = (plot.axis_desc.title.len() as f32 * 30.) / 4.;
             draw_text(
                 &plot.axis_desc.title,
-                half_width - plot.axis_desc.title.len() as f32 * (15. / 2.) + 15.,
+                half_width - len - 7.5,
                 half_height - 40. * steps_y as f32 - 20.,
                 30.,
                 BLACK,
