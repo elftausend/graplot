@@ -1,19 +1,20 @@
 #[cfg(target_os = "linux")]
 use std::thread::JoinHandle;
 
-use litequad::prelude::Conf;
+use litequad::prelude::{Conf, Color};
 
 use crate::{render, LineDesc};
 
 pub type Matrix = Vec<Vec<f64>>;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct AxisDesc {
     pub title: String,
     pub x_label: String,
     pub y_label: String,
 }
 
+#[derive(Clone)]
 pub struct Plot {
     pub xs: Matrix,
     pub ys: Matrix,
@@ -29,6 +30,19 @@ impl Plot {
 
     pub fn set_desc(&mut self, desc: Desc) {
         self.desc = desc;
+    }
+
+    /// Set graph color
+    /// # Example
+    /// ```
+    /// use graplot::Plot; 
+    /// 
+    /// let plot = Plot::new([1., 2., 3.]);
+    /// plot.set_color(0., 0.78, 1.);
+    /// plot.show();
+    /// ```
+    pub fn set_color(&mut self, color: (f32, f32, f32)) {
+        self.line_desc[0].color = Color::new(color.0, color.1, color.2, 1.);
     }
 
     pub fn add<A: PlotArg>(&mut self, args: A) {
@@ -83,7 +97,7 @@ pub fn x(end_x: f64) -> XEnd {
     XEnd(end_x.abs())
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Desc {
     pub end: XEnd,
     pub spacing_x: f32, // pixels
@@ -266,6 +280,12 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, usize) {
             axis_desc: Default::default(),
             desc: Default::default(),
         }
+    }
+}
+
+impl PlotArg for Plot {
+    fn as_plot(&self) -> Plot {
+        self.clone()
     }
 }
 
