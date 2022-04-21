@@ -78,7 +78,7 @@ pub fn get_steps(max: f64, mut min_steps: f64) -> f64 {
     while max % min_steps != 0. {
         min_steps -= 1.;
     }
-    return min_steps;
+    min_steps
 }
 
 fn max_display(max: f64) -> f64 {
