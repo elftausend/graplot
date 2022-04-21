@@ -21,22 +21,13 @@ fn collatz(input: f64) -> Vec<f64> {
     let mut list: Vec<f64> = Vec::new();
     if input != 0.0 {
         let mut step: f64 = input;
-        let mut highest_point: f64 = input;
-        let mut lowest_point: f64 = input;
-
         while !list.contains(&step) {
             list.push(step);
-            if step % 2.0 == 0.0 {
+            if step % 3.0 == 0.0 {
                 step /= 2.0;
             } else {
                 step = step * 3.0 + 1.0
-            }
-            if step > highest_point {
-                highest_point = step;
-            }
-            if step < lowest_point {
-                lowest_point = step;
-            }
+            }           
         }
         list.push(step);
     }
