@@ -5,7 +5,6 @@ use crate::{LineType, Marker, Matrix, Plot};
 const TITLE_SIZE: f32 = 37.;
 const YLABEL_SIZE: f32 = 29.;
 //const XLABEL_SIZE: f32 = 29.;
-
 const FONT_SIZE: f32 = 24.; //27.
 const COORD_THICKNESS: f32 = 2.;
 
@@ -67,16 +66,14 @@ fn get_font_size_y(max: f64) -> f32 {
     FONT_SIZE - (1. * a)
 }
 
-pub fn get_steps(max: f64) -> f64 {
-    let mut steps = 4.;
-
+pub fn get_steps(max: f64, mut min_steps: f64) -> f64 {
+    //let mut steps = 4.;
     if max >= 4. {
-        while max % steps != 0. {
-            steps += 1.;
+        while max % min_steps != 0. {
+            min_steps += 1.;
         }
     }
-
-    steps
+    min_steps
 }
 
 fn max_display(max: f64) -> f64 {
@@ -106,6 +103,9 @@ pub fn max_matrix(mat: &Matrix) -> f64 {
 }
 
 pub async fn run(plot: Plot) {
+    let spacing_x = plot.desc.spacing_x;
+    let spacing_y = plot.desc.spacing_y;
+
     let mut max_x = max_matrix(&plot.xs);
     //let mut max_x = max(&maxed);
 
@@ -113,7 +113,7 @@ pub async fn run(plot: Plot) {
 
     let x_font_size = get_font_size_x(max_x);
 
-    let steps = get_steps(max_x);
+    let steps = get_steps(max_x, plot.desc.min_steps_x.into());
     let step_x = max_x / steps;
 
     let start_x = step_x;
@@ -125,7 +125,7 @@ pub async fn run(plot: Plot) {
 
     let y_font_size = get_font_size_y(max_y);
 
-    let steps_y = get_steps(max_y);
+    let steps_y = get_steps(max_y, plot.desc.min_steps_y.into());
     let step_y = max_y / steps_y;
 
     let start_y = step_y;
@@ -141,45 +141,48 @@ pub async fn run(plot: Plot) {
             draw_text(
                 &plot.axis_desc.title,
                 half_width - len,
-                half_height - 40. * steps_y as f32 - 50.,
+                half_height - spacing_y * steps_y as f32 - 50.,
                 TITLE_SIZE,
                 BLACK,
             );
         }
 
         if !plot.axis_desc.y_label.is_empty() {
-            let len = plot.axis_desc.y_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.);
+            let len =
+                plot.axis_desc.y_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.);
             draw_text(
                 &plot.axis_desc.y_label,
                 half_width - len,
-                half_height - 40. * steps_y as f32 - 20.,
+                half_height - spacing_y * steps_y as f32 - 20.,
                 YLABEL_SIZE,
                 BLACK,
             );
         }
 
-        if !plot.axis_desc.x_label.is_empty() {      
+        if !plot.axis_desc.x_label.is_empty() {
             //let len = plot.axis_desc.y_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.);
             for (idx, char) in plot.axis_desc.x_label.chars().into_iter().enumerate() {
-                let adding = if char == 'i' { 3. } else {0.};
-            
+                let adding = if char == 'i' { 3. } else { 0. };
+
                 draw_text_rot(
-                    &format!("{char}"), 
-                    half_width + 40. * steps as f32 + 20. + adding, 
-                    half_height - plot.axis_desc.x_label.len() as f32 * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.) + idx as f32 * YLABEL_SIZE / 2., 
-                    YLABEL_SIZE, 
-                    BLACK, 
-                    std::f32::consts::PI / 2.
-                );  
+                    &format!("{char}"),
+                    half_width + spacing_x * steps as f32 + 20. + adding,
+                    half_height
+                        - plot.axis_desc.x_label.len() as f32
+                            * (YLABEL_SIZE / 4. - COORD_THICKNESS / 2.)
+                        + idx as f32 * YLABEL_SIZE / 2.,
+                    YLABEL_SIZE,
+                    BLACK,
+                    std::f32::consts::PI / 2.,
+                );
             }
-            
         }
 
         let (subtract_x, subtract_y) = if !plot.axis_desc.y_label.is_empty()
             || !plot.axis_desc.x_label.is_empty()
             || !plot.axis_desc.title.is_empty()
         {
-            (40. * steps as f32, (40. * steps_y as f32))
+            (spacing_x * steps as f32, (spacing_y * steps_y as f32))
         } else {
             (half_width, half_height)
         };
@@ -216,8 +219,8 @@ pub async fn run(plot: Plot) {
                 let x = xs[i] as f32;
                 let y = ys[i] as f32;
 
-                let x = half_width + 40. * x;
-                let y = half_height - 40. * y;
+                let x = half_width + spacing_x * x;
+                let y = half_height - spacing_y * y;
 
                 coords.push((x, y));
 
@@ -254,7 +257,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_y as usize)
                 .enumerate()
             {
-                let y = (half_height - 40. * idx as f32) - 40.;
+                let y = (half_height - spacing_y * idx as f32) - spacing_y;
                 let text = format!("{}", val);
                 let move_away = text.len();
 
@@ -280,7 +283,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_y as usize)
                 .enumerate()
             {
-                let y = (half_height - 40. * idx as f32) - 40.;
+                let y = (half_height - spacing_y * idx as f32) - spacing_y;
                 let text = format!("{}", val as f64 / tens_start as f64);
                 let move_away = text.len();
 
@@ -300,7 +303,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_y as usize)
                 .enumerate()
             {
-                let y = (half_height - 40. * -(idx as f32)) + 40.;
+                let y = (half_height - spacing_y * -(idx as f32)) + spacing_y;
                 let text = format!("{}", -val);
                 let move_away = text.len();
 
@@ -326,7 +329,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_y as usize)
                 .enumerate()
             {
-                let y = (half_height - 40. * -(idx as f32)) + 40.;
+                let y = (half_height - spacing_y * -(idx as f32)) + spacing_y;
                 let text = format!("{}", -val as f64 / tens_start as f64);
                 let move_away = text.len();
 
@@ -346,7 +349,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_x as usize)
                 .enumerate()
             {
-                let x = (half_width + 40. * idx as f32) + 40.;
+                let x = (half_width + spacing_x * idx as f32) + spacing_x;
 
                 let text = format!("{}", val);
 
@@ -371,7 +374,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_x as usize)
                 .enumerate()
             {
-                let x = (half_width + 40. * idx as f32) + 40.;
+                let x = (half_width + spacing_x * idx as f32) + spacing_x;
 
                 let text = format!("{}", val as f64 / tens_start as f64);
 
@@ -391,7 +394,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_x as usize)
                 .enumerate()
             {
-                let x = (half_width + 40. * -(idx as f32)) - 40.;
+                let x = (half_width + spacing_x * -(idx as f32)) - spacing_x;
 
                 let text = format!("{}", -val);
 
@@ -416,7 +419,7 @@ pub async fn run(plot: Plot) {
                 .step_by(step_x as usize)
                 .enumerate()
             {
-                let x = (half_width + 40. * -(idx as f32)) - 40.;
+                let x = (half_width + spacing_x * -(idx as f32)) - spacing_x;
 
                 let text = format!("{}", -val as f64 / tens_start as f64);
 
