@@ -1,8 +1,24 @@
-use graplot::{Desc, Plot};
+use graplot::{Desc, Plot, PlotArg};
 
 fn main() {
+    let mut plot = Plot::default();
+    plot.set_title("Collatz Conjecture");
+    plot.set_desc(Desc {
+        min_steps_x: 10.,
+        spacing_x: 47.,
+        ..Default::default()
+    });
+
+    for input in 1000..=1001 {
+        let mut single_graph = collatz(input as f64).as_plot();
+        single_graph.set_color(0., 1. * (input == 1000) as i32 as f32, 1.);
+        plot.add(single_graph);
+    }
+    plot.show();
+}
+
+fn collatz(input: f64) -> Vec<f64> {
     let mut list: Vec<f64> = Vec::new();
-    let input: f64 = 1000.;
     if input != 0.0 {
         let mut step: f64 = input;
         let mut highest_point: f64 = input;
@@ -23,20 +39,6 @@ fn main() {
             }
         }
         list.push(step);
-        let a: f64 = list[list.len() - 2];
-        let b: f64 = list[list.len() - 1];
-        println!("Input {} ended in a loop between {} and {}", input, a, b);
-        println!("Highest Point: {}", highest_point);
-        println!("Lowest Point: {}", lowest_point);
-
-        let mut plot = Plot::new(list);
-        plot.set_desc(Desc {
-            min_steps_x: 10.,
-            spacing_x: 47.,
-            ..Default::default()
-        });
-        plot.set_color((0.1, 0.6, 0.9));
-
-        plot.show();
     }
+    list
 }

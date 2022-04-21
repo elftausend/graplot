@@ -14,7 +14,7 @@ pub struct AxisDesc {
     pub y_label: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Plot {
     pub xs: Matrix,
     pub ys: Matrix,
@@ -41,8 +41,8 @@ impl Plot {
     /// plot.set_color(0., 0.78, 1.);
     /// plot.show();
     /// ```
-    pub fn set_color(&mut self, color: (f32, f32, f32)) {
-        self.line_desc[0].color = Color::new(color.0, color.1, color.2, 1.);
+    pub fn set_color(&mut self, r: f32, g: f32, b: f32) {
+        self.line_desc[0].color = Color::new(r, g, b, 1.);
     }
 
     pub fn add<A: PlotArg>(&mut self, args: A) {
@@ -120,6 +120,12 @@ impl Default for Desc {
 
 pub trait PlotArg {
     fn as_plot(&self) -> Plot;
+}
+
+impl PlotArg for () {
+    fn as_plot(&self) -> Plot {
+        Default::default()
+    }
 }
 
 impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {

@@ -68,12 +68,16 @@ fn get_font_size_y(max: f64) -> f32 {
 
 pub fn get_steps(max: f64, mut min_steps: f64) -> f64 {
     //let mut steps = 4.;
-    if max >= 4. {
+    if max >= min_steps {
         while max % min_steps != 0. {
             min_steps += 1.;
         }
+        return min_steps;
+    } 
+    while max % min_steps != 0. {
+        min_steps -= 1.;
     }
-    min_steps
+    return min_steps;
 }
 
 fn max_display(max: f64) -> f64 {
