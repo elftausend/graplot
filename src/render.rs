@@ -19,12 +19,13 @@ pub fn max(arr: &[f64]) -> f64 {
 }
 
 pub fn count_tens(mut num: f64) -> u128 {
-    let mut count = 0;
+    let mut count = 1;
     while num > 10. {
         num /= 10.;
-        count += 1;
+        count *= 10;
     }
-    10u128.pow(count)
+    //10u128.pow(count)
+    count
 }
 
 pub fn count_inv_tens(mut num: f64) -> u128 {
