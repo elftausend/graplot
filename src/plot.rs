@@ -1,29 +1,48 @@
-#[cfg(target_os="linux")]
+#[cfg(target_os = "linux")]
 use std::thread::JoinHandle;
 
-use macroquad::prelude::Conf;
+use litequad::prelude::{Conf, Color};
 
 use crate::{render, LineDesc};
 
 pub type Matrix = Vec<Vec<f64>>;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct AxisDesc {
     pub title: String,
     pub x_label: String,
     pub y_label: String,
 }
 
+#[derive(Clone, Default)]
 pub struct Plot {
     pub xs: Matrix,
     pub ys: Matrix,
     pub line_desc: Vec<LineDesc>,
     pub axis_desc: AxisDesc,
+    pub desc: Desc,
 }
 
 impl Plot {
     pub fn new<A: PlotArg>(args: A) -> Plot {
         args.as_plot()
+    }
+
+    pub fn set_desc(&mut self, desc: Desc) {
+        self.desc = desc;
+    }
+
+    /// Set graph color
+    /// # Example
+    /// ```
+    /// use graplot::Plot; 
+    /// 
+    /// let plot = Plot::new([1., 2., 3.]);
+    /// plot.set_color(0., 0.78, 1.);
+    /// plot.show();
+    /// ```
+    pub fn set_color(&mut self, r: f32, g: f32, b: f32) {
+        self.line_desc[0].color = Color::new(r, g, b, 1.);
     }
 
     pub fn add<A: PlotArg>(&mut self, args: A) {
@@ -52,10 +71,10 @@ impl Plot {
             window_height: 395,
             ..Default::default()
         };
-        macroquad::Window::from_config(conf, render::run(self));
+        litequad::Window::from_config(conf, render::run(self));
     }
 
-    #[cfg(target_os="linux")]
+    #[cfg(target_os = "linux")]
     pub fn show_threaded(self) -> JoinHandle<()> {
         std::thread::spawn(|| {
             let conf = Conf {
@@ -64,12 +83,12 @@ impl Plot {
                 window_height: 395,
                 ..Default::default()
             };
-            macroquad::Window::from_config(conf, render::run(self));
+            litequad::Window::from_config(conf, render::run(self));
         })
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
 pub struct XEnd(pub f64);
 pub struct YEnd(f64, f64);
 
@@ -78,8 +97,35 @@ pub fn x(end_x: f64) -> XEnd {
     XEnd(end_x.abs())
 }
 
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub struct Desc {
+    pub end: XEnd,
+    pub spacing_x: f32, // pixels
+    pub spacing_y: f32, // pixels
+    pub min_steps_x: f32,
+    pub min_steps_y: f32,
+}
+
+impl Default for Desc {
+    fn default() -> Self {
+        Self {
+            end: x(1.),
+            spacing_x: 40.,
+            spacing_y: 40.,
+            min_steps_x: 4.,
+            min_steps_y: 4.,
+        }
+    }
+}
+
 pub trait PlotArg {
     fn as_plot(&self) -> Plot;
+}
+
+impl PlotArg for () {
+    fn as_plot(&self) -> Plot {
+        Default::default()
+    }
 }
 
 impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {
@@ -89,6 +135,7 @@ impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {
             ys: vec![self.1.to_vec()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -100,6 +147,7 @@ impl<const N: usize> PlotArg for ([f64; N], [f64; N], &str) {
             ys: vec![self.1.to_vec()],
             line_desc: vec![self.2.into()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -111,6 +159,7 @@ impl<const N: usize> PlotArg for [f64; N] {
             ys: vec![self.to_vec()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -122,6 +171,7 @@ impl<const N: usize> PlotArg for ([f64; N], &str) {
             ys: vec![self.0.to_vec()],
             line_desc: vec![self.1.into()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -133,6 +183,7 @@ impl PlotArg for Vec<f64> {
             ys: vec![self.clone()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -144,6 +195,7 @@ impl PlotArg for (Vec<f64>, &str) {
             ys: vec![self.0.clone()],
             line_desc: vec![self.1.into()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -167,6 +219,7 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
             ys: vec![ys.to_vec()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -190,6 +243,7 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, XEnd) {
             ys: vec![ys.to_vec()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
     }
 }
@@ -230,7 +284,14 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, usize) {
             ys: vec![ys],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
+            desc: Default::default(),
         }
+    }
+}
+
+impl PlotArg for Plot {
+    fn as_plot(&self) -> Plot {
+        self.clone()
     }
 }
 

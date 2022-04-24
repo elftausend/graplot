@@ -1,4 +1,4 @@
-use macroquad::color::{Color, BLUE, GREEN, RED, YELLOW};
+use litequad::color::{Color, BLUE, GREEN, RED, YELLOW};
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum Marker {

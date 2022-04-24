@@ -71,7 +71,7 @@ fn test_x_squared() {
     plot.show();
 }
 
-#[cfg(not(target_os="linux"))]
+#[cfg(not(target_os = "linux"))]
 #[test]
 fn test_fn() {
     //let plot = Plot::new((|x: f64| (2. * std::f64::consts::PI * x).sin(), 15000));
@@ -84,12 +84,12 @@ fn test_fn() {
     plot.show()
 }
 
-#[cfg(target_os="linux")]
+#[cfg(target_os = "linux")]
 #[test]
 fn test_fn() {
     let plot = Plot::new(|x: f64| x.powf(3.) + x.powf(2.) - 0.08);
     let h = plot.show_threaded();
-    
+
     let plot = Plot::new(|x: f64| x.powf(2.) + 0.08);
     plot.show();
     h.join().unwrap()
@@ -145,3 +145,12 @@ fn test_tanh() {
     let plot = Plot::new(|x: f64| x.tanh());
     plot.show()
 }
+
+#[test]
+fn test_2x() {
+    let plot = Plot::new(|x: f64| 2f64.powf(x));
+    plot.show();
+}
+
+#[test]
+fn test_collatz() {}

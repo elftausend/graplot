@@ -1,13 +1,16 @@
 [package]
 name = "graplot"
-version = "0.1.5"
+version = "0.1.9"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/elftausend/graplot"
 description = "Experimental plotting library based on macroquad"
+categories = ["visualization"]
+keywords = ["macroquad", "graphing", "graph", "plot", "plotting"]
 readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-#macroquad = {path = "../macroquad"}
-macroquad = "0.3"
+#macroquad = {path = "./macroquad"}
+#macroquad = "0.3"
+litequad = "0.1"
