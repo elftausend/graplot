@@ -1,7 +1,7 @@
 #[cfg(target_os = "linux")]
 use std::thread::JoinHandle;
 
-use litequad::prelude::{Conf, Color};
+use litequad::prelude::{Color, Conf};
 
 use crate::{render, LineDesc};
 
@@ -35,8 +35,8 @@ impl Plot {
     /// Set graph color
     /// # Example
     /// ```
-    /// use graplot::Plot; 
-    /// 
+    /// use graplot::Plot;
+    ///
     /// let plot = Plot::new([1., 2., 3.]);
     /// plot.set_color(0., 0.78, 1.);
     /// plot.show();

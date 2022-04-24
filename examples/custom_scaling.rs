@@ -1,4 +1,4 @@
-use graplot::{Desc, Plot, x};
+use graplot::{x, Desc, Plot};
 
 fn main() {
     let mut plot = Plot::new((|x: f64| x.cos(), x(5.)));

@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.9)](https://docs.rs/graplot/0.1.9/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.10)](https://docs.rs/graplot/0.1.10/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad] (internally [litequad]).
 It creates a window displaying the graphs.
@@ -14,7 +14,7 @@ It creates a window displaying the graphs.
 Add 'graplot' as a dependency:
 ```toml
 [dependencies]
-graplot = "0.1.9"
+graplot = "0.1.10"
 ```
 
 ## [Examples]
@@ -64,6 +64,11 @@ plot.show();
 ```
 <img src="pictures/cosine_labeled.png" alt="cosine labeled" width="400"/>
 
+[Collatz Conjecture]:
+
+[Collatz Conjecture]: https://github.com/elftausend/graplot/blob/main/examples/collatz.rs
+
+<img src="pictures/collatz.png" alt="collatz conjecture" width="400"/>
 
 Sine wave:
 ```rust
@@ -109,6 +114,18 @@ plot.show();
 ```
 ![squared](pictures/x2.png)
 
+Use the Polynomial struct or polynomial() function to create a polynomial function that runs through all given points:
+
+```rust
+use graplot::{x, Plot, Polynomial};
+
+let poly = Polynomial::new(&[2., 3., 1.], &[2., 3., 2.]);
+let plot = Plot::new((poly, x(10.)));
+plot.show();
+```
+
+<img src="pictures/through_points.png" alt="polynomial functions runs through 3 points" width="400"/>
+
 Using a line description: (matplotlib)
 
 ```rust
@@ -134,7 +151,7 @@ plot.set_desc(Desc {
 plot.show();
 ```
 
-Another version for miniquad is needed for this feature. Therefore is it broken.
+Another version of miniquad is needed for this feature. Therefore is it broken.
 Spawning multiple windows on linux:
 
 ```rust
@@ -153,6 +170,7 @@ h.join().unwrap() // you need to close both windows
 
 ## Changelog
 
+- 0.1.10: create polynomial function with a set of points
 - 0.1.9: fixed bug
 - 0.1.8: set color now uses 3 args, fixed step size
 - 0.1.7: Set graph color, custom x & y "line" spacing and step size | "custom scaling"

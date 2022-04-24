@@ -15,8 +15,10 @@
 
 mod line_desc;
 mod plot;
+mod polynomial;
 mod render;
 
 pub use line_desc::*;
 pub use plot::*;
+pub use polynomial::*;
 pub use render::*;

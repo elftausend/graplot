@@ -74,7 +74,7 @@ pub fn get_steps(max: f64, mut min_steps: f64) -> f64 {
             min_steps += 1.;
         }
         return min_steps;
-    } 
+    }
     let max = count_inv_tens(max) as f64 * max * 10.;
     while max % min_steps != 0. {
         min_steps -= 1.;
