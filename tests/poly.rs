@@ -1,6 +1,4 @@
-
-
-use graplot::{x, Plot, Polynomial, polynomial, PlotArg};
+use graplot::{polynomial, x, Plot, PlotArg, Polynomial};
 
 #[test]
 fn test_poly_2nd() {
@@ -11,6 +9,6 @@ fn test_poly_2nd() {
 
 #[test]
 fn test_poly_1st() {
-    let poly = polynomial(&[2., 5.,], &[2., 9., ]);
+    let poly = polynomial(&[2., 5.], &[2., 9.]);
     (poly, x(10.)).as_plot().show();
 }
