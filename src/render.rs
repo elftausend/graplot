@@ -86,14 +86,29 @@ fn max_display(max: f64) -> f64 {
     if max == 0. {
         return 1.;
     }
-    if max >= 2. {
+    if max >= 2. { 
         let tens = count_tens(max);
         ((max / tens as f64 / 2.).round() * tens as f64) * 2.
+        /*
+        let new_max = (max / 10f64).round() * 10.;
+        if new_max == 0. {
+            return max;
+        }
+        new_max
+        */
     } else {
         let tens = count_inv_tens(max);
         ((max * tens as f64 / 2.).round() / tens as f64) * 2.
     }
 }
+
+#[test]
+fn test_max() {
+    let num = 26.;
+    let x = (num / 10f64).round() * 10.;
+    println!("x: {x}")
+}
+
 
 pub fn max_matrix(mat: &Matrix) -> f64 {
     let mut max = mat[0][0].abs();

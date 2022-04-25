@@ -17,8 +17,10 @@ mod line_desc;
 mod plot;
 mod polynomial;
 mod render;
+mod scatter;
 
 pub use line_desc::*;
 pub use plot::*;
 pub use polynomial::*;
 pub use render::*;
+pub use scatter::*;

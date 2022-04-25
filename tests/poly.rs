@@ -10,5 +10,5 @@ fn test_poly_2nd() {
 #[test]
 fn test_poly_1st() {
     let poly = polynomial(&[2., 5.], &[2., 9.]);
-    (poly, x(10.)).as_plot().show();
+    (poly, x(1000.)).as_plot().show();
 }
