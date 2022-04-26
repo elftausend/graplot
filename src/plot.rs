@@ -37,7 +37,7 @@ impl Plot {
     /// ```
     /// use graplot::Plot;
     ///
-    /// let plot = Plot::new([1., 2., 3.]);
+    /// let mut plot = Plot::new([1., 2., 3.]);
     /// plot.set_color(0., 0.78, 1.);
     /// plot.show();
     /// ```
@@ -71,7 +71,7 @@ impl Plot {
             window_height: 395,
             ..Default::default()
         };
-        litequad::Window::from_config(conf, render::run(self));
+        litequad::Window::from_config(conf, render::run(self, 0.));
     }
 
     #[cfg(target_os = "linux")]
@@ -83,7 +83,7 @@ impl Plot {
                 window_height: 395,
                 ..Default::default()
             };
-            litequad::Window::from_config(conf, render::run(self));
+            litequad::Window::from_config(conf, render::run(self, 0.));
         })
     }
 }
