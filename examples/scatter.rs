@@ -1,4 +1,4 @@
-use graplot::{Scatter, Plot};
+use graplot::Scatter;
 
 
 fn main() {
@@ -6,6 +6,6 @@ fn main() {
     let y = [99.,86.,87.,88.,111.,86.,70.,87.,94.,78.,77.,85.,86.];
 
     let mut scat = Scatter::new((x, y));
-    scat.add(Plot::new(([3., 16.], [30., 150.], "r-")));
+    scat.add(([3., 16.], [30., 150.], "r-"));
     scat.show();
 }

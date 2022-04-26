@@ -88,7 +88,7 @@ pub fn max_display(max: f64) -> f64 {
     }
     if max >= 2. { 
          
-        let tens = count_tens(max);
+        let tens = count_tens(max) / 10;
         ((max / tens as f64 / 2.).round() * tens as f64) * 2.
         
         /*
