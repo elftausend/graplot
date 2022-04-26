@@ -87,15 +87,17 @@ pub fn max_display(max: f64) -> f64 {
         return 1.;
     }
     if max >= 2. { 
-        /* 
+         
         let tens = count_tens(max);
         ((max / tens as f64 / 2.).round() * tens as f64) * 2.
-        */
+        
+        /*
         let new_max = (max / 10f64).round() * 10.;
         if new_max == 0. {
             return max;
         }
         new_max
+        */
         
     } else {
         let tens = count_inv_tens(max);

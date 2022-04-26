@@ -33,10 +33,9 @@ pub async fn run(plot: Plot, min_y: f64) {
     let y_font_size = get_font_size_y(max_y);
 
     let steps_y = get_steps(max_y, plot.desc.min_steps_y.into());
-    let step_y = (max_y-min_y) / steps_y;
+    let step_y = (max_y) / steps_y;
 
-    
-    let start_y = min_y.max(step_y);
+    let start_y = if min_y > 0. { min_y } else { step_y };
     //let start_y = step_y;
 
     loop {
