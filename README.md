@@ -171,7 +171,7 @@ h.join().unwrap() // you need to close both windows
 ## Changelog
 
 - 0.1.11: added scatter plots
-- 0.1.10: create polynomial function with a set of points
+- 0.1.10: create polynomial functions with a set of points
 - 0.1.9: fixed bug
 - 0.1.8: set color now uses 3 args, fixed step size
 - 0.1.7: Set graph color, custom x & y "line" spacing and step size | "custom scaling"
