@@ -4,9 +4,9 @@ use crate::{AxisDesc, max_display, get_steps, max, Desc, render};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BarDesc {
-    width: f32,
-    label: String,
-    color: Color,
+    pub width: f32,
+    pub label: String,
+    pub color: Color,
 }
 
 impl Default for BarDesc {
@@ -70,8 +70,8 @@ impl<const N: usize> BarDescArg for [&str; N] {
 pub struct Bar {
     pub bars: Vec<BarDesc>,
     pub ys: Vec<f64>,
-    axis_desc: AxisDesc,
-    desc: Desc,
+    pub axis_desc: AxisDesc,
+    pub desc: Desc,
 }
 
 impl Bar {
@@ -116,7 +116,7 @@ impl Bar {
             window_height,
             ..Default::default()
         };
-        litequad::Window::from_config(conf, render::bar::run());
+        litequad::Window::from_config(conf, render::bar::run(self));
     }
 }
 
