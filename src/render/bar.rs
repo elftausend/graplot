@@ -1,8 +1,9 @@
-use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY};
+use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY, draw_text_rot};
 use crate::{Bar, max, max_display, get_font_size_y, get_steps, min, divs, count_inv_tens};
-use super::COORD_THICKNESS;
+use super::{COORD_THICKNESS, YLABEL_SIZE, TITLE_SIZE};
 
 const DISTANCE: f32 = 80.;
+const DISTANCE_X_AXIS: f32 = 70.;
 
 pub async fn run(bar: Bar, _min_y: f64) {
 
@@ -22,12 +23,20 @@ pub async fn run(bar: Bar, _min_y: f64) {
     loop {
         clear_background(WHITE);
 
+
+        for (idx, char) in bar.axis_desc.y_label.chars().into_iter().enumerate() {
+            draw_text_rot(&char.to_string(), 7., screen_height() / 2. - (YLABEL_SIZE / 2. * idx as f32) , YLABEL_SIZE, BLACK, -std::f32::consts::PI / 2.,);
+        }
+    
+        draw_text(&bar.axis_desc.title, screen_width() / 2., DISTANCE_X_AXIS / 3. + 7., TITLE_SIZE, BLACK);
+        draw_text(&bar.axis_desc.x_label, screen_width() / 2., screen_height() - DISTANCE_X_AXIS / 3., YLABEL_SIZE, BLACK);
+
         if step_y > 1. {
             for (idx, val) in (step_y as i128..=max_y as i128)
                 .step_by(step_y as usize)
                 .enumerate()
             {
-                let y = (screen_height() - bar.desc.spacing_y * idx as f32) - bar.desc.spacing_y * 2.;
+                let y = (screen_height() - bar.desc.spacing_y * idx as f32) - DISTANCE_X_AXIS - bar.desc.spacing_y;
 
                 let text = format!("{}", val);
                 let move_away = text.len();
@@ -53,7 +62,7 @@ pub async fn run(bar: Bar, _min_y: f64) {
                 .step_by(step_y as usize)
                 .enumerate()
             {
-                let y = (screen_height() - bar.desc.spacing_y * idx as f32) - bar.desc.spacing_y * 2.;
+                let y = (screen_height() - bar.desc.spacing_y * idx as f32) - DISTANCE_X_AXIS - bar.desc.spacing_y;
 
                 let text = format!("{}", val as f64 / tens_step as f64);
                 let move_away = text.len();
@@ -70,7 +79,7 @@ pub async fn run(bar: Bar, _min_y: f64) {
             }
         }
         
-        let x_level = screen_height()-40.;
+        let x_level = screen_height()-DISTANCE_X_AXIS;
 
         let mut line_x = DISTANCE;
         let mut bar_x = DISTANCE + 20.;
@@ -96,5 +105,6 @@ pub async fn run(bar: Bar, _min_y: f64) {
         
 
         next_frame().await;
+        std::thread::sleep(std::time::Duration::from_millis(16));
     }
 }
