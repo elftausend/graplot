@@ -1,5 +1,5 @@
 use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY};
-use crate::{Bar, max, max_display, get_font_size_y, get_steps, min, divs};
+use crate::{Bar, max, max_display, get_font_size_y, get_steps, min, divs, count_inv_tens};
 use super::COORD_THICKNESS;
 
 const DISTANCE: f32 = 80.;
@@ -22,7 +22,8 @@ pub async fn run(bar: Bar, _min_y: f64) {
     loop {
         clear_background(WHITE);
 
-        for (idx, val) in (step_y as i128..=max_y as i128)
+        if step_y > 1. {
+            for (idx, val) in (step_y as i128..=max_y as i128)
                 .step_by(step_y as usize)
                 .enumerate()
             {
@@ -42,6 +43,33 @@ pub async fn run(bar: Bar, _min_y: f64) {
                 draw_line(DISTANCE - 4., y, DISTANCE + 4., y, 3., DARKGRAY);
             }
 
+        } else {
+            let tens_step = count_inv_tens(step_y);
+
+            let max_y = max_y * tens_step as f64;
+            let step_y = step_y * tens_step as f64;
+
+            for (idx, val) in (step_y as i128..=max_y as i128)
+                .step_by(step_y as usize)
+                .enumerate()
+            {
+                let y = (screen_height() - bar.desc.spacing_y * idx as f32) - bar.desc.spacing_y * 2.;
+
+                let text = format!("{}", val as f64 / tens_step as f64);
+                let move_away = text.len();
+
+                draw_text(
+                    &text,
+                    DISTANCE - 5. - (y_half_font * move_away as f32),
+                    y + (y_half_font / 2.),
+                    y_font_size,
+                    BLACK,
+                );
+
+                draw_line(DISTANCE - 4., y, DISTANCE + 4., y, 3., DARKGRAY);
+            }
+        }
+        
         let x_level = screen_height()-40.;
 
         let mut line_x = DISTANCE;
