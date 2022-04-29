@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.11)](https://docs.rs/graplot/0.1.11/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.12)](https://docs.rs/graplot/0.1.12/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad] (internally [litequad]).
 It creates a window displaying the graphs.
@@ -14,7 +14,7 @@ It creates a window displaying the graphs.
 Add 'graplot' as a dependency:
 ```toml
 [dependencies]
-graplot = "0.1.11"
+graplot = "0.1.12"
 ```
 
 ## [Examples]
@@ -126,6 +126,17 @@ plot.show();
 
 <img src="pictures/through_points.png" alt="polynomial functions runs through 3 points" width="400"/>
 
+Draw bar graphs:
+
+```rust
+let mut bar = Bar::new(["Ferris", "Stefan", "Test"], &[100., 200., 700.]);
+bar.set_title("title");
+bar.set_xlabel("test");
+bar.show();
+```
+
+<img src="pictures/bars.png" alt="bar graph" width="400"/>
+
 Using a line description: (matplotlib)
 
 ```rust
@@ -151,8 +162,7 @@ plot.set_desc(Desc {
 plot.show();
 ```
 
-Another version of miniquad is needed for this feature. Therefore is it broken.
-Spawning multiple windows on linux:
+Spawning multiple windows on linux (currently not working):
 
 ```rust
 let mut plot = Plot::new(|x: f64| x.powf(3.) + x.powf(2.) - 0.08);
@@ -170,6 +180,7 @@ h.join().unwrap() // you need to close both windows
 
 ## Changelog
 
+- 0.1.12: added bar graphs
 - 0.1.11: added scatter plots
 - 0.1.10: create polynomial functions with a set of points
 - 0.1.9: fixed bug
