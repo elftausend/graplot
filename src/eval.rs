@@ -10,6 +10,16 @@ pub fn max(arr: &[f64]) -> f64 {
     max
 }
 
+pub fn min(arr: &[f64]) -> f64 {
+    let mut min = arr[0];
+    for value in arr {
+        if value < &min {
+            min = *value;
+        }
+    }
+    min
+}
+
 pub fn count_tens(mut num: f64) -> u128 {
     let mut count = 1;
     while num > 10. {
