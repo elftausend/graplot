@@ -1,3 +1,4 @@
+/*
 #[cfg(target_os = "linux")]
 fn main() {
     use graplot::Plot;
@@ -13,4 +14,5 @@ fn main() {
 }
 
 #[cfg(not(target_os = "linux"))]
+*/
 fn main() {}

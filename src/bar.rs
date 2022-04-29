@@ -51,9 +51,25 @@ impl BarDescArg for &[&str] {
     }
 }
 
+impl<const N: usize> BarDescArg for &[&str; N] {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        self.iter()
+            .map(|s| s.as_bar_desc()[0].clone())
+            .collect()
+    }
+}
+
+impl<const N: usize> BarDescArg for [&str; N] {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        self.iter()
+            .map(|s| s.as_bar_desc()[0].clone())
+            .collect()
+    }
+}
+
 pub struct Bar {
-    bars: Vec<BarDesc>,
-    ys: Vec<f64>,
+    pub bars: Vec<BarDesc>,
+    pub ys: Vec<f64>,
     axis_desc: AxisDesc,
 }
 
@@ -76,6 +92,10 @@ impl Bar {
 
     pub fn set_ylabel(&mut self, label: &str) {
         self.axis_desc.y_label = label.to_string();
+    }
+
+    pub fn show(self) {
+
     }
 }
 

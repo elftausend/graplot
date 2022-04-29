@@ -65,6 +65,7 @@ impl Plot {
         litequad::Window::from_config(conf, render::plot::run(self, 0.));
     }
 
+    /* 
     #[cfg(target_os = "linux")]
     pub fn show_threaded(self) -> JoinHandle<()> {
         std::thread::spawn(|| {
@@ -77,6 +78,7 @@ impl Plot {
             litequad::Window::from_config(conf, render::plot::run(self, 0.));
         })
     }
+    */
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]

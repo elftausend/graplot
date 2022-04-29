@@ -84,6 +84,7 @@ fn test_fn() {
     plot.show()
 }
 
+/*
 #[cfg(target_os = "linux")]
 #[test]
 fn test_fn() {
@@ -94,6 +95,7 @@ fn test_fn() {
     plot.show();
     h.join().unwrap()
 }
+*/
 
 #[test]
 fn test_closure() {
