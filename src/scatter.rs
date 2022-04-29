@@ -33,7 +33,7 @@ impl Scatter {
             ..Default::default()
         };
         let min_y = min_matrix(&self.plot.ys);
-        litequad::Window::from_config(conf, render::run(self.plot, min_y));
+        litequad::Window::from_config(conf, render::plot::run(self.plot, min_y));
     }
 }
 

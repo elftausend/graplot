@@ -19,6 +19,7 @@ mod polynomial;
 mod render;
 mod scatter;
 mod eval;
+mod bar;
 
 pub use line_desc::*;
 pub use plot::*;
@@ -26,3 +27,4 @@ pub use polynomial::*;
 pub use render::*;
 pub use scatter::*;
 pub use eval::*;
+pub use bar::*;

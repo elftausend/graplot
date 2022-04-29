@@ -71,7 +71,7 @@ impl Plot {
             window_height: 395,
             ..Default::default()
         };
-        litequad::Window::from_config(conf, render::run(self, 0.));
+        litequad::Window::from_config(conf, render::plot::run(self, 0.));
     }
 
     #[cfg(target_os = "linux")]
@@ -83,7 +83,7 @@ impl Plot {
                 window_height: 395,
                 ..Default::default()
             };
-            litequad::Window::from_config(conf, render::run(self, 0.));
+            litequad::Window::from_config(conf, render::plot::run(self, 0.));
         })
     }
 }
