@@ -2,11 +2,7 @@ use litequad::prelude::*;
 
 use crate::{LineType, Marker, Plot, max_matrix, max_display, get_font_size_y, get_steps, get_font_size_x, divs, sub, count_inv_tens};
 
-const TITLE_SIZE: f32 = 37.;
-const YLABEL_SIZE: f32 = 29.;
-//const XLABEL_SIZE: f32 = 29.;
-pub const FONT_SIZE: f32 = 24.; //27.
-const COORD_THICKNESS: f32 = 2.;
+use super::{TITLE_SIZE, COORD_THICKNESS, YLABEL_SIZE};
 
 pub async fn run(plot: Plot, min_y: f64) {
     let spacing_x = plot.desc.spacing_x;

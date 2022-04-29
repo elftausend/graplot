@@ -3,7 +3,7 @@ use std::thread::JoinHandle;
 
 use litequad::prelude::{Color, Conf};
 
-use crate::{render, LineDesc, Matrix, AxisDesc};
+use crate::{render, LineDesc, Matrix, AxisDesc, Desc, XEnd};
 
 #[derive(Clone, Default)]
 pub struct Plot {
@@ -81,35 +81,6 @@ impl Plot {
     */
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]
-pub struct XEnd(pub f64);
-pub struct YEnd(f64, f64);
-
-/// sets the absolute max value for x
-pub fn x(end_x: f64) -> XEnd {
-    XEnd(end_x.abs())
-}
-
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub struct Desc {
-    pub end: XEnd,
-    pub spacing_x: f32, // pixels
-    pub spacing_y: f32, // pixels
-    pub min_steps_x: f32,
-    pub min_steps_y: f32,
-}
-
-impl Default for Desc {
-    fn default() -> Self {
-        Self {
-            end: x(1.),
-            spacing_x: 40.,
-            spacing_y: 40.,
-            min_steps_x: 4.,
-            min_steps_y: 4.,
-        }
-    }
-}
 
 pub trait PlotArg {
     fn as_plot(&self) -> Plot;

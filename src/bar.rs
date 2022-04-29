@@ -1,6 +1,6 @@
-use litequad::prelude::Color;
+use litequad::prelude::{Color, Conf};
 
-use crate::AxisDesc;
+use crate::{AxisDesc, max_display, get_steps, max, Desc, render};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BarDesc {
@@ -71,6 +71,7 @@ pub struct Bar {
     pub bars: Vec<BarDesc>,
     pub ys: Vec<f64>,
     axis_desc: AxisDesc,
+    desc: Desc,
 }
 
 impl Bar {
@@ -78,7 +79,8 @@ impl Bar {
         Bar {
             bars: xs.as_bar_desc(),
             ys: ys.to_vec(),
-            axis_desc: AxisDesc::default()
+            axis_desc: AxisDesc::default(),
+            desc: Default::default()
         }
     }
 
@@ -95,7 +97,26 @@ impl Bar {
     }
 
     pub fn show(self) {
+        let mut max_x = max(&self.ys);
+        max_x = max_display(max_x);
 
+        let steps = get_steps(max_x, self.desc.min_steps_x.into());
+        
+        let window_height = (steps * self.desc.spacing_y as f64).max(395.) as i32;
+        let mut window_width = 0.;
+
+        for bar in &self.bars {
+            window_width += bar.width;
+ 
+        }
+
+        let conf = Conf {
+            window_title: self.axis_desc.title.clone(),
+            window_width: window_width.max(395.) as i32 + 100,
+            window_height,
+            ..Default::default()
+        };
+        litequad::Window::from_config(conf, render::bar::run());
     }
 }
 
