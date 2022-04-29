@@ -28,3 +28,12 @@ pub use render::*;
 pub use scatter::*;
 pub use eval::*;
 pub use bar::*;
+
+pub type Matrix = Vec<Vec<f64>>;
+
+#[derive(Default, Clone)]
+pub struct AxisDesc {
+    pub title: String,
+    pub x_label: String,
+    pub y_label: String,
+}

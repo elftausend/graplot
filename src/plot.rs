@@ -3,16 +3,7 @@ use std::thread::JoinHandle;
 
 use litequad::prelude::{Color, Conf};
 
-use crate::{render, LineDesc};
-
-pub type Matrix = Vec<Vec<f64>>;
-
-#[derive(Default, Clone)]
-pub struct AxisDesc {
-    pub title: String,
-    pub x_label: String,
-    pub y_label: String,
-}
+use crate::{render, LineDesc, Matrix, AxisDesc};
 
 #[derive(Clone, Default)]
 pub struct Plot {
