@@ -1,5 +1,5 @@
-#[cfg(target_os = "linux")]
-use std::thread::JoinHandle;
+//#[cfg(target_os = "linux")]
+//use std::thread::JoinHandle;
 
 use litequad::prelude::{Color, Conf};
 
