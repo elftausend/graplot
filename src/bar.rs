@@ -12,7 +12,7 @@ pub struct BarDesc {
 impl Default for BarDesc {
     fn default() -> Self {
         Self { 
-            width: 100., 
+            width: 200., 
             label: Default::default(), 
             color: litequad::color::GREEN }
     }
@@ -102,21 +102,28 @@ impl Bar {
 
         let steps = get_steps(max_x, self.desc.min_steps_x.into());
         
-        let window_height = (steps * self.desc.spacing_y as f64).max(395.) as i32;
+        let mut window_height = (steps * self.desc.spacing_y as f64).max(395.) as i32;
         let mut window_width = 0.;
 
         for bar in &self.bars {
             window_width += bar.width;
- 
+        }
+
+        if window_width == 0. {
+            window_width = 395.;
+        }
+
+        if window_height == 0 {
+            window_height = 395;
         }
 
         let conf = Conf {
             window_title: self.axis_desc.title.clone(),
-            window_width: window_width.max(395.) as i32 + 100,
+            window_width: window_width as i32 + 150,
             window_height,
             ..Default::default()
         };
-        litequad::Window::from_config(conf, render::bar::run(self));
+        litequad::Window::from_config(conf, render::bar::run(self, 0.));
     }
 }
 
