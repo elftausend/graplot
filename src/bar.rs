@@ -67,6 +67,14 @@ impl<const N: usize> BarDescArg for [&str; N] {
     }
 }
 
+/// ```
+/// use graplot::Bar;
+
+/// let mut bar = Bar::new(["Ferris", "Stefan", "Test"], &[100., 200., 700.]);
+/// bar.set_title("title");
+/// bar.set_xlabel("test");
+/// bar.show();
+/// ```
 pub struct Bar {
     pub bars: Vec<BarDesc>,
     pub ys: Vec<f64>,
