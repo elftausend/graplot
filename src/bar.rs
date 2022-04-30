@@ -114,7 +114,8 @@ impl Bar {
         let mut window_width = 0.;
 
         for bar in &self.bars {
-            window_width += bar.width;
+            // + 20. bar spacing
+            window_width += bar.width + 20.;
         }
 
         if window_width == 0. {
