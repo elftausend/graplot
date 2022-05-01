@@ -1,4 +1,22 @@
 
+pub struct Pie {
+    pub segs: Vec<PieSegment>,
+    pub title: String,
+}
+
+impl Pie {
+    pub fn new<A: PieSegs>(args: A) -> Pie {
+        Pie {
+            segs: args.as_pie_segs(),
+            title: Default::default()
+        }
+    }
+    pub fn set_title(&mut self, title: &str) {
+        self.title = title.to_string();
+    }
+}
+
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct PieSegment {
     percentage: f64,
@@ -130,23 +148,5 @@ impl PieSegs for (Vec<f64>, &str) {
                 label: self.1.to_string()
             }
         ).collect()
-    }
-}
-
-
-pub struct Pie {
-    pub segs: Vec<PieSegment>,
-    pub title: String,
-}
-
-impl Pie {
-    pub fn new<A: PieSegs>(args: A) -> Pie {
-        Pie {
-            segs: args.as_pie_segs(),
-            title: Default::default()
-        }
-    }
-    pub fn set_title(&mut self, title: &str) {
-        self.title = title.to_string();
     }
 }

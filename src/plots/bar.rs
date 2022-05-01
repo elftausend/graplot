@@ -1,71 +1,6 @@
 use litequad::prelude::{Color, Conf};
-
 use crate::{AxisDesc, max_display, get_steps, max, Desc, render};
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct BarDesc {
-    pub width: f32,
-    pub label: String,
-    pub color: Color,
-}
-
-impl Default for BarDesc {
-    fn default() -> Self {
-        Self { 
-            width: 200., 
-            label: Default::default(), 
-            color: litequad::color::GREEN }
-    }
-}
-
-pub trait BarDescArg {
-    fn as_bar_desc(&self) -> Vec<BarDesc>;
-}
-
-impl BarDescArg for BarDesc {
-    fn as_bar_desc(&self) -> Vec<BarDesc> {
-        vec![self.clone()]
-    }
-}
-
-impl BarDescArg for &[BarDesc] {
-    fn as_bar_desc(&self) -> Vec<BarDesc> {
-        self.to_vec()
-    }
-}
-
-impl BarDescArg for &str {
-    fn as_bar_desc(&self) -> Vec<BarDesc> {
-        vec![BarDesc {
-            label: self.to_string(),
-            ..Default::default()
-        }]
-    }
-}
-
-impl BarDescArg for &[&str] {
-    fn as_bar_desc(&self) -> Vec<BarDesc> {
-        self.iter()
-            .map(|s| s.as_bar_desc()[0].clone())
-            .collect()
-    }
-}
-
-impl<const N: usize> BarDescArg for &[&str; N] {
-    fn as_bar_desc(&self) -> Vec<BarDesc> {
-        self.iter()
-            .map(|s| s.as_bar_desc()[0].clone())
-            .collect()
-    }
-}
-
-impl<const N: usize> BarDescArg for [&str; N] {
-    fn as_bar_desc(&self) -> Vec<BarDesc> {
-        self.iter()
-            .map(|s| s.as_bar_desc()[0].clone())
-            .collect()
-    }
-}
 
 /// ```
 /// use graplot::Bar;
@@ -136,3 +71,67 @@ impl Bar {
     }
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct BarDesc {
+    pub width: f32,
+    pub label: String,
+    pub color: Color,
+}
+
+impl Default for BarDesc {
+    fn default() -> Self {
+        Self { 
+            width: 200., 
+            label: Default::default(), 
+            color: litequad::color::GREEN }
+    }
+}
+
+pub trait BarDescArg {
+    fn as_bar_desc(&self) -> Vec<BarDesc>;
+}
+
+impl BarDescArg for BarDesc {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        vec![self.clone()]
+    }
+}
+
+impl BarDescArg for &[BarDesc] {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        self.to_vec()
+    }
+}
+
+impl BarDescArg for &str {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        vec![BarDesc {
+            label: self.to_string(),
+            ..Default::default()
+        }]
+    }
+}
+
+impl BarDescArg for &[&str] {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        self.iter()
+            .map(|s| s.as_bar_desc()[0].clone())
+            .collect()
+    }
+}
+
+impl<const N: usize> BarDescArg for &[&str; N] {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        self.iter()
+            .map(|s| s.as_bar_desc()[0].clone())
+            .collect()
+    }
+}
+
+impl<const N: usize> BarDescArg for [&str; N] {
+    fn as_bar_desc(&self) -> Vec<BarDesc> {
+        self.iter()
+            .map(|s| s.as_bar_desc()[0].clone())
+            .collect()
+    }
+}

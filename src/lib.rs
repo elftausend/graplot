@@ -21,11 +21,10 @@ mod eval;
 
 pub use plots::*;
 pub use line_desc::*;
-pub use plot::*;
 pub use polynomial::*;
 pub use render::*;
 pub use eval::*;
-pub use bar::*;
+
 
 pub type Matrix = Vec<Vec<f64>>;
 
