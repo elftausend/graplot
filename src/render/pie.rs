@@ -19,18 +19,15 @@ pub async fn run(pie: Pie) {
 
             let radians = (360f32-(angle + (segment.percentage * 3.6) as f32 / 2.)).to_radians();
 
-            let mut add = 0.;
-            if (360.-angle) > 180. && (360. - angle ) < 270. {
-                add = 40.;
-                println!("color_idx: {color_idx}");
-                println!("angle: {angle}");
+            let mut add_x = 0.;
+            if (360.-angle) > 126. && (360. - angle ) < 250. {
+                add_x = segment.label.len() as f32 * (25. / 2.);
             }
 
-            let rx = screen_width() / 2. + radians.cos() * pie.radius as f32;
-            let ry = screen_height() / 2. + radians.sin() * pie.radius as f32;
-            
-            println!("add: {add}");
-            draw_text(&format!("test{color_idx}", ), rx - add, ry, 25., BLACK);
+            let rx = screen_width() / 2. + radians.cos() * (pie.radius as f32 + 10.);
+            let ry = screen_height() / 2. + radians.sin() * (pie.radius as f32 + 16.);
+        
+            draw_text(&segment.label, rx - add_x, ry, 25., BLACK);
 
             angle += (segment.percentage * 3.6) as f32;
             color_idx += 1;

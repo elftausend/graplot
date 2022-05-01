@@ -8,6 +8,6 @@ fn test_pie() {
 
 #[test]
 fn test_pie_labeled() {
-    let pie = Pie::new([(35., "label"), (25., "len"), (25., "labeled"), (15., "test")]);
+    let pie = Pie::new([(25., "label"), (10., "10!"), (25., "len"), (5., "lowest"), (25., "labeled"), (10., "test")]);
     pie.show();
 }
