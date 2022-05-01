@@ -1,26 +1,50 @@
+use litequad::prelude::{Color, Conf};
+
+use crate::render;
+
 
 pub struct Pie {
     pub segs: Vec<PieSegment>,
     pub title: String,
+    pub radius: f64
 }
 
 impl Pie {
     pub fn new<A: PieSegs>(args: A) -> Pie {
         Pie {
             segs: args.as_pie_segs(),
+            radius: 110.,
             title: Default::default()
         }
     }
+
+    /// sets the radius of the final circle.
+    /// Default radius: 110.0
+    pub fn set_radius(&mut self, radius: f64) {
+        self.radius = radius;
+    }
+
     pub fn set_title(&mut self, title: &str) {
         self.title = title.to_string();
+    }
+
+    pub fn show(self) {
+        let conf = Conf {
+            window_title: self.title.clone(),
+            window_width: 395,
+            window_height: 395,
+            ..Default::default()
+        };
+        litequad::Window::from_config(conf, render::pie::run(self));
     }
 }
 
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PieSegment {
-    percentage: f64,
-    label: String,
+    pub percentage: f64,
+    pub label: String,
+    pub color: Option<Color>
 }
 
 impl PartialOrd for PieSegment {
@@ -68,7 +92,8 @@ impl PieSegs for &[f64] {
         self.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: Default::default()
+                label: Default::default(),
+                color: None
             }
         ).collect()
     }
@@ -79,7 +104,8 @@ impl<const N: usize> PieSegs for &[f64; N] {
         self.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: Default::default()
+                label: Default::default(),
+                color: None
             }
         ).collect()
     }
@@ -90,7 +116,8 @@ impl<const N: usize> PieSegs for [f64; N] {
         self.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: Default::default()
+                label: Default::default(),
+                color: None
             }
         ).collect()
     }
@@ -101,7 +128,8 @@ impl PieSegs for Vec<f64> {
         self.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: Default::default()
+                label: Default::default(),
+                color: None
             }
         ).collect()
     }
@@ -112,7 +140,8 @@ impl PieSegs for (&[f64], &str) {
         self.0.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: self.1.to_string()
+                label: self.1.to_string(),
+                color: None
             }
         ).collect()
     }
@@ -123,7 +152,8 @@ impl<const N: usize> PieSegs for (&[f64; N], &str) {
         self.0.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: self.1.to_string()
+                label: self.1.to_string(),
+                color: None
             }
         ).collect()
     }
@@ -134,7 +164,8 @@ impl<const N: usize> PieSegs for ([f64; N], &str) {
         self.0.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: self.1.to_string()
+                label: self.1.to_string(),
+                color: None
             }
         ).collect()
     }
@@ -145,7 +176,8 @@ impl PieSegs for (Vec<f64>, &str) {
         self.0.iter()
             .map(|per| PieSegment {
                 percentage: *per,
-                label: self.1.to_string()
+                label: self.1.to_string(),
+                color: None
             }
         ).collect()
     }
