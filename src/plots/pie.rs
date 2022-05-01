@@ -135,48 +135,48 @@ impl PieSegs for Vec<f64> {
     }
 }
 
-impl PieSegs for (&[f64], &str) {
+impl PieSegs for &[(f64, &str)] {
     fn as_pie_segs(&self) -> Vec<PieSegment> {
-        self.0.iter()
+        self.iter()
             .map(|per| PieSegment {
-                percentage: *per,
-                label: self.1.to_string(),
+                percentage: per.0,
+                label: per.1.to_string(),
                 color: None
             }
         ).collect()
     }
 }
 
-impl<const N: usize> PieSegs for (&[f64; N], &str) {
+impl<const N: usize> PieSegs for &[(f64, &str); N] {
     fn as_pie_segs(&self) -> Vec<PieSegment> {
-        self.0.iter()
+        self.iter()
             .map(|per| PieSegment {
-                percentage: *per,
-                label: self.1.to_string(),
+                percentage: per.0,
+                label: per.1.to_string(),
                 color: None
             }
         ).collect()
     }
 }
 
-impl<const N: usize> PieSegs for ([f64; N], &str) {
+impl<const N: usize> PieSegs for [(f64, &str); N] {
     fn as_pie_segs(&self) -> Vec<PieSegment> {
-        self.0.iter()
+        self.iter()
             .map(|per| PieSegment {
-                percentage: *per,
-                label: self.1.to_string(),
+                percentage: per.0,
+                label: per.1.to_string(),
                 color: None
             }
         ).collect()
     }
 }
 
-impl PieSegs for (Vec<f64>, &str) {
+impl PieSegs for Vec<(f64, &str)> {
     fn as_pie_segs(&self) -> Vec<PieSegment> {
-        self.0.iter()
+        self.iter()
             .map(|per| PieSegment {
-                percentage: *per,
-                label: self.1.to_string(),
+                percentage: per.0,
+                label: per.1.to_string(),
                 color: None
             }
         ).collect()
