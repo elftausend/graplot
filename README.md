@@ -182,6 +182,7 @@ h.join().unwrap() // you need to close both windows
 
 ## Changelog
 
+- 0.1.13: added pie charts
 - 0.1.12: added bar graphs
 - 0.1.11: added scatter plots
 - 0.1.10: create polynomial functions with a set of points

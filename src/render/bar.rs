@@ -1,9 +1,9 @@
 use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY, draw_text_rot};
 use crate::{Bar, max, max_display, get_font_size_y, get_steps, min, divs, count_inv_tens};
-use super::{COORD_THICKNESS, YLABEL_SIZE, TITLE_SIZE};
+use super::{COORD_THICKNESS, YLABEL_SIZE, TITLE_SIZE, DISTANCE_X_AXIS};
 
 const DISTANCE: f32 = 80.;
-const DISTANCE_X_AXIS: f32 = 70.;
+
 
 pub async fn run(bar: Bar, _min_y: f64) {
 

@@ -1,12 +1,16 @@
 use litequad::prelude::{clear_background, WHITE, next_frame, draw_poly_angle, Color, PINK, MAGENTA, DARKBROWN, DARKGREEN, DARKPURPLE, ORANGE, DARKGRAY, GOLD, GRAY, LIME, SKYBLUE, PURPLE, BROWN, BLUE, YELLOW, GREEN, RED, screen_height, screen_width, draw_text, BLACK};
 use crate::Pie;
 
+use super::{TITLE_SIZE, DISTANCE_X_AXIS};
+
 const COLOR_ARRAY: [Color; 17] = [RED, GREEN, ORANGE, BLUE, PINK, MAGENTA, BROWN, PURPLE, SKYBLUE, LIME, GRAY, DARKGREEN, DARKBROWN, GOLD, DARKPURPLE, YELLOW, DARKGRAY];
 
 pub async fn run(pie: Pie) {
 
     loop {
         clear_background(WHITE);
+
+        draw_text(&pie.title, screen_width() / 2. - (pie.title.len() as f32* TITLE_SIZE / 4.), DISTANCE_X_AXIS / 3. + 7., TITLE_SIZE, BLACK);
 
         let mut angle = 0.;
         let mut color_idx = 0;
