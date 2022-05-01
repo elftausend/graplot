@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.12)](https://docs.rs/graplot/0.1.12/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.13)](https://docs.rs/graplot/0.1.13/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad] (internally [litequad]).
 It creates a window displaying the graphs.
@@ -14,7 +14,7 @@ It creates a window displaying the graphs.
 Add 'graplot' as a dependency:
 ```toml
 [dependencies]
-graplot = "0.1.12"
+graplot = "0.1.13"
 ```
 
 ## [Examples]
@@ -69,6 +69,18 @@ plot.show();
 [Collatz Conjecture]: https://github.com/elftausend/graplot/blob/main/examples/collatz.rs
 
 <img src="pictures/collatz.png" alt="collatz conjecture" width="400"/>
+
+Draw pie charts:
+
+```rust
+use graplot::Pie;
+
+// without labels: let pie = Pie::new([35., 25., 25., 15.]);
+let draw = [(35., "label"), (25., "len"), (25., "labeled"), (15., "test")];
+let pie = Pie::new(draw);
+pie.show();
+```
+<img src="pictures/pie_chart.png" alt="pie chart" width="400"/>
 
 Sine wave:
 ```rust

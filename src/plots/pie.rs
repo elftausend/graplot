@@ -2,7 +2,15 @@ use litequad::prelude::{Color, Conf};
 
 use crate::render;
 
+/// ```
+/// use graplot::Pie;
 
+/// // without labels: let pie = Pie::new([35., 25., 25., 15.]);
+/// let draw = [(35., "label"), (25., "len"), (25., "labeled"), (15., "test")];
+/// let mut pie = Pie::new(draw);
+/// pie.set_title("title");
+/// pie.show();
+/// ```
 pub struct Pie {
     pub segs: Vec<PieSegment>,
     pub title: String,
