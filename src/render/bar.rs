@@ -23,7 +23,6 @@ pub async fn run(bar: Bar, _min_y: f64) {
     loop {
         clear_background(WHITE);
 
-
         for (idx, char) in bar.axis_desc.y_label.chars().into_iter().enumerate() {
             draw_text_rot(&char.to_string(), 7., screen_height() / 2. - (YLABEL_SIZE / 2. * idx as f32) , YLABEL_SIZE, BLACK, -std::f32::consts::PI / 2.,);
         }
