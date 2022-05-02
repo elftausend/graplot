@@ -38,8 +38,9 @@ impl Bar {
         self.axis_desc.y_label = label.to_string();
     }
 
-    pub fn add<A: BarDescArg>(&mut self, bar: A) {
-        self.bars.extend(bar.as_bar_desc())
+    pub fn add<A: BarDescArg>(&mut self, bar: A, y: f64) {
+        self.bars.extend(bar.as_bar_desc());
+        self.ys.push(y);
     }
 
     pub fn show(self) {
