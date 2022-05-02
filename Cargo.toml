@@ -13,4 +13,4 @@ readme = "README.md"
 [dependencies]
 #macroquad = {path = "./macroquad"}
 #macroquad = "0.3"
-litequad = "0.1"
+litequad = "0.1.*"
