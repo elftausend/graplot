@@ -24,7 +24,7 @@ pub use line_desc::*;
 pub use polynomial::*;
 pub use render::*;
 pub use eval::*;
-
+pub use litequad::color::colors::*;
 
 pub type Matrix = Vec<Vec<f64>>;
 

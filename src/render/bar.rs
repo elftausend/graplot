@@ -4,7 +4,6 @@ use super::{COORD_THICKNESS, YLABEL_SIZE, TITLE_SIZE, DISTANCE_X_AXIS};
 
 const DISTANCE: f32 = 80.;
 
-
 pub async fn run(bar: Bar, _min_y: f64) {
 
     let mut max_y = max(&bar.ys);
