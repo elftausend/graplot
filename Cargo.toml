@@ -1,6 +1,6 @@
 [package]
 name = "graplot"
-version = "0.1.13"
+version = "0.1.14"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/elftausend/graplot"
@@ -13,4 +13,4 @@ readme = "README.md"
 [dependencies]
 #macroquad = {path = "./macroquad"}
 #macroquad = "0.3"
-litequad = "0.1.*"
+litequad = "0.1.2"
