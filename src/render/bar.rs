@@ -7,7 +7,7 @@ const DISTANCE: f32 = 80.;
 pub async fn run(bar: Bar, _min_y: f64) {
 
     let mut max_y = max(&bar.ys);
-    max_y = max_display(max_y);
+    max_y = max_display(max_y, false);
 
     let min_y = min(&bar.ys).min(0.);
     

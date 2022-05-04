@@ -4,14 +4,14 @@ use crate::{LineType, Marker, Plot, max_matrix, max_display, get_font_size_y, ge
 
 use super::{TITLE_SIZE, COORD_THICKNESS, YLABEL_SIZE};
 
-pub async fn run(plot: Plot, min_y: f64) {
+pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
     let spacing_x = plot.desc.spacing_x;
     let spacing_y = plot.desc.spacing_y;
 
     let mut max_x = max_matrix(&plot.xs);
     //let mut max_x = max(&maxed);
 
-    max_x = max_display(max_x);
+    max_x = max_display(max_x, other_scaling);
 
     let x_font_size = get_font_size_x(max_x);
 
@@ -24,7 +24,7 @@ pub async fn run(plot: Plot, min_y: f64) {
     //let mut max_y = max(&maxed);
 
     let mut max_y = max_matrix(&plot.ys);
-    max_y = max_display(max_y);
+    max_y = max_display(max_y, other_scaling);
 
     let y_font_size = get_font_size_y(max_y);
 

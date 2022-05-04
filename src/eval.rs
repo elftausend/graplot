@@ -92,23 +92,38 @@ pub fn get_steps(max: f64, mut min_steps: f64) -> f64 {
     min_steps
 }
 
-pub fn max_display(max: f64) -> f64 {
+pub fn max_display(max: f64, other_scaling: bool) -> f64 {
     if max == 0. {
         return 1.;
     }
     if max >= 2. { 
-        let tens = count_tens(max);
-        ((max / tens as f64 / 2.).round() * tens as f64) * 2.
-        /*
-        let tens = count_tens(max) / 10;
+        
+        /*let tens = count_tens(max) / 10;
         if tens == 0 {
             return max;
         }
         if tens == 1 {
             return (max / 10.).round() * 10.;
         }
-        ((max / tens as f64 / 2.).round() * tens as f64) * 2.
-        */
+
+        ((max / tens as f64 / 2.).round() * tens as f64) * 2.*/
+            
+        if other_scaling {
+            let tens = count_tens(max) / 10;
+            if tens == 0 {
+                return max;
+            }
+            if tens == 1 {
+                return (max / 10.).round() * 10.;
+            }
+            ((max / tens as f64 / 2.).round() * tens as f64) * 2.
+        } else {
+            let tens = count_tens(max);
+            ((max / tens as f64 / 2.).round() * tens as f64) * 2.
+        }
+        
+        
+
         /*
         let new_max = (max / 10f64).round() * 10.;
         if new_max == 0. {

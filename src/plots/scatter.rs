@@ -1,6 +1,6 @@
 use litequad::prelude::Conf;
 
-use crate::{Plot, PlotArg, LineType, Marker, render, min_matrix};
+use crate::{Plot, PlotArg, LineType, Marker, render, min_matrix, Desc};
 
 pub struct Scatter {
     pub plot: Plot
@@ -18,6 +18,10 @@ impl Scatter {
         }
     }
 
+    pub fn set_desc(&mut self, desc: Desc) {
+        self.plot.set_desc(desc)
+    }
+
     pub fn add<A: PlotArg>(&mut self, args: A) {
         let plot = args.as_plot();
         self.plot.xs.push(plot.xs[0].clone());
@@ -33,7 +37,7 @@ impl Scatter {
             ..Default::default()
         };
         let min_y = min_matrix(&self.plot.ys);
-        litequad::Window::from_config(conf, render::plot::run(self.plot, min_y));
+        litequad::Window::from_config(conf, render::plot::run(self.plot, min_y, true));
     }
 }
 

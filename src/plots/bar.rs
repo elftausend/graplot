@@ -45,7 +45,7 @@ impl Bar {
 
     pub fn show(self) {
         let mut max_x = max(&self.ys);
-        max_x = max_display(max_x);
+        max_x = max_display(max_x, false);
 
         let steps = get_steps(max_x, self.desc.min_steps_x.into());
         
