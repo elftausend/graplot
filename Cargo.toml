@@ -2,7 +2,7 @@
 name = "graplot"
 version = "0.1.15"
 edition = "2021"
-license = "MIT"
+license = "MIT/Apache-2.0"
 repository = "https://github.com/elftausend/graplot"
 description = "Experimental plotting library based on macroquad"
 categories = ["visualization"]
