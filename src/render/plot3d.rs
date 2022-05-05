@@ -1,4 +1,4 @@
-use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY}, camera::{set_camera, Camera3D}, models::draw_line_3d};
+use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK}, camera::{set_camera, Camera3D}, models::draw_line_3d};
 
 
 pub async fn run() {
@@ -6,14 +6,95 @@ pub async fn run() {
         clear_background(WHITE);
 
         set_camera(&Camera3D {
-            position: vec3(-20., 15., 0.),
+            //position: vec3(-30., 10., 0.),
+            //position: vec3(-17., 12., 0.),
+            position: vec3(-14., 12., 10.),
+            //position: vec3(-5., 15., 5.),
             up: vec3(0., 1., 0.),
             target: vec3(0., 0., 0.),
             ..Default::default()
         });
 
-        draw_grid(6, 1., 1.6);
+        let spacing_z = 1.6;
+        let spacing_x = 1.;
+        draw_grid(6, 1., spacing_z);
+        
 
+        let half_slices = (6 as i32) / 2;
+        
+        for i in -half_slices..=half_slices {
+            let color = LIGHTGRAY;
+
+            draw_line_3d(
+                vec3(i as f32 * spacing_x, 0., -half_slices as f32 * 1.6),
+                vec3(i as f32 * spacing_x, 6., -half_slices as f32 * 1.6),
+                color,
+            );
+            draw_line_3d(
+                vec3(-half_slices as f32 * spacing_x, (i+half_slices) as f32 * 1., -half_slices as f32 * 1.6),
+                vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * 1., -half_slices as f32 * 1.6),
+                color,
+            );
+        }
+        
+        // vertical grid
+        for i in -half_slices..=half_slices {
+            draw_line_3d(
+                vec3(half_slices as f32, (i+half_slices) as f32, -half_slices as f32 * spacing_z), 
+                vec3(half_slices as f32, (i+half_slices) as f32, half_slices as f32* spacing_z), 
+                LIGHTGRAY
+            );
+            draw_line_3d(
+                vec3(half_slices as f32, 0., i as f32 * spacing_z), 
+                vec3(half_slices as f32, 6., i as f32 * spacing_z),
+                LIGHTGRAY
+            );
+        }
+
+        draw_line_3d(
+            vec3(3., 0., half_slices as f32 * spacing_z), 
+            vec3(3., 6., half_slices as f32 * spacing_z),
+            BLACK
+        );
+        draw_line_3d(
+            vec3(-3., 0., -half_slices as f32 * spacing_z), 
+            vec3(-3., 0., half_slices as f32 * spacing_z), 
+            BLACK
+        );
+
+        draw_line_3d(
+            vec3(3., 0., half_slices as f32 * spacing_z), 
+            vec3(-3., 0., half_slices as f32 * spacing_z), 
+            BLACK
+        );
+        
+        // lines for y? values
+        for i in -half_slices+1..half_slices {
+            draw_line_3d(
+                vec3(-2.8, 0., i as f32 * spacing_z), 
+                vec3(-3.2, 0., i as f32 * spacing_z), 
+                BLACK
+            );
+        }
+
+        // lines for x? values
+        for i in -half_slices+1..half_slices {
+            draw_line_3d(
+                vec3(i as f32 * spacing_x, 0., 2.9 * spacing_z), 
+                vec3(i as f32 * spacing_x, 0., 3.1 * spacing_z), 
+                BLACK
+            );
+        }
+
+        // lines for z? values
+        for i in 1..=half_slices*2 {
+            draw_line_3d(
+                vec3(half_slices as f32, i as f32 * spacing_x, 2.9 * spacing_z), 
+                vec3(half_slices as f32, i as f32 * spacing_x, 3.1 * spacing_z), 
+                BLACK
+            );
+        }
+        
         next_frame().await;
     }
 }
@@ -21,7 +102,7 @@ pub async fn run() {
 
 pub fn draw_grid(slices: u32, spacing_x: f32, spacing_z: f32) {
     let half_slices = (slices as i32) / 2;
-    for i in -half_slices..half_slices + 1 {
+    for i in -half_slices..=half_slices {
         //let color = if i == 0 { BLACK } else { LIGHTGRAY };
         let color = LIGHTGRAY;
 
@@ -29,11 +110,11 @@ pub fn draw_grid(slices: u32, spacing_x: f32, spacing_z: f32) {
             vec3(i as f32 * spacing_x, 0., -half_slices as f32 * spacing_z),
             vec3(i as f32 * spacing_x, 0., half_slices as f32 * spacing_z),
             color,
-        );
+        );    
         draw_line_3d(
             vec3(-half_slices as f32 * spacing_x, 0., i as f32 * spacing_z),
             vec3(half_slices as f32 * spacing_x, 0., i as f32 * spacing_z),
-            color,
+            LIGHTGRAY,
         );
     }
 }
