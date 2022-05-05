@@ -28,7 +28,7 @@ pub async fn run() {
 
             draw_line_3d(
                 vec3(i as f32 * spacing_x, 0., -half_slices as f32 * spacing_z),
-                vec3(i as f32 * spacing_x, slices as f32, -half_slices as f32 * spacing_z),
+                vec3(i as f32 * spacing_x, slices as f32 * spacing_x, -half_slices as f32 * spacing_z),
                 color,
             );
             draw_line_3d(
@@ -38,42 +38,45 @@ pub async fn run() {
             );
         }
         
-        // vertical grid
+        // back grid
         for i in -half_slices..=half_slices {
             draw_line_3d(
-                vec3(half_slices as f32, (i+half_slices) as f32, -half_slices as f32 * spacing_z), 
-                vec3(half_slices as f32, (i+half_slices) as f32, half_slices as f32* spacing_z), 
+                vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z), 
+                vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, half_slices as f32* spacing_z), 
                 LIGHTGRAY
             );
             draw_line_3d(
-                vec3(half_slices as f32, 0., i as f32 * spacing_z), 
-                vec3(half_slices as f32, slices as f32, i as f32 * spacing_z),
+                vec3(half_slices as f32 * spacing_x, 0., i as f32 * spacing_z), 
+                vec3(half_slices as f32 * spacing_x, slices as f32 * spacing_x, i as f32 * spacing_z),
                 LIGHTGRAY
             );
         }
 
+        // z (up)
         draw_line_3d(
-            vec3(half_slices as f32, 0., half_slices as f32 * spacing_z), 
-            vec3(half_slices as f32, slices as f32, half_slices as f32 * spacing_z),
-            BLACK
-        );
-        draw_line_3d(
-            vec3(-half_slices as f32, 0., -half_slices as f32 * spacing_z), 
-            vec3(-half_slices as f32, 0., half_slices as f32 * spacing_z), 
+            vec3(half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
+            vec3(half_slices as f32 * spacing_x, slices as f32 * spacing_x, half_slices as f32 * spacing_z),
             BLACK
         );
 
         draw_line_3d(
-            vec3(half_slices as f32, 0., half_slices as f32 * spacing_z), 
-            vec3(-half_slices as f32, 0., half_slices as f32 * spacing_z), 
+            vec3(-half_slices as f32 * spacing_x, 0., -half_slices as f32 * spacing_z), 
+            vec3(-half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
+            BLACK
+        );
+
+
+        draw_line_3d(
+            vec3(half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
+            vec3(-half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
             BLACK
         );
         
         // lines for y? values
         for i in -half_slices+1..half_slices {
             draw_line_3d(
-                vec3(-half_slices as f32 + 0.2, 0., i as f32 * spacing_z), 
-                vec3(-half_slices as f32 - 0.2, 0., i as f32 * spacing_z), 
+                vec3((-half_slices as f32 + 0.2) * spacing_x, 0., i as f32 * spacing_z), 
+                vec3((-half_slices as f32 - 0.2) * spacing_x, 0., i as f32 * spacing_z), 
                 BLACK
             );
         }
@@ -88,10 +91,10 @@ pub async fn run() {
         }
 
         // lines for z? values
-        for i in 1..=half_slices*2 {
+        for i in 1..=slices {
             draw_line_3d(
-                vec3(half_slices as f32, i as f32 * spacing_x, (half_slices as f32 - 0.1) * spacing_z), 
-                vec3(half_slices as f32, i as f32 * spacing_x, (half_slices as f32 + 0.1) * spacing_z), 
+                vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x, (half_slices as f32 - 0.1) * spacing_z), 
+                vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x, (half_slices as f32 + 0.1) * spacing_z), 
                 BLACK
             );
         }
