@@ -180,7 +180,6 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
             }
         } else {
             let tens_start = count_inv_tens(start_y);
-
             let tens_step = count_inv_tens(step_y);
 
             let start_y = start_y * tens_start as f64;
