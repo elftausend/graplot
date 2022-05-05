@@ -1,4 +1,4 @@
-use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY, draw_text_rot};
+use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY, draw_text_rot, is_key_pressed, KeyCode};
 use crate::{Bar, max, max_display, get_font_size_y, get_steps, min, divs, count_inv_tens};
 use super::{COORD_THICKNESS, YLABEL_SIZE, TITLE_SIZE, DISTANCE_X_AXIS};
 
@@ -101,6 +101,9 @@ pub async fn run(bar: Bar, _min_y: f64) {
         // y axis
         draw_line(DISTANCE, 0., DISTANCE, screen_height(), COORD_THICKNESS, GRAY);
         
+        if is_key_pressed(KeyCode::Escape) {
+            break;
+        }
 
         next_frame().await;
         std::thread::sleep(std::time::Duration::from_millis(16));

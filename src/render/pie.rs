@@ -1,4 +1,4 @@
-use litequad::prelude::{clear_background, WHITE, next_frame, draw_poly_angle, Color, PINK, MAGENTA, DARKBROWN, DARKGREEN, DARKPURPLE, ORANGE, DARKGRAY, GOLD, GRAY, LIME, SKYBLUE, PURPLE, BROWN, BLUE, YELLOW, GREEN, RED, screen_height, screen_width, draw_text, BLACK};
+use litequad::prelude::{clear_background, WHITE, next_frame, draw_poly_angle, Color, PINK, MAGENTA, DARKBROWN, DARKGREEN, DARKPURPLE, ORANGE, DARKGRAY, GOLD, GRAY, LIME, SKYBLUE, PURPLE, BROWN, BLUE, YELLOW, GREEN, RED, screen_height, screen_width, draw_text, BLACK, is_key_pressed, KeyCode};
 use crate::Pie;
 
 use super::{TITLE_SIZE, DISTANCE_X_AXIS};
@@ -36,6 +36,11 @@ pub async fn run(pie: Pie) {
             angle += (segment.percentage * 3.6) as f32;
             color_idx += 1;
         }
+
+        if is_key_pressed(KeyCode::Escape) {
+            break;
+        }
+        
         next_frame().await;
         std::thread::sleep(std::time::Duration::from_millis(16));
     }

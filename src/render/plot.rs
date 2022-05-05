@@ -341,6 +341,10 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
             }
         }
 
+        if is_key_pressed(KeyCode::Escape) {
+            break;
+        }
+
         next_frame().await;
         std::thread::sleep(std::time::Duration::from_millis(16));
     }

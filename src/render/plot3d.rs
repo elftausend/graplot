@@ -1,4 +1,4 @@
-use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, draw_text}, camera::{set_camera, Camera3D}, models::draw_line_3d};
+use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, draw_text, is_key_pressed, KeyCode}, camera::{set_camera, Camera3D}, models::draw_line_3d};
 
 
 pub async fn run() {
@@ -101,7 +101,12 @@ pub async fn run() {
 
         draw_text("test", 0., 0., 10., BLACK);
         
+        if is_key_pressed(KeyCode::Escape) {
+            break;
+        }
+
         next_frame().await;
+        std::thread::sleep(std::time::Duration::from_millis(16));
     }
 }
 
