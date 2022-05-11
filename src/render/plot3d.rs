@@ -5,9 +5,12 @@ pub async fn run() {
         clear_background(WHITE);
 
         let camera = Camera3D {
-            //position: vec3(-17., 12., 0.),
+            position: vec3(-14., 10., 13.),
             //position: vec3(-14., 12., 10.),
-            position: vec3(-10., 9., 11.5),
+            
+            //position: vec3(-10., 7., 11.5),
+            
+
             //position: vec3(-14., 12., -7.),
             up: vec3(0., 1., 0.),
             target: vec3(0., 0., 0.),
@@ -18,64 +21,59 @@ pub async fn run() {
 
         let mut draw_later = Vec::<Vec3>::new();
 
-        let slices = 6;
+        
         let spacing_z = 1.6;
         let spacing_x = 1.;
         
-        draw_grid(slices, spacing_x, spacing_z);
-        
-        let half_slices = (slices as i32) / 2;
-        
-        for i in -half_slices..=half_slices {
-            let color = LIGHTGRAY;
+        let slices_bot = 6;
+        let slices_left = 6;
+        let slices_back = 6;
+        draw_bottom_grid(slices_bot, slices_left, spacing_x, spacing_z);
 
-            draw_line_3d(
-                vec3(i as f32 * spacing_x, 0., -half_slices as f32 * spacing_z),
-                vec3(i as f32 * spacing_x, slices as f32 * spacing_x, -half_slices as f32 * spacing_z),
-                color,
-            );
-            draw_line_3d(
-                vec3(-half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z),
-                vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z),
-                color,
-            );
-        }
+        draw_left_grid(slices_left, spacing_x, spacing_z);
         
-        // back grid
-        for i in -half_slices..=half_slices {
-            draw_line_3d(
-                vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z), 
-                vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, half_slices as f32* spacing_z), 
-                LIGHTGRAY
-            );
-            draw_line_3d(
-                vec3(half_slices as f32 * spacing_x, 0., i as f32 * spacing_z), 
-                vec3(half_slices as f32 * spacing_x, slices as f32 * spacing_x, i as f32 * spacing_z),
-                LIGHTGRAY
-            );
-        }
+        
+        draw_back_grid(slices_back, spacing_x, spacing_z);
 
-        // z (up)
+        let half_slices = (slices_bot as i32) / 2;
+            
+        // z
         draw_line_3d(
             vec3(half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
-            vec3(half_slices as f32 * spacing_x, slices as f32 * spacing_x, half_slices as f32 * spacing_z),
+            vec3(half_slices as f32 * spacing_x, slices_back as f32 * spacing_x, half_slices as f32 * spacing_z),
             BLACK
         );
 
+        // x front
         draw_line_3d(
             vec3(-half_slices as f32 * spacing_x, 0., -half_slices as f32 * spacing_z), 
             vec3(-half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
             BLACK
         );
 
+        // x back
+        draw_line_3d(
+            vec3(half_slices as f32 * spacing_x, 0., -half_slices as f32 * spacing_z), 
+            vec3(half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
+            BLACK
+        );
 
+
+        // z - right
         draw_line_3d(
             vec3(half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
             vec3(-half_slices as f32 * spacing_x, 0., half_slices as f32 * spacing_z), 
             BLACK
         );
+
+        // z - left
+        draw_line_3d(
+            vec3(half_slices as f32 * spacing_x, 0., -half_slices as f32 * spacing_z), 
+            vec3(-half_slices as f32 * spacing_x, 0., -half_slices as f32 * spacing_z), 
+            BLACK
+        );
         
-        // lines for y? values
+        // lines for z? values
         for i in -half_slices+1..half_slices {
             draw_line_3d(
                 vec3((-half_slices as f32 + 0.2) * spacing_x, 0., i as f32 * spacing_z), 
@@ -96,8 +94,8 @@ pub async fn run() {
             draw_later.push(vec3(i as f32 * spacing_x - 0.1, 0., (half_slices as f32 - 0.1) * spacing_z + 0.5));
         }
 
-        // lines for z? values
-        for i in 1..=slices {
+        // lines for y? values
+        for i in 1..=slices_bot {
             draw_line_3d(
                 vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x, (half_slices as f32 - 0.1) * spacing_z), 
                 vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x, (half_slices as f32 + 0.1) * spacing_z), 
@@ -157,7 +155,7 @@ pub async fn run() {
 
             //let transform = camera.matrix().project_point3(vec3(x, y, z));
             //let transform = vec3(x - (half_slices-1) as f32 * spacing_x, y, z - (half_slices-1) as f32 * spacing_z);
-            let transform = vec3((x - half_slices as f32) * spacing_x, y * spacing_x, (z - half_slices as f32 ) * spacing_z);            
+            let transform = vec3((x - half_slices as f32) * spacing_x, y * spacing_x, (z - half_slices as f32) * spacing_z);            
             draw_sphere(transform, 0.1, None, GREEN);
             
 
@@ -229,21 +227,59 @@ pub async fn run() {
 }
 
 
-pub fn draw_grid(slices: u32, spacing_x: f32, spacing_z: f32) {
+pub fn draw_bottom_grid(slices_z: u32, slices_x: u32, spacing_x: f32, spacing_z: f32) {
+
+    let half_slices_x = (slices_x as i32) / 2;
+    let half_slices_z = (slices_z as i32) / 2;
+
+    for i in -half_slices_x..=half_slices_x {
+        draw_line_3d(
+            vec3(i as f32 * spacing_x, 0., -half_slices_z as f32 * spacing_z),
+            vec3(i as f32 * spacing_x, 0., half_slices_z as f32 * spacing_z),
+            GREEN,
+        );    
+    }
+
+    for i in -half_slices_z..=half_slices_z {
+        
+        draw_line_3d(
+            vec3(-half_slices_x as f32 * spacing_x, 0., i as f32 * spacing_z),
+            vec3(half_slices_x as f32 * spacing_x, 0., i as f32 * spacing_z),
+            LIGHTGRAY,
+        );
+    }
+}
+
+pub fn draw_left_grid(slices: u32, spacing_x: f32, spacing_z: f32) {
     let half_slices = (slices as i32) / 2;
     for i in -half_slices..=half_slices {
-        //let color = if i == 0 { BLACK } else { LIGHTGRAY };
         let color = LIGHTGRAY;
 
         draw_line_3d(
             vec3(i as f32 * spacing_x, 0., -half_slices as f32 * spacing_z),
-            vec3(i as f32 * spacing_x, 0., half_slices as f32 * spacing_z),
+            vec3(i as f32 * spacing_x, slices as f32 * spacing_x, -half_slices as f32 * spacing_z),
             color,
-        );    
+        );
         draw_line_3d(
-            vec3(-half_slices as f32 * spacing_x, 0., i as f32 * spacing_z),
-            vec3(half_slices as f32 * spacing_x, 0., i as f32 * spacing_z),
-            LIGHTGRAY,
+            vec3(-half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z),
+            vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z),
+            color,
+        );
+    }
+}
+
+pub fn draw_back_grid(slices: u32, spacing_x: f32, spacing_z: f32) {
+    let half_slices = (slices as i32) / 2;
+    for i in -half_slices..=half_slices {
+        draw_line_3d(
+            vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z), 
+            vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, half_slices as f32* spacing_z), 
+            LIGHTGRAY
+        );
+        draw_line_3d(
+            vec3(half_slices as f32 * spacing_x, 0., i as f32 * spacing_z), 
+            vec3(half_slices as f32 * spacing_x, slices as f32 * spacing_x, i as f32 * spacing_z),
+            LIGHTGRAY
         );
     }
 }
