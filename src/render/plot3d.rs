@@ -8,7 +8,8 @@ pub async fn run() {
 
         let camera = Camera3D {
             //position: vec3(-17., 12., 0.),
-            position: vec3(-14., 12., 10.),
+            //position: vec3(-14., 12., 10.),
+            position: vec3(-10., 9., 11.5),
             //position: vec3(-14., 12., -7.),
             up: vec3(0., 1., 0.),
             target: vec3(0., 0., 0.),
