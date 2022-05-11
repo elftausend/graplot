@@ -40,11 +40,7 @@ pub fn count_inv_tens(mut num: f64) -> u128 {
 }
 
 pub fn divs(lhs: &[f64], rhs: f64) -> Vec<f64> {
-    let mut out = Vec::with_capacity(lhs.len());
-    for val in lhs.iter() {
-        out.push(val / rhs);
-    }
-    out
+    lhs.iter().map(|v| v / rhs).collect()
 }
 
 pub fn sub(lhs: &[f64], rhs: f64) -> Vec<f64> {
