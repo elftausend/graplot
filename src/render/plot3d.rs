@@ -1,7 +1,5 @@
 use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
 
-use crate::{divs, max_matrix};
-
 pub async fn run() {
     loop {
         clear_background(WHITE);
@@ -117,6 +115,7 @@ pub async fn run() {
         );
         */
 
+        /*
         let x = 0.;
         let y = 0.;
         let z = 0.;
@@ -128,7 +127,8 @@ pub async fn run() {
         let start = vec3((x - half_slices as f32) * spacing_x, y * spacing_x, (z - half_slices as f32 +1.) * spacing_z);
         let end = vec3((x1 - half_slices as f32) * spacing_x, y1 * spacing_x, (z1 - half_slices as f32 + 1.) * spacing_z);
 
-        //draw_line_3d(start, end, GREEN);
+        draw_line_3d(start, end, GREEN);
+        */
 
         
         //let xs = [];
