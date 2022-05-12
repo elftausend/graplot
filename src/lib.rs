@@ -25,6 +25,7 @@ pub use polynomial::*;
 pub use render::*;
 pub use eval::*;
 pub use litequad::color::colors::*;
+pub use litequad::color::Color;
 
 pub type Matrix = Vec<Vec<f64>>;
 

@@ -38,6 +38,19 @@ impl Bar {
         self.axis_desc.y_label = label.to_string();
     }
 
+    /// Colors the bar at the given index with the color.
+    /// ```
+    /// use graplot::{Bar, Color};
+    /// 
+    /// let mut bar = Bar::new(["Red", "Green", "Blue"], &[200., 220., 250.]);
+    /// bar.color(0, Color::new(1., 0., 0., 1.,));
+    /// bar.color(2, Color::new(0., 0., 1., 1.,));
+    /// bar.show();
+    /// ```
+    pub fn color(&mut self, idx: usize, color: Color) {
+        self.bars[idx].color = color;
+    }
+
     pub fn add<A: BarDescArg>(&mut self, bar: A, y: f64) {
         self.bars.extend(bar.as_bar_desc());
         self.ys.push(y);

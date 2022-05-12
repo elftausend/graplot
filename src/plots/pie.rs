@@ -36,6 +36,19 @@ impl Pie {
         self.title = title.to_string();
     }
 
+    /// Colors the segment at the given index with the color.
+    /// /// # Example
+    /// ```
+    /// use graplot::{Pie, Color};
+    /// 
+    /// let mut pie = Pie::new([25., 20., 15., 15., 35.]);
+    /// pie.color(1, Color::new(0.2, 0.1, 0.3, 1.));
+    /// pie.show();
+    /// ```
+    pub fn color(&mut self, idx: usize, color: Color) {
+        self.segs[idx].color = Some(color);
+    }
+
     pub fn show(self) {
         let conf = Conf {
             window_title: self.title.clone(),

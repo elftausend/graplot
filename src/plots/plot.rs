@@ -36,6 +36,20 @@ impl Plot {
         self.line_desc[0].color = Color::new(r, g, b, 1.);
     }
 
+    /// Colors the graph at the given index with the color.
+    /// # Example
+    /// ```
+    /// use graplot::{Plot, BLUE};
+    /// 
+    /// let mut plot = Plot::new([1., 2., 3.,]);
+    /// plot.add([2., 3., 4.,]);
+    /// plot.color(1, BLUE);
+    /// plot.show();
+    /// ```
+    pub fn color(&mut self, idx: usize, color: Color) {
+        self.line_desc[idx].color = color;
+    }
+
     pub fn add<A: PlotArg>(&mut self, args: A) {
         let plot = args.as_plot();
         self.xs.push(plot.xs[0].clone());
