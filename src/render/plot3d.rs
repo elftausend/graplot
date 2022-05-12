@@ -4,9 +4,12 @@ use crate::{max, max_display};
 
 pub async fn run() {
 
-    let xs = [0.,1.,2.,3.,4.,5.,6.];
-    let ys = [0.,1.,4.,9.,16.,25.,36.];
-    let zs = [0.,1.,4.,9.,16.,25.,36.];
+    let xs = [0., 0.001, 0.002,];
+    let ys = [0., 0.001, 0.002,];
+    let zs = [0., 0.001, 0.003];
+    //let xs = [0.,1.,2.,3.,4.,5.,6.];
+    //let ys = [0.,1.,4.,9.,16.,25.,36.];
+    //let zs = [0.,1.,4.,9.,16.,25.,36.];
 
     let mut max_x = max(&xs);
     
@@ -111,7 +114,7 @@ pub async fn run() {
                 vec3((-half_slices as f32 - 0.2) * spacing_x, 0., i as f32 * spacing_z), 
                 BLACK
             );
-            draw_later.push(((idx+1) as f64 * step_x, vec3((-half_slices as f32 + 0.2) * spacing_x - 1.2, 0., i as f32 * spacing_z)));
+            draw_later.push(((idx+1) as f64 * step_x, vec3((-half_slices as f32 + 0.4) * spacing_x - 2.1, 0., i as f32 * spacing_z)));
         }
 
         // lines for x? values
@@ -122,7 +125,7 @@ pub async fn run() {
                 BLACK
             );
 
-            draw_later.push(((idx+1) as f64 * step_z, vec3(i as f32 * spacing_x - 0.1, 0., (half_slices as f32 - 0.1) * spacing_z + 0.5)));
+            draw_later.push(((idx+1) as f64 * step_z, vec3(i as f32 * spacing_x - 0.1, 0., (half_slices as f32 - 0.1) * spacing_z + 0.9)));
         }
 
         // lines for y? values
@@ -132,7 +135,7 @@ pub async fn run() {
                 vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x, (half_slices as f32 + 0.1) * spacing_z), 
                 BLACK
             );
-            draw_later.push((i as f64 * step_y, vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x -0.1, (half_slices as f32 - 0.1) * spacing_z + 0.4)));
+            draw_later.push((i as f64 * step_y, vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x -0.1, (half_slices as f32 - 0.1) * spacing_z + 0.6)));
         }
 
 
@@ -228,7 +231,7 @@ pub async fn run() {
                 (transform.x / 2. + 0.5) * screen_width(),
                 (0.5 - transform.y / 2.) * screen_height(),
             );
-            let text = format!("{}", draw.0);
+            let text = format!("{:.3}", draw.0);
             draw_text(&text, a.x, a.y, 15., litequad::color::GREEN);
                 
         }
