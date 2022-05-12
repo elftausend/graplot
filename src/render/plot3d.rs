@@ -1,6 +1,37 @@
 use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
 
+use crate::{max, max_display};
+
 pub async fn run() {
+
+    let xs = [0.,1.,2.,3.,4.,5.,6.];
+    let ys = [0.,1.,4.,9.,16.,25.,36.];
+    let zs = [0.,1.,4.,9.,16.,25.,36.];
+
+    let mut max_x = max(&xs);
+    
+    max_x = max_display(max_x, false);
+
+    let steps_x = 6.;
+
+    let step_x = max_x / steps_x;
+    
+    let mut max_y = max(&ys);
+
+    max_y = max_display(max_y, false);
+
+    let steps_y = 6.;
+
+    let step_y = max_y / steps_y;
+
+    let mut max_z = max(&zs);
+
+    max_z = max_display(max_z, false);
+
+    let steps_z = 6.;
+
+    let step_z = max_z / steps_z;
+
     loop {
         clear_background(WHITE);
 
@@ -19,7 +50,7 @@ pub async fn run() {
 
         set_camera(&camera);
 
-        let mut draw_later = Vec::<Vec3>::new();
+        let mut draw_later = Vec::<(f64, Vec3)>::new();
 
         
         let spacing_z = 1.6;
@@ -74,24 +105,24 @@ pub async fn run() {
         );
         
         // lines for z? values
-        for i in -half_slices+1..half_slices {
+        for (idx, i) in (-half_slices+1..half_slices).into_iter().enumerate() {
             draw_line_3d(
                 vec3((-half_slices as f32 + 0.2) * spacing_x, 0., i as f32 * spacing_z), 
                 vec3((-half_slices as f32 - 0.2) * spacing_x, 0., i as f32 * spacing_z), 
                 BLACK
             );
-            draw_later.push(vec3((-half_slices as f32 + 0.2) * spacing_x - 1.2, 0., i as f32 * spacing_z));
+            draw_later.push(((idx+1) as f64 * step_x, vec3((-half_slices as f32 + 0.2) * spacing_x - 1.2, 0., i as f32 * spacing_z)));
         }
 
         // lines for x? values
-        for i in -half_slices+1..half_slices {
+        for (idx, i) in (-half_slices+1..half_slices).into_iter().enumerate() {
             draw_line_3d(
                 vec3(i as f32 * spacing_x, 0., (half_slices as f32 - 0.1) * spacing_z), 
                 vec3(i as f32 * spacing_x, 0., (half_slices as f32 + 0.1) * spacing_z), 
                 BLACK
             );
 
-            draw_later.push(vec3(i as f32 * spacing_x - 0.1, 0., (half_slices as f32 - 0.1) * spacing_z + 0.5));
+            draw_later.push(((idx+1) as f64 * step_z, vec3(i as f32 * spacing_x - 0.1, 0., (half_slices as f32 - 0.1) * spacing_z + 0.5)));
         }
 
         // lines for y? values
@@ -101,7 +132,7 @@ pub async fn run() {
                 vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x, (half_slices as f32 + 0.1) * spacing_z), 
                 BLACK
             );
-            draw_later.push(vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x -0.1, (half_slices as f32 - 0.1) * spacing_z + 0.4));
+            draw_later.push((i as f64 * step_y, vec3(half_slices as f32 * spacing_x, i as f32 * spacing_x -0.1, (half_slices as f32 - 0.1) * spacing_z + 0.4)));
         }
 
 
@@ -132,12 +163,8 @@ pub async fn run() {
         //let xs = [];
         //let ys = [];
         //let zs = [];
-        let xs = [0.,1.,2.,3.,4.,5.,6.];
-        let ys = [0.,1.,4.,9.,16.,25.,36.];
-        let zs = [0.,1.,4.,9.,16.,25.,36.];
         
         let mut coords = Vec::new();
-
         let mut shadow: Vec<(f32, f32, f32)> = Vec::new();
 
 
@@ -147,10 +174,10 @@ pub async fn run() {
 
         for i in 0..xs.len() {
 
-            let z = ((xs[i] / 1.) * slices as f64) as f32;
-            let y = ((ys[i] / 6.) * slices as f64) as f32;
+            let z = ((xs[i] / step_x) * slices as f64) as f32;
+            let y = ((ys[i] / step_y) * slices as f64) as f32;
             //let z = ((zs[i] / 6.) * slices as f64) as f32;
-            let x = ((zs[i] / 6.) * slices as f64) as f32;
+            let x = ((zs[i] / step_z) * slices as f64) as f32;
 
 
             //let transform = camera.matrix().project_point3(vec3(x, y, z));
@@ -195,14 +222,14 @@ pub async fn run() {
         set_default_camera();
 
         for draw in draw_later {
-            let transform = mat.project_point3(vec3(draw.x, draw.y, draw.z));
+            let transform = mat.project_point3(vec3(draw.1.x, draw.1.y, draw.1.z));
 
             let a = vec2(
                 (transform.x / 2. + 0.5) * screen_width(),
                 (0.5 - transform.y / 2.) * screen_height(),
             );
-            
-            draw_text("-5", a.x, a.y, 15., litequad::color::GREEN);
+            let text = format!("{}", draw.0);
+            draw_text(&text, a.x, a.y, 15., litequad::color::GREEN);
                 
         }
 
@@ -236,7 +263,7 @@ pub fn draw_bottom_grid(slices_z: u32, slices_x: u32, spacing_x: f32, spacing_z:
         draw_line_3d(
             vec3(i as f32 * spacing_x, 0., -half_slices_z as f32 * spacing_z),
             vec3(i as f32 * spacing_x, 0., half_slices_z as f32 * spacing_z),
-            GREEN,
+            LIGHTGRAY,
         );    
     }
 
