@@ -154,6 +154,102 @@ impl<const N: usize> PlotArg for ([f64; N], &str) {
     }
 }
 
+impl<const N: usize> PlotArg for (&[f64; N], &[f64; N]) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.to_vec()],
+            ys: vec![self.1.to_vec()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl<const N: usize> PlotArg for (&[f64; N], &[f64; N], &str) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.to_vec()],
+            ys: vec![self.1.to_vec()],
+            line_desc: vec![self.2.into()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl<const N: usize> PlotArg for &[f64; N] {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![(0..N).map(|x| x as f64).collect()],
+            ys: vec![self.to_vec()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl<const N: usize> PlotArg for (&[f64; N], &str) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![(0..N).map(|x| x as f64).collect()],
+            ys: vec![self.0.to_vec()],
+            line_desc: vec![self.1.into()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for (&[f64], &[f64]) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.to_vec()],
+            ys: vec![self.1.to_vec()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for (&[f64], &[f64], &str) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.to_vec()],
+            ys: vec![self.1.to_vec()],
+            line_desc: vec![self.2.into()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for &[f64] {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![(0..self.len()).map(|x| x as f64).collect()],
+            ys: vec![self.to_vec()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for (&[f64], &str) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![(0..self.0.len()).map(|x| x as f64).collect()],
+            ys: vec![self.0.to_vec()],
+            line_desc: vec![self.1.into()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
 impl PlotArg for Vec<f64> {
     fn as_plot(&self) -> Plot {
         Plot {

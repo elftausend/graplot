@@ -1,60 +1,48 @@
 use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color, is_key_down}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
 
-use crate::{max, max_display};
+use crate::{max_display, Plot3D, max_matrix};
 
-pub async fn run() {
+pub async fn run(plot: Plot3D) {
 
     /*let xs = [-1., 1., 2.,];
     let ys = [1., 1., 2.,];
     let zs = [-1., 1., 3.];*/
-    let xs = [0.,1.,2.,3.,4.,5.,6.];
-    let ys = [0.,1.,4.,9.,16.,25.,36.];
-    let zs = [0.,1.,4.,9.,16.,25.,36.];
+    let xs = plot.xs;
+    let ys = plot.ys;
+    let zs = plot.zs;
 
-    let mut max_x = max(&xs);
-    
+    let mut max_x = max_matrix(&xs);
     max_x = max_display(max_x, false);
-
     let steps_x = 6.;
-
     let step_x = max_x / steps_x;
     
-    let mut max_y = max(&ys);
-
+    let mut max_y = max_matrix(&ys);
     max_y = max_display(max_y, false);
-
     let steps_y = 6.;
-
     let step_y = max_y / steps_y;
 
-    let mut max_z = max(&zs);
-
+    let mut max_z = max_matrix(&zs);
     max_z = max_display(max_z, false);
-
     let steps_z = 6.;
-
     let step_z = max_z / steps_z;
 
-    let mut camera_z = 13.;
-    let mut camera_x = -14.;
+    
+    let yaw: f32 = 1.18; //1.18
 
-    let mut yaw: f32 = 1.18; //1.18
-    let mut pitch: f32 = 0.;
-
-    let mut front = vec3(
-        yaw.cos() * pitch.cos(),
-        pitch.sin(),
-        yaw.sin() * pitch.cos(),
+    let front = vec3(
+        yaw.cos(),
+        0.,
+        yaw.sin(),
     )
     .normalize();
 
     let world_up = vec3(0.0, 0.0, 1.0);
     let right = front.cross(world_up).normalize();
-    
 
     let mut position = vec3(-14., 10., 13.);
 
     loop {
+        let mut pressed = false;
 
         clear_background(WHITE);
 
@@ -65,19 +53,23 @@ pub async fn run() {
         if is_key_down(KeyCode::A) {
             //camera_z -= 0.3;
             position -= front;
+            pressed = true;
         }
 
         if is_key_down(KeyCode::D) {
             //camera_z += 0.3;
             position += front;
+            pressed = true;
         }
 
         if is_key_down(KeyCode::W) {
             position -= right;
+            pressed = true;
         }
 
         if is_key_down(KeyCode::S) {
             position += right;
+            pressed = true;
         }
 
         let camera = Camera3D {
@@ -210,57 +202,63 @@ pub async fn run() {
         //let ys = [];
         //let zs = [];
         
-        let mut coords = Vec::new();
-        let mut shadow: Vec<(f32, f32, f32)> = Vec::new();
 
 
         //let max = max_matrix(&vec![x.to_vec(), y.to_vec(), z.to_vec()]);
 
         let slices = 1;
-
-        for i in 0..xs.len() {
-
-            let z = ((xs[i] / step_x) * slices as f64) as f32;
-            let y = ((ys[i] / step_y) * slices as f64) as f32;
-            //let z = ((zs[i] / 6.) * slices as f64) as f32;
-            let x = ((zs[i] / step_z) * slices as f64) as f32;
-
-
-            //let transform = camera.matrix().project_point3(vec3(x, y, z));
-            //let transform = vec3(x - (half_slices-1) as f32 * spacing_x, y, z - (half_slices-1) as f32 * spacing_z);
-            let transform = vec3((x - half_slices as f32) * spacing_x, y * spacing_x, (z - half_slices as f32) * spacing_z);            
-            draw_sphere(transform, 0.1, None, GREEN);
-            
-
-            let (x, y, z) = transform.into();
-            //println!("({x}, {y}, {z})");
-//            let x = half_width + spacing_x * x;
-//            let y = half_height - spacing_y * y;
-
-            draw_sphere((x, 0., z).into(), 0.065, None, Color::new(0., 0., 0., 0.2));
-
-            shadow.push((x, 0., z));
-            coords.push((x, y, z));
-
-            if coords.len() >= 2 {
-                draw_line_3d(
-                    coords[0].into(),
-                    coords[1].into(),
-                    GREEN
-                );
-
-                draw_line_3d(
-                    shadow[0].into(),
-                    shadow[1].into(),
-                    Color::new(0., 0., 0., 0.2)
-                );
-
-                coords.remove(0);
-                shadow.remove(0);
-            }
-         
-        }
+        for (idx, xs) in xs.iter().enumerate() {
+            let mut coords = Vec::new();
+            let mut shadow: Vec<(f32, f32, f32)> = Vec::new();
     
+            let ys = &ys[idx];
+            let zs = &zs[idx];
+
+            for i in 0..xs.len() {
+
+                let z = ((xs[i] / step_x) * slices as f64) as f32;
+                let y = ((ys[i] / step_y) * slices as f64) as f32;
+                //let z = ((zs[i] / 6.) * slices as f64) as f32;
+                let x = ((zs[i] / step_z) * slices as f64) as f32;
+    
+    
+                //let transform = camera.matrix().project_point3(vec3(x, y, z));
+                //let transform = vec3(x - (half_slices-1) as f32 * spacing_x, y, z - (half_slices-1) as f32 * spacing_z);
+                let transform = vec3((x - half_slices as f32) * spacing_x, y * spacing_x, (z - half_slices as f32) * spacing_z);            
+                draw_sphere(transform, 0.1, None, GREEN);
+                
+    
+                let (x, y, z) = transform.into();
+                //println!("({x}, {y}, {z})");
+    //            let x = half_width + spacing_x * x;
+    //            let y = half_height - spacing_y * y;
+    
+                draw_sphere((x, 0., z).into(), 0.065, None, Color::new(0., 0., 0., 0.2));
+    
+                shadow.push((x, 0., z));
+                coords.push((x, y, z));
+    
+                if coords.len() >= 2 {
+                    draw_line_3d(
+                        coords[0].into(),
+                        coords[1].into(),
+                        GREEN
+                    );
+    
+                    draw_line_3d(
+                        shadow[0].into(),
+                        shadow[1].into(),
+                        Color::new(0., 0., 0., 0.2)
+                    );
+    
+                    coords.remove(0);
+                    shadow.remove(0);
+                }
+             
+            }
+        
+        }
+        
         //draw_sphere(vec3(0., 0., 0.), 1., None, GREEN);
 
         let mat = camera.matrix();
@@ -291,7 +289,12 @@ pub async fn run() {
         */
         
         next_frame().await;
-        std::thread::sleep(std::time::Duration::from_millis(16));
+        let time = if pressed {
+            16
+        } else {
+            16
+        };
+        std::thread::sleep(std::time::Duration::from_millis(time));
     }
 }
 
