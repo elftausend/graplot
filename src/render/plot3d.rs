@@ -1,15 +1,15 @@
-use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
+use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color, is_key_down}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
 
 use crate::{max, max_display};
 
 pub async fn run() {
 
-    let xs = [0., 0.001, 0.002,];
-    let ys = [0., 0.001, 0.002,];
-    let zs = [0., 0.001, 0.003];
-    //let xs = [0.,1.,2.,3.,4.,5.,6.];
-    //let ys = [0.,1.,4.,9.,16.,25.,36.];
-    //let zs = [0.,1.,4.,9.,16.,25.,36.];
+    /*let xs = [-1., 1., 2.,];
+    let ys = [1., 1., 2.,];
+    let zs = [-1., 1., 3.];*/
+    let xs = [0.,1.,2.,3.,4.,5.,6.];
+    let ys = [0.,1.,4.,9.,16.,25.,36.];
+    let zs = [0.,1.,4.,9.,16.,25.,36.];
 
     let mut max_x = max(&xs);
     
@@ -35,11 +35,54 @@ pub async fn run() {
 
     let step_z = max_z / steps_z;
 
+    let mut camera_z = 13.;
+    let mut camera_x = -14.;
+
+    let mut yaw: f32 = 1.18; //1.18
+    let mut pitch: f32 = 0.;
+
+    let mut front = vec3(
+        yaw.cos() * pitch.cos(),
+        pitch.sin(),
+        yaw.sin() * pitch.cos(),
+    )
+    .normalize();
+
+    let world_up = vec3(0.0, 0.0, 1.0);
+    let right = front.cross(world_up).normalize();
+    
+
+    let mut position = vec3(-14., 10., 13.);
+
     loop {
+
         clear_background(WHITE);
 
+        if is_key_pressed(KeyCode::Escape) {
+            break;
+        }
+
+        if is_key_down(KeyCode::A) {
+            //camera_z -= 0.3;
+            position -= front;
+        }
+
+        if is_key_down(KeyCode::D) {
+            //camera_z += 0.3;
+            position += front;
+        }
+
+        if is_key_down(KeyCode::W) {
+            position -= right;
+        }
+
+        if is_key_down(KeyCode::S) {
+            position += right;
+        }
+
         let camera = Camera3D {
-            position: vec3(-14., 10., 13.),
+            //position: vec3(camera_x, 10., camera_z),
+            position,
             //position: vec3(-14., 12., 10.),
             
             //position: vec3(-10., 7., 11.5),
@@ -246,10 +289,6 @@ pub async fn run() {
     
         draw_text("-5", a.x, a.y, 15., litequad::color::GREEN);
         */
-        
-        if is_key_pressed(KeyCode::Escape) {
-            break;
-        }
         
         next_frame().await;
         std::thread::sleep(std::time::Duration::from_millis(16));
