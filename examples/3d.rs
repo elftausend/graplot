@@ -5,6 +5,7 @@ fn main() {
     let ys = [0.,1.,4.,9.,16.,25.,36.];
     let zs = [0.,1.,4.,9.,16.,25.,36.];
     
+    // move with: W, A, S, D
     let plot = Plot3D::new((xs, ys, zs, "r-o"));
     plot.show();
 }
