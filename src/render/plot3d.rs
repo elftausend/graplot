@@ -1,6 +1,6 @@
 use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color, is_key_down}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
 
-use crate::{max_display, Plot3D, max_matrix};
+use crate::{max_display, Plot3D, max_matrix, Marker};
 
 pub async fn run(plot: Plot3D) {
 
@@ -214,6 +214,8 @@ pub async fn run(plot: Plot3D) {
             let ys = &ys[idx];
             let zs = &zs[idx];
 
+            let line_desc = &plot.line_desc[idx];
+
             for i in 0..xs.len() {
 
                 let z = ((xs[i] / step_x) * slices as f64) as f32;
@@ -233,23 +235,32 @@ pub async fn run(plot: Plot3D) {
     //            let x = half_width + spacing_x * x;
     //            let y = half_height - spacing_y * y;
     
-                draw_sphere((x, 0., z).into(), 0.065, None, Color::new(0., 0., 0., 0.2));
-    
+                match line_desc.marker {
+                    Marker::Circle(_) => draw_sphere((x, 0., z).into(), 0.065, None, Color::new(0., 0., 0., 0.2)),
+                    Marker::None => {},
+                }
+                
                 shadow.push((x, 0., z));
                 coords.push((x, y, z));
     
                 if coords.len() >= 2 {
-                    draw_line_3d(
-                        coords[0].into(),
-                        coords[1].into(),
-                        GREEN
-                    );
-    
-                    draw_line_3d(
-                        shadow[0].into(),
-                        shadow[1].into(),
-                        Color::new(0., 0., 0., 0.2)
-                    );
+                    match line_desc.line_type {
+                        crate::LineType::Solid => {
+                            draw_line_3d(
+                                coords[0].into(),
+                                coords[1].into(),
+                                line_desc.color
+                            );
+            
+                            draw_line_3d(
+                                shadow[0].into(),
+                                shadow[1].into(),
+                                Color::new(0., 0., 0., 0.2)
+                            );
+                        },
+                        crate::LineType::None => {},
+                    }
+                    
     
                     coords.remove(0);
                     shadow.remove(0);
@@ -273,7 +284,7 @@ pub async fn run(plot: Plot3D) {
                 (0.5 - transform.y / 2.) * screen_height(),
             );
             let text = format!("{:.3}", draw.0);
-            draw_text(&text, a.x, a.y, 15., litequad::color::GREEN);
+            draw_text(&text, a.x, a.y, 15., BLACK);
                 
         }
 
