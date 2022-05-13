@@ -1,4 +1,4 @@
-use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, GREEN, Color, is_key_down}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
+use litequad::{prelude::{next_frame, clear_background, WHITE, vec3, LIGHTGRAY, BLACK, is_key_pressed, KeyCode, draw_text, vec2, screen_width, screen_height, Vec3, Color, is_key_down}, camera::{set_camera, Camera3D, set_default_camera, Camera}, models::{draw_line_3d, draw_sphere}};
 
 use crate::{max_display, Plot3D, max_matrix, Marker};
 
@@ -227,7 +227,7 @@ pub async fn run(plot: Plot3D) {
                 //let transform = camera.matrix().project_point3(vec3(x, y, z));
                 //let transform = vec3(x - (half_slices-1) as f32 * spacing_x, y, z - (half_slices-1) as f32 * spacing_z);
                 let transform = vec3((x - half_slices as f32) * spacing_x, y * spacing_x, (z - half_slices as f32) * spacing_z);            
-                draw_sphere(transform, 0.1, None, GREEN);
+                
                 
     
                 let (x, y, z) = transform.into();
@@ -236,7 +236,10 @@ pub async fn run(plot: Plot3D) {
     //            let y = half_height - spacing_y * y;
     
                 match line_desc.marker {
-                    Marker::Circle(_) => draw_sphere((x, 0., z).into(), 0.065, None, Color::new(0., 0., 0., 0.2)),
+                    Marker::Circle(_) => {
+                        draw_sphere(transform, 0.1, None, line_desc.color);
+                        draw_sphere((x, 0., z).into(), 0.065, None, Color::new(0., 0., 0., 0.2))
+                    },
                     Marker::None => {},
                 }
                 
