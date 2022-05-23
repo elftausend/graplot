@@ -97,11 +97,9 @@ pub async fn run(plot: Plot3D) {
         let slices_bot = 6;
         let slices_left = 6;
         let slices_back = 6;
+        
         draw_bottom_grid(slices_bot, slices_left, spacing_x, spacing_z);
-
-        draw_left_grid(slices_left, spacing_x, spacing_z);
-        
-        
+        draw_left_grid(slices_left, spacing_x, spacing_z);     
         draw_back_grid(slices_back, spacing_x, spacing_z);
 
         let half_slices = (slices_bot as i32) / 2;
@@ -218,7 +216,7 @@ pub async fn run(plot: Plot3D) {
 
             for i in 0..xs.len() {
 
-                let z = ((xs[i] / step_x) * slices as f64) as f32;
+                let z = ((xs[i] / step_x) * slices as f64) as f32 /*+ spacing_x*/;
                 let y = ((ys[i] / step_y) * slices as f64) as f32;
                 //let z = ((zs[i] / 6.) * slices as f64) as f32;
                 let x = ((zs[i] / step_z) * slices as f64) as f32;
@@ -339,17 +337,15 @@ pub fn draw_bottom_grid(slices_z: u32, slices_x: u32, spacing_x: f32, spacing_z:
 pub fn draw_left_grid(slices: u32, spacing_x: f32, spacing_z: f32) {
     let half_slices = (slices as i32) / 2;
     for i in -half_slices..=half_slices {
-        let color = LIGHTGRAY;
-
         draw_line_3d(
             vec3(i as f32 * spacing_x, 0., -half_slices as f32 * spacing_z),
             vec3(i as f32 * spacing_x, slices as f32 * spacing_x, -half_slices as f32 * spacing_z),
-            color,
+            LIGHTGRAY,
         );
         draw_line_3d(
             vec3(-half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z),
             vec3(half_slices as f32 * spacing_x, (i+half_slices) as f32 * spacing_x, -half_slices as f32 * spacing_z),
-            color,
+            LIGHTGRAY,
         );
     }
 }

@@ -274,6 +274,30 @@ impl PlotArg for (Vec<f64>, &str) {
     }
 }
 
+impl PlotArg for (Vec<f64>, Vec<f64>) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.clone()],
+            ys: vec![self.1.clone()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for (Vec<f32>, Vec<f32>) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.iter().map(|x| *x as f64).collect()],
+            ys: vec![self.1.iter().map(|x| *x as f64).collect()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
 impl<F: Fn(f64) -> f64> PlotArg for F {
     fn as_plot(&self) -> Plot {
         let mut xs = [0.; 20000];
