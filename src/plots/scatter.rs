@@ -36,8 +36,8 @@ impl Scatter {
             window_height: 395,
             ..Default::default()
         };
-        let min_y = min_matrix(&self.plot.ys);
-        litequad::Window::from_config(conf, render::plot::run(self.plot, min_y, true));
+        let _min_y = min_matrix(&self.plot.ys);
+        litequad::Window::from_config(conf, render::plot::run(self.plot, 0., true));
     }
 }
 
