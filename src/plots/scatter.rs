@@ -18,6 +18,18 @@ impl Scatter {
         }
     }
 
+    pub fn set_title(&mut self, title: &str) {
+        self.plot.set_title(title)
+    }
+
+    pub fn set_xlabel(&mut self, label: &str) {
+        self.plot.set_xlabel(label)
+    }
+    
+    pub fn set_ylabel(&mut self, label: &str) {
+        self.plot.set_ylabel(label)
+    }
+
     pub fn set_desc(&mut self, desc: Desc) {
         self.plot.set_desc(desc)
     }
