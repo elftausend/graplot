@@ -366,6 +366,14 @@ impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, XEnd, &str) {
     }
 }
 
+impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, &str, XEnd) {
+    fn as_plot(&self) -> Plot {
+        let mut plot = (self.0, self.2).as_plot();
+        plot.line_desc = vec![self.1.into()];
+        plot
+    }
+}
+
 impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, &str) {
     fn as_plot(&self) -> Plot {
         let mut plot = self.0.as_plot();
