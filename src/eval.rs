@@ -73,17 +73,30 @@ pub fn get_font_size_y(max: f64) -> f32 {
     FONT_SIZE - (1. * a)
 }
 
+const MAX_MIN_STEPS: f64 = 14.;
+const MIN_MIN_STEPS: f64 = 3.;
+
 pub fn get_steps(max: f64, mut min_steps: f64) -> f64 {
     //let mut steps = 4.;
     if max >= min_steps {
         while max % min_steps != 0. {
             min_steps += 1.;
+
+            if min_steps == MAX_MIN_STEPS {
+                return MAX_MIN_STEPS;
+            }
         }
         return min_steps;
     }
+    /* 
     let max = count_inv_tens(max) as f64 * max * 10.;
     while max % min_steps != 0. {
         min_steps -= 1.;
+        println!("min_steps: {min_steps}");
+    }
+    */
+    if min_steps < MIN_MIN_STEPS {
+        return MIN_MIN_STEPS;
     }
     min_steps
 }
