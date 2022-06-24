@@ -50,6 +50,7 @@ impl Plot {
         self.line_desc[idx].color = color;
     }
 
+    /// adds a new graph / plot to the original plot.
     pub fn add<A: PlotArg>(&mut self, args: A) {
         let plot = args.as_plot();
         self.xs.push(plot.xs[0].clone());

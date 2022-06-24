@@ -3,7 +3,7 @@ use crate::{AxisDesc, max_display, get_steps, max, Desc, render};
 
 /// ```
 /// use graplot::Bar;
-
+/// 
 /// let mut bar = Bar::new(["Ferris", "Stefan", "Test"], &[100., 200., 700.]);
 /// bar.set_title("title");
 /// bar.set_xlabel("test");
@@ -57,10 +57,10 @@ impl Bar {
     }
 
     pub fn show(self) {
-        let mut max_x = max(&self.ys);
-        max_x = max_display(max_x, false);
+        let mut max_y = max(&self.ys);
+        max_y = max_display(max_y, false);
 
-        let steps = get_steps(max_x, self.desc.min_steps_x.into());
+        let steps = get_steps(max_y, self.desc.min_steps_x.into());
         
         let mut window_height = (steps * self.desc.spacing_y as f64).max(395.) as i32;
         let mut window_width = 0.;
@@ -84,7 +84,7 @@ impl Bar {
             window_height,
             ..Default::default()
         };
-        litequad::Window::from_config(conf, render::bar::run(self, 0.));
+        litequad::Window::from_config(conf, render::bar::run(self, 0., max_y, steps));
     }
 }
 
@@ -101,7 +101,8 @@ impl Default for BarDesc {
         Self { 
             width: 200., 
             label: Default::default(), 
-            color: litequad::color::GREEN }
+            color: litequad::color::GREEN 
+        }
     }
 }
 

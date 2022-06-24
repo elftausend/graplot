@@ -1,21 +1,16 @@
 use std::fmt::Display;
 
 use litequad::prelude::{clear_background, next_frame, WHITE, draw_line, GRAY, screen_width, screen_height, BLACK, draw_rectangle, draw_text, DARKGRAY, draw_text_rot, is_key_pressed, KeyCode};
-use crate::{Bar, max, max_display, get_font_size_y, get_steps, min, divs, count_inv_tens, negative};
+use crate::{Bar, get_font_size_y, min, divs, count_inv_tens, negative};
 use super::{COORD_THICKNESS, YLABEL_SIZE, TITLE_SIZE, DISTANCE_X_AXIS};
 const DISTANCE: f32 = 80.;
 
-pub async fn run(bar: Bar, _min_y: f64) {
-
-    let mut max_y = max(&bar.ys);
-    max_y = max_display(max_y, false);
-
+pub async fn run(bar: Bar, _min_y: f64, max_y: f64, steps_y: f64) {
     let min_y = min(&bar.ys);
     
     let y_font_size = get_font_size_y(max_y);
     let y_half_font = y_font_size / 2.;
 
-    let steps_y = get_steps(max_y, bar.desc.min_steps_y.into());
     let step_y = (max_y) / steps_y;
 
     let ys = divs(&bar.ys, step_y);

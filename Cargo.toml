@@ -14,3 +14,7 @@ readme = "README.md"
 #macroquad = {path = "./macroquad"}
 #macroquad = "0.3"
 litequad = "0.1.2"
+
+[features]
+#default = ["performance"]
+#performance = [] # low resource usage, non resizeable windows
