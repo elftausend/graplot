@@ -166,17 +166,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let y = (half_height - spacing_y * idx as f32) - spacing_y;
-                let text = format!("{}", val);
-                let move_away = text.len();
-
-                draw_text(
-                    &text,
-                    half_width - 5. - (y_half_font * move_away as f32),
-                    y + (y_half_font / 2.),
-                    y_font_size,
-                    BLACK,
-                );
-                draw_line(half_width - 4., y, half_width + 4., y, 3., DARKGRAY);
+                axis_desc_y(val , y, half_width, y_half_font, y_font_size);
             }
         } else {
             let tens_start = count_inv_tens(start_y);
@@ -191,17 +181,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let y = (half_height - spacing_y * idx as f32) - spacing_y;
-                let text = format!("{}", val as f64 / tens_start as f64);
-                let move_away = text.len();
-
-                draw_text(
-                    &text,
-                    half_width - 5. - (y_half_font * move_away as f32),
-                    y + (y_half_font / 2.),
-                    y_font_size,
-                    BLACK,
-                );
-                draw_line(half_width - 4., y, half_width + 4., y, 3., DARKGRAY);
+                axis_desc_y(val as f64 / tens_start as f64, y, half_width, y_half_font, y_font_size);
             }
         }
 
@@ -211,17 +191,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let y = (half_height - spacing_y * -(idx as f32)) + spacing_y;
-                let text = format!("{}", -val);
-                let move_away = text.len();
-
-                draw_text(
-                    &text,
-                    half_width - 5. - (y_half_font * move_away as f32),
-                    y + (y_half_font / 2.),
-                    y_font_size,
-                    BLACK,
-                );
-                draw_line(half_width - 4., y, half_width + 4., y, 3., DARKGRAY);
+                axis_desc_y(-val , y, half_width, y_half_font, y_font_size);
             }
         } else {
             let tens_start = count_inv_tens(start_y);
@@ -237,17 +207,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let y = (half_height - spacing_y * -(idx as f32)) + spacing_y;
-                let text = format!("{}", -val as f64 / tens_start as f64);
-                let move_away = text.len();
-
-                draw_text(
-                    &text,
-                    half_width - 5. - (y_half_font * move_away as f32),
-                    y + (y_half_font / 2.),
-                    y_font_size,
-                    BLACK,
-                );
-                draw_line(half_width - 4., y, half_width + 4., y, 3., DARKGRAY);
+                axis_desc_y(-val as f64 / tens_start as f64 , y, half_width, y_half_font, y_font_size);
             }
         }
 
@@ -257,17 +217,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let x = (half_width + spacing_x * idx as f32) + spacing_x;
-
-                let text = format!("{}", val);
-
-                draw_text(
-                    &text,
-                    x - text.len() as f32 * (x_half_font / 2.),
-                    half_height + x_half_font + 7.,
-                    x_font_size,
-                    BLACK,
-                );
-                draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);
+                axis_desc_x(val, x, x_half_font, x_font_size, half_height);
             }
         } else {
             let tens_start = count_inv_tens(start_x);
@@ -282,17 +232,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let x = (half_width + spacing_x * idx as f32) + spacing_x;
-
-                let text = format!("{}", val as f64 / tens_start as f64);
-
-                draw_text(
-                    &text,
-                    x - text.len() as f32 * (x_half_font / 2.),
-                    half_height + x_half_font + 7.,
-                    x_font_size,
-                    BLACK,
-                );
-                draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);
+                axis_desc_x(val as f64 / tens_start as f64, x, x_half_font, x_font_size, half_height);
             }
         }
 
@@ -302,17 +242,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let x = (half_width + spacing_x * -(idx as f32)) - spacing_x;
-
-                let text = format!("{}", -val);
-
-                draw_text(
-                    &text,
-                    x - text.len() as f32 * (x_half_font / 2.),
-                    half_height + x_half_font + 7.,
-                    x_font_size,
-                    BLACK,
-                );
-                draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);
+                axis_desc_x(-val, x, x_half_font, x_font_size, half_height);
             }
         } else {
             let tens_start = count_inv_tens(start_x);
@@ -327,17 +257,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
                 .enumerate()
             {
                 let x = (half_width + spacing_x * -(idx as f32)) - spacing_x;
-
-                let text = format!("{}", -val as f64 / tens_start as f64);
-
-                draw_text(
-                    &text,
-                    x - text.len() as f32 * (x_half_font / 2.),
-                    half_height + x_half_font + 7.,
-                    x_font_size,
-                    BLACK,
-                );
-                draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);
+                axis_desc_x(-val as f64 / tens_start as f64, x, x_half_font, x_font_size, half_height);
             }
         }
 
@@ -348,4 +268,32 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
         next_frame().await;
         std::thread::sleep(std::time::Duration::from_millis(16));
     }
+}
+
+
+fn axis_desc_y<T: std::fmt::Display>(val: T, y: f32, half_width: f32, y_half_font: f32, y_font_size: f32) {
+    let text = format!("{}", val);
+    let move_away = text.len();
+
+    draw_text(
+        &text,
+        half_width - 5. - (y_half_font * move_away as f32),
+        y + (y_half_font / 2.),
+        y_font_size,
+        BLACK,
+    );
+    draw_line(half_width - 4., y, half_width + 4., y, 3., DARKGRAY);
+}
+
+fn axis_desc_x<T: std::fmt::Display>(val: T, x: f32, x_half_font: f32, x_font_size: f32, half_height: f32) {
+    let text = format!("{}", val);
+
+    draw_text(
+        &text,
+        x - text.len() as f32 * (x_half_font / 2.),
+        half_height + x_half_font + 7.,
+        x_font_size,
+        BLACK,
+    );
+    draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);
 }
