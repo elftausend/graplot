@@ -62,7 +62,7 @@ impl Bar {
 
         let steps = get_steps(max_y, self.desc.min_steps_x.into());
         
-        let mut window_height = (steps * self.desc.spacing_y as f64).max(395.) as i32;
+        let window_height = (steps * self.desc.spacing_y as f64).max(395.) as i32;
         let mut window_width = 0.;
 
         for bar in &self.bars {
@@ -74,9 +74,6 @@ impl Bar {
             window_width = 395.;
         }
 
-        if window_height == 0 {
-            window_height = 395;
-        }
 
         let conf = Conf {
             window_title: self.axis_desc.title.clone(),

@@ -60,6 +60,10 @@ pub async fn negative_only(bar: Bar, step_y: f64, y_half_font: f32, y_font_size:
     loop {
         clear_background(WHITE);
 
+        for (idx, char) in bar.axis_desc.y_label.chars().into_iter().enumerate() {
+            draw_text_rot(&char.to_string(), 7., screen_height() / 2. - (YLABEL_SIZE / 2. * idx as f32) , YLABEL_SIZE, BLACK, -std::f32::consts::PI / 2.,);
+        }
+
         draw_text(&bar.axis_desc.title, screen_width() / 2., DISTANCE_X_AXIS / 3. + 7., TITLE_SIZE, BLACK);
         draw_text(&bar.axis_desc.x_label, screen_width() / 2., screen_height() - DISTANCE_X_AXIS / 3., YLABEL_SIZE, BLACK);
 

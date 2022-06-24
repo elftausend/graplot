@@ -34,3 +34,11 @@ fn test_only_neg_bar() {
     bar.set_ylabel("test");
     bar.show();
 }
+
+#[test]
+fn test_only_one_bar() {
+    let mut bar = Bar::new(("Added", ORANGE), &[-10.]);
+    bar.set_title("title");
+    bar.set_ylabel("test");
+    bar.show();
+}
