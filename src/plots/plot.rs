@@ -3,7 +3,7 @@
 
 use litequad::prelude::{Color, Conf};
 
-use crate::{render, LineDesc, Matrix, AxisDesc, Desc, XEnd, max, max_matrix, max_display, get_steps};
+use crate::{render, LineDesc, Matrix, AxisDesc, Desc, XEnd};
 
 #[derive(Clone, Default)]
 pub struct Plot {
@@ -71,12 +71,19 @@ impl Plot {
     }
 
     pub fn show(self) {
-        let mut max_y = max_matrix(&self.ys);
+        
+        /*let mut max_y = max_matrix(&self.ys);
         max_y = max_display(max_y, false);
 
         let steps_y = get_steps(max_y, self.desc.min_steps_x.into());
-        let mut window_height = (steps_y * self.desc.spacing_y as f64).max(395.) as i32;
+        let window_height = (steps_y * self.desc.spacing_y as f64).max(395.) as i32;
 
+        let mut max_x = max_matrix(&self.xs);
+        max_x = max_display(max_x, false);
+
+        let steps_x = get_steps(max_x, self.desc.min_steps_x.into());
+        let window_width = (steps_x * self.desc.spacing_x as f64).max(395.) as i32 * 2 + 7;
+        */
         let conf = Conf {
             window_title: self.axis_desc.title.clone(),
             window_width: 395,

@@ -42,8 +42,6 @@ pub async fn run(plot: Plot3D) {
     let mut position = vec3(-14., 10., 13.);
 
     loop {
-        let mut pressed = false;
-
         clear_background(WHITE);
 
         if is_key_pressed(KeyCode::Escape) {
@@ -53,23 +51,19 @@ pub async fn run(plot: Plot3D) {
         if is_key_down(KeyCode::A) {
             //camera_z -= 0.3;
             position -= front;
-            pressed = true;
         }
 
         if is_key_down(KeyCode::D) {
             //camera_z += 0.3;
             position += front;
-            pressed = true;
         }
 
         if is_key_down(KeyCode::W) {
             position -= right;
-            pressed = true;
         }
 
         if is_key_down(KeyCode::S) {
             position += right;
-            pressed = true;
         }
 
         let camera = Camera3D {
@@ -301,12 +295,12 @@ pub async fn run(plot: Plot3D) {
         */
         
         next_frame().await;
-        let time = if pressed {
+        /*let wait = if pressed {
             16
         } else {
             16
-        };
-        std::thread::sleep(std::time::Duration::from_millis(time));
+        };*/
+        std::thread::sleep(std::time::Duration::from_millis(16));
     }
 }
 

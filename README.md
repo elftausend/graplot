@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.18)](https://docs.rs/graplot/0.1.18/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.19)](https://docs.rs/graplot/0.1.19/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad] (internally [litequad]).
 It creates a window displaying the graphs.
@@ -14,7 +14,7 @@ It creates a window displaying the graphs.
 Add 'graplot' as a dependency:
 ```toml
 [dependencies]
-graplot = "0.1.18"
+graplot = "0.1.19"
 ```
 
 ## [Examples]
@@ -210,6 +210,7 @@ h.join().unwrap() // you need to close both windows
 
 ## Changelog
 
+- 0.1.19: negative value bars
 - 0.1.18: bugfixes
 - 0.1.17: basic 3d plotting
 - 0.1.16: coloring,
