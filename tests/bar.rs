@@ -25,3 +25,12 @@ fn test_small_bar() {
     bar.set_ylabel("test");
     bar.show();
 }
+
+#[test]
+fn test_only_neg_bar() {
+    let mut bar = Bar::new([("Ferris", RED), ("Stefan", GREEN), ("Test", BLUE)], &[-100., -200., -500.,]);
+    bar.add(("Added", ORANGE), -400.);
+    bar.set_title("title");
+    bar.set_ylabel("test");
+    bar.show();
+}

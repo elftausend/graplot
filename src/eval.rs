@@ -1,10 +1,11 @@
 use crate::{Matrix, FONT_SIZE};
 
 pub fn max(arr: &[f64]) -> f64 {
-    let mut max = arr[0];
+    let mut max = arr[0].abs();
     for value in arr {
-        if value > &max {
-            max = *value;
+        let value = value.abs();
+        if value > max {
+            max = value;
         }
     }
     max
@@ -179,4 +180,24 @@ pub fn min_matrix(mat: &Matrix) -> f64 {
         }
     }
     min
+}
+
+
+pub fn negative(arr: &[f64]) -> bool {
+    let negative = true;
+    for value in arr {
+        if value.is_sign_positive() {
+            return false;
+        }
+    }
+    negative
+}
+
+#[test]
+fn test_negative() {
+    let a = [-1., -4., -2., -5.];
+    let b = [-1., -4., -2., 5.];
+
+    assert_eq!(negative(&a), true);
+    assert_eq!(negative(&b), false);
 }
