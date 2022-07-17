@@ -300,6 +300,30 @@ impl PlotArg for (Vec<f64>, Vec<f64>) {
     }
 }
 
+impl PlotArg for (Vec<f64>, Vec<f64>, &str) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.clone()],
+            ys: vec![self.1.clone()],
+            line_desc: vec![self.2.into()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for (&Vec<f64>, &Vec<f64>) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.clone()],
+            ys: vec![self.1.clone()],
+            line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
 impl PlotArg for Vec<f32> {
     fn as_plot(&self) -> Plot {
         Plot {
@@ -318,6 +342,18 @@ impl PlotArg for (Vec<f32>, Vec<f32>) {
             xs: vec![self.0.iter().map(|x| *x as f64).collect()],
             ys: vec![self.1.iter().map(|x| *x as f64).collect()],
             line_desc: vec![Default::default()],
+            axis_desc: Default::default(),
+            desc: Default::default(),
+        }
+    }
+}
+
+impl PlotArg for (Vec<f32>, Vec<f32>, &str) {
+    fn as_plot(&self) -> Plot {
+        Plot {
+            xs: vec![self.0.iter().map(|x| *x as f64).collect()],
+            ys: vec![self.1.iter().map(|x| *x as f64).collect()],
+            line_desc: vec![self.2.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
         }
