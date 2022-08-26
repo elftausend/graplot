@@ -1,7 +1,7 @@
 # graplot
 
 [![Crates.io version](https://img.shields.io/crates/v/graplot.svg)](https://crates.io/crates/graplot)
-[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.20)](https://docs.rs/graplot/0.1.20/graplot/)
+[![Docs](https://docs.rs/graplot/badge.svg?version=0.1.21)](https://docs.rs/graplot/0.1.21/graplot/)
 
 'graplot' is an experimental plotting library written in Rust that is based on [macroquad] (internally [litequad]).
 It creates a window displaying the graphs.
@@ -14,7 +14,7 @@ It creates a window displaying the graphs.
 Add 'graplot' as a dependency:
 ```toml
 [dependencies]
-graplot = "0.1.20"
+graplot = "0.1.21"
 ```
 
 ## [Examples]
@@ -28,7 +28,8 @@ let plot = Plot::new([-4., -2., 1., 4.]);
 plot.show();
 ```
 
-![plot1](pictures/plot1.png)
+<img src="pictures/plot1.png" alt="first plot example" width="350"/>
+
 
 3D line plot:
 
@@ -44,7 +45,8 @@ let plot = Plot3D::new((xs, ys, zs, "r-o"));
 plot.show();
 ```
 
-![3d line plot](pictures/3d_line.png)
+
+<img src="pictures/3d_line.png" alt="3d line plot example" width="350"/>
 
 Multiple graphs:
 ```rust
@@ -63,7 +65,7 @@ plot.add((ys2, "r-"));
 plot.show();
 ```
 
-![multiple graphs](pictures/multiple.png)
+<img src="pictures/multiple.png" alt="multiple graphs" width="350"/>
 
 Label the x and y axis and set a title:
 
@@ -78,7 +80,7 @@ plot.set_xlabel("x axis");
 plot.set_ylabel("y axis");
 plot.show();
 ```
-<img src="pictures/cosine_labeled.png" alt="cosine labeled" width="400"/>
+<img src="pictures/cosine_labeled.png" alt="cosine labeled" width="350"/>
 
 [Collatz Conjecture]:
 
@@ -96,7 +98,7 @@ let draw = [(35., "label"), (25., "len"), (25., "labeled"), (15., "test")];
 let pie = Pie::new(draw);
 pie.show();
 ```
-<img src="pictures/pie_chart.png" alt="pie chart" width="400"/>
+<img src="pictures/pie_chart.png" alt="pie chart" width="350"/>
 
 Sine wave:
 ```rust
@@ -119,7 +121,7 @@ let plot = Plot::new((xs, ys));
 plot.show();
 ```
 
-![Sinewave](pictures/sine_wave.png)
+<img src="pictures/sine_wave.png" alt="sine wave example" width="350"/>
 
 
 x³ + x² - 0.08:
@@ -130,7 +132,7 @@ use graplot::{Plot, x};
 let plot = Plot::new((|x: f64| x.powf(3.) + x.powf(2.) - 0.08, x(1.)) );
 plot.show();
 ```
-<img src="pictures/pol3.png" alt="pol3" width="400"/>
+<img src="pictures/pol3.png" alt="pol3" width="350"/>
 
 
 x² - 0.5:
@@ -140,7 +142,8 @@ use graplot::Plot;
 let plot = Plot::new(|x: f64| x.powf(2.) - 0.5);
 plot.show();
 ```
-![squared](pictures/x2.png)
+
+<img src="pictures/x2.png" alt="x squared example" width="350"/>
 
 Use the Polynomial struct or polynomial() function to create a polynomial function that runs through all given points:
 
@@ -152,7 +155,7 @@ let plot = Plot::new((poly, x(10.)));
 plot.show();
 ```
 
-<img src="pictures/through_points.png" alt="polynomial functions runs through 3 points" width="400"/>
+<img src="pictures/through_points.png" alt="polynomial functions runs through 3 points" width="350"/>
 
 Draw bar graphs:
 
@@ -165,7 +168,7 @@ bar.set_xlabel("test");
 bar.show();
 ```
 
-<img src="pictures/bars.png" alt="bar graph" width="400"/>
+<img src="pictures/bars.png" alt="bar graph" width="300"/>
 
 Using a line description: (matplotlib)
 
@@ -176,7 +179,30 @@ use graplot::Plot;
 let plot = Plot::new(([-4., -3., -3.4, -3.75, -4.1], "c-o"));
 plot.show();
 ```
-![line_desc](pictures/line_desc.png)
+
+<img src="pictures/line_desc.png" alt="line desc example" width="250"/>
+
+Draw graphs with nodes and egdes:
+
+```rust
+use graplot::{Graph, RED};
+
+let mut graph = Graph::new();
+graph.set_node_color(RED);
+
+let a = graph.add_node(vec![]);
+let b = graph.add_node(vec![]);
+let c = graph.add_node(vec![]);
+
+let d = graph.add_node(vec![a.idx, b.idx]);
+let e = graph.add_node(vec![a.idx, c.idx]);
+
+graph.add_node(vec![d.idx, e.idx, b.idx]);
+
+graph.show();
+```
+
+<img src="pictures/graph.png" alt="graph" width="300"/>
 
 Custom scaling:
 
@@ -191,6 +217,7 @@ plot.set_desc(Desc {
 });
 plot.show();
 ```
+
 
 Spawning multiple windows on linux (currently not working):
 
@@ -210,6 +237,7 @@ h.join().unwrap() // you need to close both windows
 
 ## Changelog
 
+- 0.1.21: added graphs (nodes, edges)
 - 0.1.19: negative value bars
 - 0.1.18: bugfixes
 - 0.1.17: basic 3d plotting
