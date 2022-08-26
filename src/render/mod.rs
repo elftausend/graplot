@@ -2,6 +2,7 @@ pub mod plot;
 pub mod bar;
 pub mod pie;
 pub mod plot3d;
+pub mod graph;
 
 const TITLE_SIZE: f32 = 37.;
 const YLABEL_SIZE: f32 = 29.;

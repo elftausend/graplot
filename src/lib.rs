@@ -18,7 +18,9 @@ mod plots;
 mod polynomial;
 mod render;
 mod eval;
+mod graph;
 
+pub use graph::*;
 pub use plots::*;
 pub use line_desc::*;
 pub use polynomial::*;
