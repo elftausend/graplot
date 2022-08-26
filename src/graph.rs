@@ -22,6 +22,7 @@ pub struct GraphDesc {
     pub egde_color: EdgeColor,
     pub window_width: i32,
     pub window_height: i32,
+    pub outer_ring: (Color, f32),
 
 }
 
@@ -36,6 +37,7 @@ impl Default for GraphDesc {
             egde_color: EdgeColor::Mixed,
             window_width: 395,
             window_height: 395,
+            outer_ring: (GREEN, 0.)
         }
     }
 }

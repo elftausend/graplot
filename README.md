@@ -185,11 +185,14 @@ plot.show();
 Draw graphs with nodes and egdes:
 
 ```rust
-use graplot::{Graph, RED};
+use graplot::{Graph, RED, graph::GraphDesc, Color};
 
 let mut graph = Graph::new();
-graph.set_node_color(RED);
-
+graph.graph_desc = GraphDesc {
+    node_color: RED,
+    outer_ring: (Color::new(1., 0.5, 0.8, 1.), 3.5),
+    ..Default::default()
+};
 let a = graph.add_node(vec![]);
 let b = graph.add_node(vec![]);
 let c = graph.add_node(vec![]);

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use litequad::{window::{next_frame, clear_background, screen_width}, prelude::WHITE, shapes::{draw_circle, draw_line}};
+use litequad::{window::{next_frame, clear_background, screen_width}, prelude::WHITE, shapes::{draw_circle, draw_line, draw_circle_lines}};
 use crate::{Graph, graph::EdgeColor};
 use super::COLOR_ARRAY;
 
@@ -27,6 +27,7 @@ pub async fn run(graph: Graph) {
                 node_coords.insert(node.idx, (x, y));
 
                 draw_circle(x, y, radius, graph.graph_desc.node_color);
+                draw_circle_lines(x, y, radius, graph.graph_desc.outer_ring.1, graph.graph_desc.outer_ring.0);
 
                 //draw_line(screen_width() / 2. - radius, y, screen_width() / 2. - radius +length, y, 5., BLUE);
 
