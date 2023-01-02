@@ -3,7 +3,7 @@
 
 use litequad::prelude::{Color, Conf};
 
-use crate::{render, LineDesc, Matrix, AxisDesc, Desc, XEnd};
+use crate::{render, LineDesc, Matrix, AxisDesc, Desc, XEnd, ToF64};
 
 #[derive(Clone, Default)]
 pub struct Plot {
@@ -15,7 +15,7 @@ pub struct Plot {
 }
 
 impl Plot {
-    pub fn new<A: PlotArg>(args: A) -> Plot {
+    pub fn new(args: impl PlotArg) -> Plot {
         args.as_plot()
     }
 
@@ -120,11 +120,11 @@ impl PlotArg for () {
     }
 }
 
-impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for ([T; N], [T; N]) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.to_vec()],
-            ys: vec![self.1.to_vec()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -132,11 +132,11 @@ impl<const N: usize> PlotArg for ([f64; N], [f64; N]) {
     }
 }
 
-impl<const N: usize> PlotArg for ([f64; N], [f64; N], &str) {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for ([T; N], [T; N], &str) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.to_vec()],
-            ys: vec![self.1.to_vec()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![self.2.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -144,11 +144,11 @@ impl<const N: usize> PlotArg for ([f64; N], [f64; N], &str) {
     }
 }
 
-impl<const N: usize> PlotArg for [f64; N] {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for [T; N] {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..N).map(|x| x as f64).collect()],
-            ys: vec![self.to_vec()],
+            ys: vec![self.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -156,11 +156,11 @@ impl<const N: usize> PlotArg for [f64; N] {
     }
 }
 
-impl<const N: usize> PlotArg for ([f64; N], &str) {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for ([T; N], &str) {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..N).map(|x| x as f64).collect()],
-            ys: vec![self.0.to_vec()],
+            ys: vec![self.0.to_f64()],
             line_desc: vec![self.1.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -168,11 +168,11 @@ impl<const N: usize> PlotArg for ([f64; N], &str) {
     }
 }
 
-impl<const N: usize> PlotArg for (&[f64; N], &[f64; N]) {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for (&[T; N], &[T; N]) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.to_vec()],
-            ys: vec![self.1.to_vec()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -180,11 +180,11 @@ impl<const N: usize> PlotArg for (&[f64; N], &[f64; N]) {
     }
 }
 
-impl<const N: usize> PlotArg for (&[f64; N], &[f64; N], &str) {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for (&[T; N], &[T; N], &str) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.to_vec()],
-            ys: vec![self.1.to_vec()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![self.2.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -192,11 +192,11 @@ impl<const N: usize> PlotArg for (&[f64; N], &[f64; N], &str) {
     }
 }
 
-impl<const N: usize> PlotArg for &[f64; N] {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for &[T; N] {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..N).map(|x| x as f64).collect()],
-            ys: vec![self.to_vec()],
+            ys: vec![self.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -204,11 +204,11 @@ impl<const N: usize> PlotArg for &[f64; N] {
     }
 }
 
-impl<const N: usize> PlotArg for (&[f64; N], &str) {
+impl<T: ToF64<Output = f64>, const N: usize> PlotArg for (&[T; N], &str) {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..N).map(|x| x as f64).collect()],
-            ys: vec![self.0.to_vec()],
+            ys: vec![self.0.to_f64()],
             line_desc: vec![self.1.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -216,11 +216,11 @@ impl<const N: usize> PlotArg for (&[f64; N], &str) {
     }
 }
 
-impl PlotArg for (&[f64], &[f64]) {
+impl<T: ToF64<Output = f64>> PlotArg for (&[T], &[T]) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.to_vec()],
-            ys: vec![self.1.to_vec()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -228,11 +228,11 @@ impl PlotArg for (&[f64], &[f64]) {
     }
 }
 
-impl PlotArg for (&[f64], &[f64], &str) {
+impl<T: ToF64<Output = f64>> PlotArg for (&[T], &[T], &str) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.to_vec()],
-            ys: vec![self.1.to_vec()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![self.2.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -240,11 +240,11 @@ impl PlotArg for (&[f64], &[f64], &str) {
     }
 }
 
-impl PlotArg for &[f64] {
+impl<T: ToF64<Output = f64>> PlotArg for &[T] {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..self.len()).map(|x| x as f64).collect()],
-            ys: vec![self.to_vec()],
+            ys: vec![self.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -252,11 +252,11 @@ impl PlotArg for &[f64] {
     }
 }
 
-impl PlotArg for (&[f64], &str) {
+impl<T: ToF64<Output = f64>> PlotArg for (&[T], &str) {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..self.0.len()).map(|x| x as f64).collect()],
-            ys: vec![self.0.to_vec()],
+            ys: vec![self.0.to_f64()],
             line_desc: vec![self.1.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -264,23 +264,11 @@ impl PlotArg for (&[f64], &str) {
     }
 }
 
-impl PlotArg for Vec<f64> {
-    fn as_plot(&self) -> Plot {
-        Plot {
-            xs: vec![(0..self.len()).map(|x| x as f64).collect()],
-            ys: vec![self.clone()],
-            line_desc: vec![Default::default()],
-            axis_desc: Default::default(),
-            desc: Default::default(),
-        }
-    }
-}
-
-impl PlotArg for (Vec<f64>, &str) {
+impl<T: ToF64<Output = f64>> PlotArg for (Vec<T>, &str) {
     fn as_plot(&self) -> Plot {
         Plot {
             xs: vec![(0..self.0.len()).map(|x| x as f64).collect()],
-            ys: vec![self.0.clone()],
+            ys: vec![self.0.to_f64()],
             line_desc: vec![self.1.into()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -288,11 +276,11 @@ impl PlotArg for (Vec<f64>, &str) {
     }
 }
 
-impl PlotArg for (Vec<f64>, Vec<f64>) {
+impl<T: ToF64<Output = f64>> PlotArg for (&Vec<T>, &Vec<T>) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.clone()],
-            ys: vec![self.1.clone()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -300,23 +288,11 @@ impl PlotArg for (Vec<f64>, Vec<f64>) {
     }
 }
 
-impl PlotArg for (Vec<f64>, Vec<f64>, &str) {
+impl<T: ToF64<Output = f64>> PlotArg for Vec<T> {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.clone()],
-            ys: vec![self.1.clone()],
-            line_desc: vec![self.2.into()],
-            axis_desc: Default::default(),
-            desc: Default::default(),
-        }
-    }
-}
-
-impl PlotArg for (&Vec<f64>, &Vec<f64>) {
-    fn as_plot(&self) -> Plot {
-        Plot {
-            xs: vec![self.0.clone()],
-            ys: vec![self.1.clone()],
+            xs: vec![(0..self.len()).map(|x| x.to_f64()).collect()],
+            ys: vec![self.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -324,11 +300,11 @@ impl PlotArg for (&Vec<f64>, &Vec<f64>) {
     }
 }
 
-impl PlotArg for Vec<f32> {
+impl<T: ToF64<Output = f64>> PlotArg for (Vec<T>, Vec<T>) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![(0..self.len()).map(|x| x as f64).collect()],
-            ys: vec![self.iter().map(|x| *x as f64).collect()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![Default::default()],
             axis_desc: Default::default(),
             desc: Default::default(),
@@ -336,23 +312,11 @@ impl PlotArg for Vec<f32> {
     }
 }
 
-impl PlotArg for (Vec<f32>, Vec<f32>) {
+impl<T: ToF64<Output = f64>> PlotArg for (Vec<T>, Vec<T>, &str) {
     fn as_plot(&self) -> Plot {
         Plot {
-            xs: vec![self.0.iter().map(|x| *x as f64).collect()],
-            ys: vec![self.1.iter().map(|x| *x as f64).collect()],
-            line_desc: vec![Default::default()],
-            axis_desc: Default::default(),
-            desc: Default::default(),
-        }
-    }
-}
-
-impl PlotArg for (Vec<f32>, Vec<f32>, &str) {
-    fn as_plot(&self) -> Plot {
-        Plot {
-            xs: vec![self.0.iter().map(|x| *x as f64).collect()],
-            ys: vec![self.1.iter().map(|x| *x as f64).collect()],
+            xs: vec![self.0.to_f64()],
+            ys: vec![self.1.to_f64()],
             line_desc: vec![self.2.into()],
             axis_desc: Default::default(),
             desc: Default::default(),

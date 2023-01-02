@@ -119,11 +119,8 @@ impl Graph {
 }
 
 fn count_nodes_in_layers(layers: &[Layer]) -> usize {
-    let mut node_count = 0;
-    for layer in layers {
-        node_count += layer.nodes.len();
-    }
-    node_count
+    layers.iter()
+        .fold(0, |acc, layer| acc + layer.nodes.len())
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]

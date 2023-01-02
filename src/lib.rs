@@ -67,3 +67,34 @@ impl Default for Desc {
         }
     }
 }
+
+pub(crate) trait ToF64 {
+    type Output;
+    fn to_f64(&self) -> Self::Output;
+}
+
+impl<T: ToF64<Output = f64>> ToF64 for [T] {
+    type Output = Vec<f64>;
+
+    fn to_f64(&self) -> Self::Output {
+        self.iter().map(|val| val.to_f64()).collect()
+    }
+}
+
+macro_rules! impl_tof64 {
+    ($($t:ty),*) => {
+        $(
+            impl ToF64 for $t {
+                type Output = f64;
+                #[inline]
+                fn to_f64(&self) -> f64 {
+                    *self as f64
+                }
+            }
+        )*
+    };
+}
+
+impl_tof64!(f32, f64, i8, i16, i32, i64, i128,
+    isize, u8, u16, u32, u64, u128, usize
+);
