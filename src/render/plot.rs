@@ -5,8 +5,8 @@ use crate::{LineType, Marker, Plot, max_matrix, max_display, get_font_size_y, ge
 use super::{TITLE_SIZE, COORD_THICKNESS, YLABEL_SIZE};
 
 pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
-    let spacing_x = plot.desc.spacing_x;
-    let spacing_y = plot.desc.spacing_y;
+    let mut spacing_x = plot.desc.spacing_x;
+    let mut spacing_y = plot.desc.spacing_y;
 
     let max_x = match plot.desc.end_x {
         Some(x) => x.0,
@@ -36,6 +36,14 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
     //let start_y = step_y;
 
     loop {
+        let (_, wheel_y) = mouse_wheel();
+
+        if is_key_down(KeyCode::LeftShift) || is_key_down(KeyCode::RightShift) {
+            spacing_y += wheel_y * 0.2;
+        } else {
+            spacing_x += wheel_y * 0.2;
+        }
+
         clear_background(WHITE);
 
         let half_height = screen_height() / 2.;
