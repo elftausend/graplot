@@ -64,13 +64,13 @@ impl PlotArg for Polynomial {
     }
 }
 
-impl PlotArg for (Polynomial, XEnd) {
+impl PlotArg for (Polynomial, Option<XEnd>) {
     fn as_plot(&self) -> crate::Plot {
         let mut xs = [0.; 200];
 
         let mut add = -100f64;
         for x in &mut xs {
-            *x = (add / 100.) * self.1 .0;
+            *x = (add / 100.) * self.1.unwrap().0;
             add += 1.;
         }
 
@@ -101,7 +101,7 @@ impl PlotArg for (Polynomial, &str) {
     }
 }
 
-impl PlotArg for (Polynomial, XEnd, &str) {
+impl PlotArg for (Polynomial, Option<XEnd>, &str) {
     fn as_plot(&self) -> Plot {
         let mut plot = (self.0.clone(), self.1).as_plot();
         plot.line_desc = vec![self.2.into()];

@@ -8,11 +8,12 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
     let spacing_x = plot.desc.spacing_x;
     let spacing_y = plot.desc.spacing_y;
 
-    let mut max_x = max_matrix(&plot.xs);
+    let max_x = match plot.desc.end_x {
+        Some(x) => x.0,
+        None => max_display(max_matrix(&plot.xs), other_scaling),
+    };
+
     //let mut max_x = max(&maxed);
-
-    max_x = max_display(max_x, other_scaling);
-
     let x_font_size = get_font_size_x(max_x);
 
     let steps = get_steps(max_x, plot.desc.min_steps_x.into());

@@ -348,13 +348,13 @@ impl<F: Fn(f64) -> f64> PlotArg for F {
     }
 }
 
-impl<F: Fn(f64) -> f64> PlotArg for (F, XEnd) {
+impl<F: Fn(f64) -> f64> PlotArg for (F, Option<XEnd>) {
     fn as_plot(&self) -> Plot {
         let mut xs = vec![0.; 200];
 
         let mut add = -100f64;
         for x in &mut xs {
-            *x = (add / 100.) * self.1 .0;
+            *x = (add / 100.) * self.1.unwrap().0;
             add += 1.;
         }
 
@@ -372,7 +372,7 @@ impl<F: Fn(f64) -> f64> PlotArg for (F, XEnd) {
     }
 }
 
-impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, XEnd, &str) {
+impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, Option<XEnd>, &str) {
     fn as_plot(&self) -> Plot {
         let mut plot = (self.0, self.1).as_plot();
         plot.line_desc = vec![self.2.into()];
@@ -380,7 +380,7 @@ impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, XEnd, &str) {
     }
 }
 
-impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, &str, XEnd) {
+impl<F: Copy + Fn(f64) -> f64> PlotArg for (F, &str, Option<XEnd>) {
     fn as_plot(&self) -> Plot {
         let mut plot = (self.0, self.2).as_plot();
         plot.line_desc = vec![self.1.into()];

@@ -43,13 +43,13 @@ pub struct XEnd(pub f64);
 pub struct YEnd(f64, f64);
 
 /// sets the absolute max value for x
-pub fn x(end_x: f64) -> XEnd {
-    XEnd(end_x.abs())
+pub fn x(end_x: f64) -> Option<XEnd> {
+    Some(XEnd(end_x.abs()))
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Desc {
-    pub end: XEnd,
+    pub end_x: Option<XEnd>,
     pub spacing_x: f32, // pixels
     pub spacing_y: f32, // pixels
     pub min_steps_x: f32,
@@ -59,7 +59,7 @@ pub struct Desc {
 impl Default for Desc {
     fn default() -> Self {
         Self {
-            end: x(1.),
+            end_x: None,
             spacing_x: 40.,
             spacing_y: 40.,
             min_steps_x: 4.,
