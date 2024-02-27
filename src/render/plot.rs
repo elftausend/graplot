@@ -4,6 +4,11 @@ use crate::{LineType, Marker, Plot, max_matrix, max_display, get_font_size_y, ge
 
 use super::{TITLE_SIZE, COORD_THICKNESS, YLABEL_SIZE};
 
+const ALPHA: f32 = 1.;
+const COORD_SYS_COLOR: Color = Color::new(0.51, 0.51, 0.51, ALPHA);
+pub const COORD_BLACK: Color = Color::new(0.00, 0.00, 0.00, ALPHA);
+pub const COORD_DARKGRAY: Color = Color::new(0.31, 0.31, 0.31, ALPHA);
+
 pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
     let mut spacing_x = plot.desc.spacing_x;
     let mut spacing_y = plot.desc.spacing_y;
@@ -107,7 +112,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
             half_width,
             screen_height(),
             COORD_THICKNESS,
-            GRAY,
+            COORD_SYS_COLOR,
         );
 
         // x-axis
@@ -117,7 +122,7 @@ pub async fn run(plot: Plot, min_y: f64, other_scaling: bool) {
             half_width + subtract_x,
             half_height,
             COORD_THICKNESS,
-            GRAY,
+            COORD_SYS_COLOR,
         );
 
         for (idx, xs) in plot.xs.iter().enumerate() {
@@ -289,9 +294,9 @@ fn axis_desc_y<T: std::fmt::Display>(val: T, y: f32, half_width: f32, y_half_fon
         half_width - 5. - (y_half_font * move_away as f32),
         y + (y_half_font / 2.),
         y_font_size,
-        BLACK,
+        COORD_BLACK,
     );
-    draw_line(half_width - 4., y, half_width + 4., y, 3., DARKGRAY);
+    draw_line(half_width - 4., y, half_width + 4., y, 3., COORD_DARKGRAY);
 }
 
 fn axis_desc_x<T: std::fmt::Display>(val: T, x: f32, x_half_font: f32, x_font_size: f32, half_height: f32) {
@@ -302,7 +307,7 @@ fn axis_desc_x<T: std::fmt::Display>(val: T, x: f32, x_half_font: f32, x_font_si
         x - text.len() as f32 * (x_half_font / 2.),
         half_height + x_half_font + 7.,
         x_font_size,
-        BLACK,
+        COORD_BLACK,
     );
-    draw_line(x, half_height + 4., x, half_height - 4., 3., DARKGRAY);
+    draw_line(x, half_height + 4., x, half_height - 4., 3., COORD_DARKGRAY);
 }
